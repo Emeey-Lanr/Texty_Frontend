@@ -1,12 +1,16 @@
 import "../styles/chat.css"
 import boxer from "../images/boxer.jpg"
 import { AiOutlineCamera } from "react-icons/ai"
-
+import { appContext } from "../App"
+import {useContext} from "react"
 const ChattingSpace = () => {
+      const {hideSideBar, setHideSideBar,  showSideBarBtn} = useContext (appContext)
   return (
       <div className="chatting_space">
           <div className="chat_group_indication">
-              <div></div>
+              <div>
+                  <button onClick={ showSideBarBtn}>Show</button>
+              </div>
           </div>
           <div className="chat_group">
               <div className="chat-message_div_1">

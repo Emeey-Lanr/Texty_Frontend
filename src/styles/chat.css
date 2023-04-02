@@ -178,3 +178,9 @@ color: white;
     width: 10px;
 }
 
+
+@media (max-width:1000px){
+    .chatting_space{
+        width: 100%;
+    }
+}

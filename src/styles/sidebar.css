@@ -5,4 +5,71 @@
     left: 0;
     top: 0;
     background-color: black;
+    display: block;
+}
+.exit{
+    width: 50px;
+    height: 50px;
+    position: relative;
+    background-color: black;
+    left: 300px;
+    top: 20px;
+    /* border-radius: 90px; */
+    border-radius: 0 20px 20px 0;
+    outline: 3px solid black;
+    border: 5px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+.exit button{
+    border: none;
+    background: none;
+}
+.exit button .exit_btn_icon{
+    color: #9f750a;
+    font-size: 1.5rem;
+    font-weight: 100;
+}
+
+/* back modal */
+
+@media (min-width:1001px){
+    .hidesidebar{
+        display: block;
+    }
+    .sidebar_back_modal{
+        display: none;
+    }
+}
+
+@media (max-width:1000px){
+.hidesidebar{
+    display: none;
+}
+.sidebar_animation{
+    animation: sidebar 1 1s ease-out running normal;
+}
+@keyframes  sidebar{
+    
+    0%{
+        transform: translateY(400px);
+       width: 100%;
+        transition: 6s all ease-in-out;
+
+    }
+}
+.exit{
+    display: block;
+
+}
+.sidebar_back_modal{
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background: #00000087;
+}
 }
