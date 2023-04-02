@@ -1,0 +1,180 @@
+.chatting_space{
+    width: 81%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+/* To show user group */
+.chat_group_indication{
+    height: 10%;
+}
+
+/* For Chat message */
+.chat_group{
+    width: 95%;
+    margin:  0 auto;
+    height: 80%;
+    overflow-x: hidden;
+    overflow-y: visible;
+
+}
+.chat_group::-webkit-scrollbar{
+    width: 10px;
+}
+/* If other user */
+.chat-message_div_1{
+    width: 90%;
+    margin:  0 0 auto 0;
+}
+.chat-message_imgdiv_1 {
+    display: flex;
+    align-items: center;
+
+}
+.chat-message_imgdiv_1 div{
+    width: 200px;
+    background-color: black;
+    height: 40px;
+    border-radius: 50px 20px 50px;
+    text-align: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+.chat-message_div_1 img{
+    width: 100%;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+}
+.chat_message_1{
+    width: 94%;
+    margin: 0 0 0 auto;
+    background-color: aliceblue;
+    padding: 5px 20px;
+    margin-top: 5px;
+    border-radius: 10px;
+    
+}
+.chat_message_1 p{
+    text-align: justify;
+    line-height: 2;
+    color: #494949;
+}
+
+/* if user */
+.chat-message_div_2{
+    width: 90%;
+    margin:  0 0 0 auto;
+}
+.chat-message_imgdiv_2 {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+
+}
+.chat-message_imgdiv_2 div{
+    width: 200px;
+    background-color: black;
+    height: 40px;
+    border-radius: 50px 20px 50px;
+    text-align: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+.chat-message_div_2 img{
+    width: 100%;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+}
+.chat_message_2{
+    width: 94%;
+    margin: 0 auto 0 0;
+    background-color: #fff0f0;
+    padding: 5px 20px;
+    margin-top: 5px;
+    border-radius: 10px;
+    
+}
+.chat_message_2 p{
+    text-align: justify;
+    line-height: 2;
+    color: #494949;
+}
+
+
+
+/* For chat input */
+ .chat_input_div{
+    width: 92%;
+    margin:  0 auto;
+    height: 10%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+   
+    /* border-radius: 70px 30px 70px; */
+
+}
+.chat_input_div .chat_input {
+    border: 1px solid #8d8d8d;
+    width: 55%;
+    display: flex;
+  align-items: center;
+  justify-content: space-around;
+    height: 40px;
+    padding-left: 5px;
+    border-radius: 10px;
+
+  
+
+}
+.chat_input label{
+    background-color: black;
+ width: 35px;
+ height: 35px;
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.chat_input label .camera_icon{
+font-size: 1.5rem;
+color: white;
+}
+.chat_input div{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    border-left: 2px solid #494949;
+    border-radius: 20px;
+    margin-left: 5px;
+    /* padding-left: 5px; */
+
+}
+.chat_input div textarea{
+   width: 100%;
+   resize: none;
+   border: none;
+}
+.chat_input div textarea:focus{
+    outline: none;
+}
+
+
+ .chat_input textarea::-webkit-scrollbar{
+    width: 10px;
+}
+

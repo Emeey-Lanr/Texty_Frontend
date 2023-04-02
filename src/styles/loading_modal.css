@@ -1,0 +1,25 @@
+.loading_div{
+    width: 200px;
+    height: 5px;
+    border: 0.5px solid black;
+    border-radius: 10px;
+    overflow-x: hidden;
+ 
+}
+.loading_div div{
+    width: 20%;
+    height: 5px;
+    background-color: black;
+    animation: loading infinite 2s running normal;
+}
+
+@keyframes loading {
+    0%{
+        transform: translateX(0);
+    }
+   100%{
+        transform: translateX(200px);
+        transition: all ease-in;
+    }
+    
+}

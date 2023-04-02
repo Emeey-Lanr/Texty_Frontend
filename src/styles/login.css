@@ -1,0 +1,120 @@
+.signup_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background: linear-gradient(to left, #f9f9f9, #dad9d9);
+    display: flex;
+    justify-content: center;
+    align-items:center;
+}
+
+.signup_logo_div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signup_register{
+    width: 100%;
+display: flex;
+justify-content: center;
+
+}
+.signup_register p{
+ font-size: 1.3rem;
+/* font-weight: 600;  */
+text-transform: uppercase;
+font-family: sans-serif;
+letter-spacing: 5px;
+}
+.signup_username{
+    width: 23%;
+    margin:  0 auto;
+    
+}
+.signup_username div input{
+    width: 100%;
+    height: 44px;
+    background: none;
+    border: 1px solid #373737;
+    border-radius: 40px;
+    padding-left: 10px;
+}
+.signup_username div input:focus{
+    outline: 3px solid #00000086;
+}
+.signup_password{
+width: 23%;
+margin: 0 auto;
+}
+.signup_password div input{
+    width: 100%;
+    height: 44px;
+    background: none;
+    border: 1px solid #373737;
+    border-radius: 40px;
+    padding-left: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.signup_password div input:focus{
+    outline: 3px solid #00000086;
+}
+.signup_line{
+    width: 20%;
+    margin:  0 auto;
+    background-color: #afafaf;
+    height: 1px;
+    margin-top: 10px;
+}
+.signup_btn{
+    width: 24%;
+    margin: 20px auto 0 auto;
+    
+}
+.signup_btn button{
+    width: 100%;
+    height: 50px;
+    background-color: black;
+    border: none;
+    color: white;
+    border-radius: 30px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    font-weight: 200;
+}
+.signup_signin_link{
+    width: 23%;
+    margin: 0  auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.signup_signin_link .signup_signin-line{
+    border-left: 3px solid #373737;
+    width: 2px;
+    height: 20px;
+
+}
+.signup_signin_link .signup_signin_to_div{
+    width: 100px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    border-radius: 50px 20px 50px;
+}
+.signup_signin_link .signup_signin_to_div:hover{
+    background-color: #373737;
+}
+.signup_signin_link div .signup_signin_to{
+    text-decoration: none;
+    /* border-bottom: 5px solid #373737; */
+    color: #373737;
+    /* background-color: #000000; */
+    border-radius: 10px;
+    padding: 4px 10px;
+    color: white;
+    font-size: 0.9rem;
+}
+
