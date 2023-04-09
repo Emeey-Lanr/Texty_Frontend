@@ -3,10 +3,13 @@ import boxer from "../images/boxer.jpg"
 import { AiOutlineCamera } from "react-icons/ai"
 import { appContext } from "../App"
 import {useContext} from "react"
+import GroupNotification from "./GroupNotification"
+import GroupDetails from "./GroupDetails"
 const ChattingSpace = () => {
       const {hideSideBar, setHideSideBar,  showSideBarBtn} = useContext (appContext)
   return (
-      <div className="chatting_space">
+      <>
+           <div className="chatting_space">
          
           <div className="chat_group">
               <div className="chat-message_div_1">
@@ -61,9 +64,12 @@ const ChattingSpace = () => {
            
                  
               
+              </div>
           </div>
-          
-</div>
+    <GroupNotification/>
+    {/* <GroupDetails/> */}
+    </>
+     
   )
 }
 

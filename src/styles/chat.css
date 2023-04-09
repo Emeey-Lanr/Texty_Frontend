@@ -187,73 +187,207 @@ color: white;
     justify-content: center;
     align-items: center;
 }
-.create_group_modal .create_group_modal_div{
-    width: 450px;
-    background-color: black;
- 
-    align-items: end;
-    padding: 20px  0;
-    border-radius: 40px 10px 40px;
+.create_group_modal .create_group_div{
+    width: 400px;
+    background: black;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 0;
+}
+.create_group_modal .create_group_div .create_group_exit{
+    width: 90%;
+    margin:  0 auto;
+    display: flex;
+    justify-content: flex-end;
 
 }
+.create_group_div .create_group_exit button{
+    border: none;
+    color: white;
+    background: none;
+    font-size: 1.3rem;
 
-.create_group_modal .create_group_exit{
+}
+.create_group_div .create_group_description{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.create_group_div .create_group_description select{
+    /* border: 1px solid white; */
+    border: none;
+    background: none;
+    color: white;
+    border-radius: 20px;
+
+}
+.create_group_div .create_group_description select option{
+    background:black ;
+    border: none;
+}
+.create_group_div .create_group_description select option:hover{
+    background: white;
+    color: black;
+}
+.create_group_modal .create_group_div .name_and_input {
+    width: 90%;
+    margin: 0 auto;
+}
+.create_group_div .name_and_input input{
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    border: 1px solid #fff0f0;
+    background: none;
+    
+}
+.create_group_div .btn {
+
+    width: 90%;
+    margin:  10px auto 20px auto;
+}
+.create_group_div .btn button{
+    border: none;
+    background-color: white;
+    height: 40px;
+    border-radius: 40px;
+    width: 100%;
+}
+
+/* GRoup Details */
+.group_details_info{
+    width: 100%;
+    height: 92%;
+    position: fixed;
+    bottom: 0;
+    background: #00000044;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.group_details_info_div{
+    width: 500px;
+    height: 90%;
+    background: black;
+    padding: 10px 10px;
+    border-radius: 10px;
+
+}
+.group_details_info_div .group_details_exit{
     width: 98%;
     margin:  0 auto;
     display: flex;
-    justify-content: end;
-
+    justify-content: flex-end;
 }
-.create_group_modal .create_group_exit button{
+.group_details_info_div .group_details_exit button{
     border: none;
     background: none;
-
-}
-.create_group_modal .create_group_exit button .icon{
     color: white;
-    font-size: 1.3rem;
-}
 
-.create_group_modal .create_group_modal_div .create_group_details{
-    width: 98%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: end;
 }
-
-.create_group_modal .create_group_modal_div .create_group_imgupload_div label img{
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
+.group_details_info_div .group_details_info_img_div{
+    width: 90%;
+    margin:  0 auto;
     
 
 }
-.create_group_modal_div .create_group_input p{
+.group_details_info_div .group_details_info_img_div img{
+    width: 50%;
+    height: 150px;
+    border-radius: 10px;
+}
+.group_details_info_div .group_description{
+    width: 90%;
+    margin:  0 auto;
     color: white;
     font-size: 0.9rem;
-    text-align: center;
 }
-.create_group_modal_div .create_group_input input{
-  width: 300px;
-  height: 40px;
-  background: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
- border-bottom: 1px solid #ffffff;
- color: #ededed;
- padding: 0 10px;
+.group_details_info_div .group_description .group_description_btn{
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    grid-gap: 10px;
 }
-.create_group_modal_div .create_group_input input:focus{
-    outline: none;
+.group_details_info_div .group_description .group_description_btn button{
+    width: 100%;
+    border: none;
+    padding: 7px 0;
+    border-radius: 20px;
+    background: white;
 }
-.create_group_modal_div .create_group_btn button{
- width: 40px;
- height: 40px;
- border: none;
- border-radius: 40px;
+
+.group_details_info_div .group_members{
+    width: 90%;
+    margin:  5px auto 0 auto;
+    height: 40%;
+    overflow-y: scroll;
 }
+.group_details_info_div .group_members::-webkit-scrollbar{
+    width: 0px;
+}
+.group_details_info_div .group_members .group_members_heading{
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    background: black;
+    border:1px solid white;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+ 
+}
+.group_details_info_div .group_members .members_name{
+    width: 95%;
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 70% 20%;
+    padding-top: 10px;
+    margin:  0 auto;
+}
+.group_details_info_div .group_members .members_name img{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+.group_details_info_div .group_members .members_name .img_name_div{
+    color: white;
+    display: flex;
+}
+.group_details_info_div .group_members .members_name .img_name_div p{
+    font-size: 0.9rem;
+}
+.group_details_info_div .group_members .members_name .btn_div{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.group_details_info_div .group_members .members_name .btn_div button{
+    border: none;
+    width: 100%;
+    height: 40px;
+   /* padding: 0 20px; */
+  background: #ffffff;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* NOTIFICATION INFO */
+.group_notification_info{
+    width: 100%;
+    height: 92%;
+    background: #00000044;
+    position: fixed;
+    bottom: 0;
+}
+
 @media (max-width:1000px){
     .chatting_space{
         width: 100%;

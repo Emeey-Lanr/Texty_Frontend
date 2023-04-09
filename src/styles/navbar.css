@@ -90,8 +90,12 @@ outline: none;
     display: block;
     background: none;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
 }
-.navbar_group_action_indicators span{
+.navbar_group_action_indicators div span{
     display: block;
     width: 5px;
     height: 5px;
@@ -148,6 +152,7 @@ color: #171717;
     display: block;
     background: none;
     border: none;
+    padding-top: 5px;
 
 
  
@@ -155,11 +160,24 @@ color: #171717;
 
 .open_sidebar span{
     display: block;
-    width: 35px;
-    height: 4px;
-    margin-bottom: 5px;
+    width: 30px;
+    height: 3px;
+    margin-bottom: 4px;
     background: #ffffff;
     border-radius: 10px;
+  
+   
 }
 
+}
+
+@media (max-width:705px){
+    .navbar_group_details{
+        width: 50%;
+    }
+}
+@media (max-width:450px){
+    .navbar_group_details{
+        width: 70%;
+    }
 }

@@ -1,8 +1,9 @@
 import "../styles/navbar.css"
 import { appContext } from "../App"
 import {useContext} from "react"
-import { FaSearch, FaTrash, FaBell, FaPeopleCarry } from "react-icons/fa"
+import { FaSearch, FaTrash, FaBell, FaPeopleCarry, FaPlus } from "react-icons/fa"
 import boxer from "../images/boxer.jpg"
+
   const Navbar = () => {
    const { showSideBarBtn} = useContext (appContext)
   return (
@@ -31,7 +32,10 @@ import boxer from "../images/boxer.jpg"
          </div>
           <div className="navbar_group_action_div">
              <button className="navbar_group_action_indicators">
-            <span></span><span></span><span></span><span></span>
+            <div>
+            <span></span><span></span><span></span>
+            
+              </div>
           </button>
           <div className="navbar_group_action">
             <button>
@@ -39,6 +43,9 @@ import boxer from "../images/boxer.jpg"
             </button>
             <button>
               <FaPeopleCarry style={{paddingRight:"10px"}}/> Group Details
+            </button>
+            <button>
+              <FaPlus style={{paddingRight:"10px"}} /> Invite a friend
             </button>
             <button>
              <FaTrash style={{paddingRight:"10px"}} />   Delete Group
