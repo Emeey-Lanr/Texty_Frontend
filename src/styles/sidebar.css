@@ -1,5 +1,5 @@
 .sidebar_div{
-    width: 300px;
+    width: 280px;
     height: 100%;
     position: fixed;
     left: 0;
@@ -7,34 +7,185 @@
     background-color: black;
     display: block;
 }
+.app_logo{
+    height: 20%;
+    /* display: flex;
+    justify-content: center; */
+  
+}
+.app_logo_div{
+    width: 30px;
+     background: linear-gradient(to left, #f9f9f9, #dad9d9);
+    height: 60px;
+    border-radius: 50px 20px 50px;
+    transform: rotate(30deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.app_logo_div div{
+    width: 30%;
+    height: 50%;
+    border: 1px solid #000000;
+    border-radius: 20px 50px 20px;
+}
+
+.app_logo .group_identification_add_chat{
+ width: 98%;
+ margin:  20px auto 0 auto;
+ border-bottom: 1px solid white;
+ background-color: #ffffff;
+ border-radius: 10px;
+display: grid;
+grid-template-columns: 100%;
+justify-content: center;
+align-items: center;
+/* position: sticky;
+top: 0; */
+
+
+}
+
+
+.app_logo .group_identification_add_chat button{
+    height: 40px;
+    width: 90%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    margin: 0 auto;
+  
+
+}
+
+
+.group_identification{
+    height: 50%;
+    /* border-bottom: 1px solid #fde9bb; */
+    overflow-y: scroll;
+  
+}
+.group_identification::-webkit-scrollbar{
+    width: 10px;
+}
+
+.group_identification .group_chat{
+    width: 100%;
+}
+.group_identification .group_chat button{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-content: space-between;
+    border: none;
+    background: none;
+
+}
+.group_identification .group_chat button .group_img_div{
+    display: flex;
+    height: 42px;
+    align-items: flex-end;
+
+}
+.group_identification .group_chat button .group_img_div span{
+    color: #f2f2f2;
+    display: flex;
+    padding-left: 10px;
+
+
+}
+.group_identification  .group_chat button img{
+    width: 40px;
+    height: 40px;  
+    border-radius: 40px;
+}
+
+.group_identification .group_chat button .notifications{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+.group_identification .group_chat button .notifications .notifying_bell{
+    width: 30px;
+    color: #ff1111;
+    display: flex;
+}
+.group_identification .group_chat button .notifications .notifying_bell .dot{
+    color: white;
+    width: 5px;
+    height: 5px;
+    background-color: white;
+    margin-left: -5px;
+    border-radius: 5px;
+    /* margin-top: 10px; */
+}
+
+.group_identification .group_chat button .notifications .unreadmessage{
+    width: 20px;
+    height: 20px;
+    background-color: #ff1111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.5rem;
+}
+/* */
+.user_Profile_details{
+    height: 30%;
+}
 .exit{
     width: 50px;
     height: 50px;
     position: relative;
-    background-color: black;
+    background: none;
     left: 300px;
     top: 20px;
-    /* border-radius: 90px; */
-    border-radius: 0 20px 20px 0;
-    outline: 3px solid black;
-    border: 5px solid white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+   
+    /* outline: 3px solid black; */
+    border: 2px solid #ffffff;
+
     display: none;
 }
 .exit button{
     border: none;
     background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+
 }
 .exit button .exit_btn_icon{
-    color: #9f750a;
+    color: #ededed;
     font-size: 1.5rem;
     font-weight: 100;
 }
 
 /* back modal */
-
+.user_Profile_details{
+    border-top: 1px solid #dbdbdb;
+    padding-top: 10px;
+    overflow-y: scroll;
+}
+.user_Profile_details::-webkit-scrollbar{
+    width: 10px;
+}
+.user_Profile_details button{
+    display: block;
+    width: 90%;
+    margin:  0 auto 20px auto;
+    border: none;
+    border: 1px solid white;
+    padding: 10px;
+    border-radius: 10px;
+    
+}
 @media (min-width:1001px){
     .hidesidebar{
         display: block;
@@ -42,6 +193,7 @@
     .sidebar_back_modal{
         display: none;
     }
+   
 }
 
 @media (max-width:1000px){
@@ -61,7 +213,10 @@
     }
 }
 .exit{
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 
 }
 .sidebar_back_modal{
@@ -72,4 +227,7 @@
     top: 0;
     background: #00000087;
 }
+
+
+
 }

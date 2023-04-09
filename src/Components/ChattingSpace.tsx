@@ -7,11 +7,7 @@ const ChattingSpace = () => {
       const {hideSideBar, setHideSideBar,  showSideBarBtn} = useContext (appContext)
   return (
       <div className="chatting_space">
-          <div className="chat_group_indication">
-              <div>
-                  <button onClick={ showSideBarBtn}>Show</button>
-              </div>
-          </div>
+         
           <div className="chat_group">
               <div className="chat-message_div_1">
                   <div className="chat-message_imgdiv_1">
