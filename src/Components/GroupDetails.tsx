@@ -1,6 +1,6 @@
 import boxer from "../images/boxer.jpg"
 import { FaTimes } from "react-icons/fa"
-import {BiChat, BiPlus} from "react-icons/bi"
+import {BiChat, BiPlus,BiLock} from "react-icons/bi"
 const GroupDetails = () => {
   return (
       <div className="group_details_info">
@@ -14,7 +14,12 @@ const GroupDetails = () => {
               <img src={boxer} alt="" />
           </div>
               <div className="group_description">
-                  <h1>Group</h1>
+                  <div style={{display:"flex",alignItems:"center"}}>
+                      <h1>Group</h1> <button style={{border:"none",background:"none",marginLeft:"10px", fontSize:"1.2rem"}}>
+                          <BiLock style={{color:"white"}}/>
+                      </button>
+                  </div>
+                  
                   <p>
                       Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem culpa saepe tenetur temporibus non earum, officia praesentium eius. Quo, labore.
                   </p>

@@ -1,11 +1,12 @@
 import "../styles/chat.css"
 import img from "../images/boxer.jpg"
-import {BiX} from"react-icons/bi"
+import {BiX, BiLockOpen,BiLock} from"react-icons/bi"
 const CreateGroup = () => {
   return (
       <div className="create_group_modal">
           <div className="create_group_div">
               <div className="create_group_exit">
+                  
                   <button>
                       <BiX/>
                   </button>
@@ -29,6 +30,20 @@ const CreateGroup = () => {
               </div>
               <div className="btn">
                   <button>Create</button>
+              </div>
+              <div className="create_group_status">
+                  <div className="state">
+                      <p>Open</p>
+                  </div>
+                  <div className="action">
+                      {/* <button>
+                          <BiLockOpen/>
+                      </button> */}
+                      <button>
+                          <BiLock/>
+                      </button>
+
+                  </div>
               </div>
               
         </div>

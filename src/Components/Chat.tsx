@@ -1,5 +1,6 @@
 import ChattingSpace from "./ChattingSpace"
 import CreateGroup from "./CreateGroup"
+import Friends from "./Friends"
 import Navbar from "./Navbar"
 import RecomendedGroups from "./RecomendedGroups"
 
@@ -9,10 +10,10 @@ const Chat = () => {
   return (
     <div className="chat-div">
 
-      {/* <RecomendedGroups /> */}
-      <ChattingSpace />
+      {/* <RecomendedGroups />
+      <ChattingSpace /> */}
       <SideBarModal />
-   
+    <Friends/>
       {/* <CreateGroup/> */}
       <Navbar/>
       <Sidebar />

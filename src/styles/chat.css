@@ -241,7 +241,7 @@ color: white;
     border-radius: 40px;
     border: 1px solid #fff0f0;
     background: none;
-    
+    color: white;
 }
 .create_group_div .btn {
 
@@ -254,6 +254,22 @@ color: white;
     height: 40px;
     border-radius: 40px;
     width: 100%;
+}
+.create_group_status{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin:  0 auto;
+}
+.create_group_status .state p{
+    font-size: 0.9rem;
+}
+.create_group_status .action button{
+    border: none;
+    background:  none;
+    color: white;
+    font-size: 2rem;
 }
 
 /* GRoup Details */
@@ -386,6 +402,64 @@ color: white;
     background: #00000044;
     position: fixed;
     bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.group_notification_info .group_notifictaion_div{
+    height: 80%;
+    width: 450px;
+    background: black;   
+    border-radius: 10px;
+    padding: 10px 0;
+}
+.group_notification_info .group_details_info_div .group_notification_header{
+    position: sticky;
+    top: 0;
+    width: 97%;
+    margin:  0 auto;
+}
+.group_notification_header_exist{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.group_notification_header_exist button{
+    border: none;
+    background: none;
+    color: white;
+}
+.group_notification_heading_description{
+    width: 95%;
+    margin: 0 auto;
+    height: 43px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 30px;
+}
+.group_notification_heading_description h2{
+    color: white;
+}
+.group_notification_body{
+    width: 95%;
+    margin:  10px auto 0 auto;
+    height: 80%;
+    overflow-y: scroll;
+
+}
+.group_notification_body::-webkit-scrollbar{
+    width: 0px;
+}
+.group_notification_body .joined{
+    width: 100%;
+    border-bottom: 0.9px solid #656565;
+    margin-top: 10px;
+}
+.group_notification_body .joined p{
+    color: white;
+    font-size: 0.8rem;
 }
 
 @media (max-width:1000px){

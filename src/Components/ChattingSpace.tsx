@@ -66,8 +66,8 @@ const ChattingSpace = () => {
               
               </div>
           </div>
-    <GroupNotification/>
-    {/* <GroupDetails/> */}
+    {/* <GroupNotification/> */}
+    <GroupDetails/>
     </>
      
   )

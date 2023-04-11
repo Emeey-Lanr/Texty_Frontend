@@ -1,7 +1,7 @@
 import "../styles/sidebar.css"
 import { appContext } from "../App"
 import {useContext} from "react"
-import {FaBell, FaTimes, FaTrash,} from "react-icons/fa"
+import {FaBell, FaTimes, FaTrash, FaUserFriends,} from "react-icons/fa"
 import Logo from "./Logo"
 import boxer from "../images/boxer.jpg"
 import {BiPlus, BiSearch, BiLogOut, BiTrash, BiUserCircle, BiBell} from "react-icons/bi"
@@ -227,9 +227,9 @@ const Sidebar = () => {
 
       </div>
       <div className="user_Profile_details">
-        {/* <button>
-
-        </button> */}
+        <button>
+             <FaUserFriends/> Friends
+        </button>
           <button>
           <FaBell/> <span>Notification</span>
         </button>
