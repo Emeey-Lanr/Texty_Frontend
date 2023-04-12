@@ -9,12 +9,14 @@ import SideBarModal from "./SideBarModal"
 import UserNotification from "./UserNotification"
 import UserProfile from "./UserProfile"
 import Home from "./Home"
+import Search from "./Search"
 
 const Chat = () => {
   return (
     <div className="chat-div">
-<Home/>
-   
+{/* <Home/>
+    */}
+      <Search/>
       {/* <ChattingSpace />  */}
       <SideBarModal />
       {/* <Friends/> */}
