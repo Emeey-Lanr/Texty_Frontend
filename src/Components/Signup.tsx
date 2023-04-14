@@ -1,9 +1,11 @@
 import "../styles/login.css"
 import Logo from "./Logo"
 import {Link} from "react-router-dom"
+import LoginMessageModal from "./LoginMessageModal"
 const Signup = () => {
   return (
-      <div className="signup_div">
+    <>
+     <div className="signup_div">
           <div style={{width:"100%"}}>
               <div className="signup_logo_div">
                   <Logo/>
@@ -35,8 +37,12 @@ const Signup = () => {
             </Link>
                    </div>
               </div>
-          </div>
-    </div>
+      </div>
+      
+      </div>
+  <LoginMessageModal/>
+    </>
+     
   )
 }
 

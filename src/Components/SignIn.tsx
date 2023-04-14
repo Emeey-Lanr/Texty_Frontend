@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+import LoginMessageModal from './LoginMessageModal'
 import Logo from './Logo'
 const SignIn = () => {
   return (
-   <div className="signup_div">
+    <>
+      <div className="signup_div">
           <div style={{width:"100%"}}>
               <div className="signup_logo_div">
                   <Logo/>
@@ -36,7 +38,11 @@ const SignIn = () => {
                    </div>
               </div>
           </div>
-    </div>
+      </div>
+    
+  <LoginMessageModal/>  
+    </>
+   
   )
 }
 

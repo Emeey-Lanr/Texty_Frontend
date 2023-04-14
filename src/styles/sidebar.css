@@ -4,7 +4,8 @@
     position: fixed;
     left: 0;
     top: 0;
-    background-color: black;
+    background: #0000006b;
+    /* background-color: black; */
     display: block;
 }
 .app_logo{

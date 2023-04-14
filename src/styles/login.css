@@ -118,3 +118,76 @@ margin: 0 auto;
     font-size: 0.9rem;
 }
 
+/* LOGIN MESSAGE MODAL */
+.login_message_modal_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #00000060;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login_message_modal_div .login_message{
+    width: 400px;
+    background: #000000da;
+    padding: 10px 0;
+    border-radius: 10px;
+    animation: modalmessage 1 0.9s ease-out running normal ;
+}
+@keyframes modalmessage {
+0%{
+    transform: translateY(10px);
+}    
+
+/* 90%{
+    transform: translateX(10px);
+} */
+}
+
+.login_message_modal_div .login_message .login_message_exit{
+    width: 95%;
+    margin:  0 auto;
+    display: flex;
+    justify-content: end;
+}
+.login_message_modal_div .login_message .login_message_exit button{
+    border: none;
+    background: none;
+    color: white;
+}
+.login_message_modal_div .login_message .login_message_message{
+    width: 95%;
+    margin:  0 auto;
+}
+.login_message_modal_div .login_message .login_message_message p{
+    text-align:center ;
+    color: #ececec;
+  font-family: sans-serif;
+    font-size: 0.9rem;
+}
+.login_message_modal_div .spinner{
+    width: 40px;
+    height: 40px;
+   border: 20px solid black;
+   border-radius: 40px;
+   display: flex;
+   justify-content: center;
+   animation: spinner infinite 0.9s running normal;
+}
+@keyframes spinner {
+    0%{
+        transform: rotate(360deg);
+    }
+}
+.login_message_modal_div .spinner div{
+    width: 30px;
+    height: 20px;
+    background: white;
+    transform: rotateY(80deg);
+    position: relative;
+    margin-top: -20px;
+    
+}

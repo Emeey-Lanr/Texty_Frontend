@@ -10,6 +10,7 @@ import UserNotification from "./UserNotification"
 import UserProfile from "./UserProfile"
 import Home from "./Home"
 import Search from "./Search"
+import Create from "./Create"
 
 const Chat = () => {
   return (
@@ -19,13 +20,14 @@ const Chat = () => {
       {/* <Search/> */}
       {/* <ChattingSpace />  */}
       <SideBarModal />
+      {/* <Create/> */}
       {/* <Friends/> */}
       {/* <UserNotification /> */}
       {/* <UserProfile/> */}
       {/* <CreateGroup/> */}
       <Navbar/>
       <Sidebar />
-  n    
+  
     </div>
   )
 }
