@@ -5,6 +5,7 @@ import Chat from "./Components/Chat";
 // import {Route, Routes} from "react-router-dom"
 import {Route, Routes} from  "react-router-dom"
 import { createContext, useState } from "react";
+import UserProfile from "./Components/UserProfile";
 interface comingAppDetails {
      hideSideBar:string
   setHideSideBar: React.Dispatch<React.SetStateAction<string>>
@@ -39,7 +40,8 @@ const App = () => {
      <Route path="/" element={<IndexPage />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/signin" element={<SignIn />} />
-      <Route path="/chat" element={<Chat />} />
+        <Route path="/chat" element={<Chat />} />
+        {/* <Route path="profile/:id" element={<UserProfile/>}/> */}
       </Routes>
     
      

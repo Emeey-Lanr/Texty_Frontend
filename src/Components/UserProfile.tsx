@@ -1,8 +1,13 @@
 import "../styles/user.css"
 import boxer from "../images/boxer.jpg"
-import {useState} from "react"
-import { BiHeart,BiTrash, BiImageAdd,BiPlus } from "react-icons/bi"
+import {useEffect, useState} from "react"
+import { BiHeart, BiTrash, BiImageAdd, BiPlus } from "react-icons/bi"
+import { useParams } from "react-router-dom"
 const UserProfile = () => {
+  let id = useParams()
+  useEffect(() => {
+    console.log(id.id)
+  },[])
   return (
    <div className="user_profile_div">
    

@@ -14,9 +14,9 @@ import Search from "./Search"
 const Chat = () => {
   return (
     <div className="chat-div">
-{/* <Home/>
-    */}
-      <Search/>
+<Home/>
+   
+      {/* <Search/> */}
       {/* <ChattingSpace />  */}
       <SideBarModal />
       {/* <Friends/> */}
