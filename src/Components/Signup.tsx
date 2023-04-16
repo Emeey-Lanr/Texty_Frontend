@@ -2,7 +2,92 @@ import "../styles/login.css"
 import Logo from "./Logo"
 import {Link} from "react-router-dom"
 import LoginMessageModal from "./LoginMessageModal"
+import { appContext } from "../App"
+import { useContext, useReducer, useState } from "react"
+import axios from "axios"
+import{UserDetailsModel} from "../Model/AppModelContext"
+import LoginSpinner from "./LoginSpinner"
+import { Navigate } from "react-router-dom"
 const Signup = () => {
+
+
+  const {
+  appEndPoint, 
+   setLoginModalState,
+      setLoginModalMessage,
+      // 
+      setSpinnerState 
+} = useContext(appContext)
+// let navigate =
+
+  const [username, setUsername] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [checkIfInValidPassword, setCheckIfInvalidPassword] = useState<boolean>(false)
+
+  const userSignupEndpoint: string = `${appEndPoint}/user/signup`
+ 
+
+  const userDetails: UserDetailsModel = {
+    username: username,
+    password:password
+
+  }
+  // password.includes(*|&|@")
+  const checkPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+setPassword(e.target.value)
+    if (e.target.value.trim().length < 6  ) {
+      setCheckIfInvalidPassword(true)
+    
+    } else {
+      setCheckIfInvalidPassword(false)
+       
+    }
+   
+  }
+  const messageAlertFunction = (onModal: boolean, message: string) => {
+       setLoginModalState(onModal)
+      setLoginModalMessage(message)
+    
+  }
+
+  const loadFunction = (onSpinner:boolean) => {
+    setSpinnerState(onSpinner)
+  }
+interface DetailModel  {
+              id:string
+            }
+  const signupBtn = () => {
+    if (username !== "" && password !== "") {
+    
+       if (password.split("").length < 6) {
+        messageAlertFunction(true, "Password must be aleast 6 characters")
+       } else {
+         loadFunction(true)
+         axios.post(userSignupEndpoint, userDetails).then((result) => {
+          if(result.data.status){
+            console.log(result.data)
+            
+            const details:DetailModel = {
+              id:result.data.client_Token
+            }
+            localStorage.xxxxxxxxxxxxxxx = JSON.stringify(details)
+          }else{
+            loadFunction(false)
+            messageAlertFunction(true, result.data.message)
+          }
+            
+        })
+        
+    }
+  
+      
+    } else {
+    
+       messageAlertFunction(true, "Fill in inputs")
+    }
+    
+  }
+  
   return (
     <>
      <div className="signup_div">
@@ -16,15 +101,16 @@ const Signup = () => {
               <div style={{width:"100%"}}>
                 <div className="signup_username">
                  <p>Username</p>
-                 <div> <input type="text" /></div>
+                 <div> <input type="text" onChange={(e)=>setUsername(e.target.value)} /></div>
                </div>
                <div className="signup_password">
-                <p>Password</p>
-                <div><input type="password" /></div>
+              <p>Password</p>
+              {checkIfInValidPassword && <span style={{ color: "red", fontSize: "0.8rem", display: "block", padding: "2px 0" }}>password must be aleast 6 characters</span>}
+                <div><input className={`${checkIfInValidPassword ? "invalid" : "valid"}`} type="password" onChange={(e)=>checkPassword(e)} /></div>
                </div>
               </div>
               <div className="signup_btn">
-                  <button>Signup</button>
+            <button onClick={() => signupBtn()}>Signup</button>
               </div>
               <div className="signup_signin_link">
           <div>
@@ -40,6 +126,7 @@ const Signup = () => {
       </div>
       
       </div>
+      <LoginSpinner/>
   <LoginMessageModal/>
     </>
      
