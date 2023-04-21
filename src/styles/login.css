@@ -29,7 +29,7 @@ font-family: sans-serif;
 letter-spacing: 5px;
 }
 .signup_username{
-    width: 23%;
+    width: 360px;
     margin:  0 auto;
     
 }
@@ -45,7 +45,7 @@ letter-spacing: 5px;
     outline: 3px solid #00000086;
 }
 .signup_password{
-width: 23%;
+width: 360px;
 margin: 0 auto;
 }
 .signup_password div input{
@@ -72,7 +72,7 @@ margin: 0 auto;
     margin-top: 10px;
 }
 .signup_btn{
-    width: 24%;
+    width: 360px;
     margin: 20px auto 0 auto;
     
 }
@@ -88,7 +88,7 @@ margin: 0 auto;
     font-weight: 200;
 }
 .signup_signin_link{
-    width: 23%;
+    width: 360px;
     margin: 0  auto;
     display: flex;
     justify-content: space-between;
@@ -193,4 +193,36 @@ margin: 0 auto;
     position: relative;
     margin-top: -20px;
     
+}
+
+@media (max-width:370px){
+.signup_div div  .signup_username{
+    width: 90%;
+    
+}
+
+.signup_div div  .signup_password{
+width: 90%;
+
+}
+
+
+.signup_div div  .signup_btn{
+    width: 90%;
+  
+    
+}
+
+.signup_div div .signup_signin_link{
+    width: 90%;
+   
+}
+
+
+}
+
+@media (max-width:320px){
+   .signup_div div .gotAccountOrNot{
+        font-size: 0.9rem;
+    }
 }

@@ -2,44 +2,34 @@ import "../styles/home.css"
 import { FaTimes,FaArrowLeft } from "react-icons/fa"
 import {BiImageAdd} from "react-icons/bi"
 import boxer from "../images/boxer.jpg"
-
-const Create = () => {
+import Post from "./Post"
+import { appContext } from "../App"
+import {useContext} from "react"
+const Create:React.FC = () => {
+  const { openPrePost,
+    setOpenPrePost,
+    setCreatePostModal,
+   setCreateGroupModal,}= useContext(appContext)
   return (
-    <div className="create_group_post">
-      {/* <div className="action_div">
-        <div className="c_exit">
-          <button>
-            <FaTimes/>
-          </button>
-        </div>
-        <div className="c_create">
-             <button>Post</button><button>Group</button>
-        </div>
+    <>
+      {openPrePost &&<div className="create_group_post">
+        <div className="action_div">
+          <div className="c_exit">
+            <button onClick={()=>setOpenPrePost(false)}>
+              <FaTimes />
+            </button>
+          </div>
+          <div className="c_create">
+            <button onClick={()=>setCreatePostModal(true)}>Post</button><button onClick={()=>setCreateGroupModal(true)}>Group</button>
+          </div>
       
-      </div> */}
-      <div className="create_post">
-        <div className="go_back">
-     <FaArrowLeft/>
         </div>
-        <div className="input_post_div">
-<textarea ></textarea>
-        </div>
-        {/* <div className="img_post_div">
-          <img src={boxer} alt="" />
-        </div> */}
-        <div className="action_post">
-          <label id="upload">
-            <BiImageAdd className="icon"/>
-            <input type="file" hidden id="upload" />
-          </label>
-          <button>
-            post
-          </button>
-        </div>
+    
 
-      </div>
-
-    </div>
+      </div>}
+      <Post/>
+    </>
+   
   )
 }
 

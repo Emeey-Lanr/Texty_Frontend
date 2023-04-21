@@ -1,8 +1,21 @@
 
+import { useEffect } from "react"
 import "../styles/indexpage.css"
 import Loading from "./Loading"
 import Logo from "./Logo"
+import { useNavigate } from "react-router-dom"
 const IndexPage = () => {
+  let navigate = useNavigate()
+  useEffect(() => {
+    setTimeout(() => {
+      if (localStorage.xxxxxxxxxxxxxxx) {
+        navigate("/home")
+      } else {
+        navigate("/signin")
+      }
+      
+    },3000)
+  },[])
   return (
     <div className="index_body">
       <div style={{width:"100%"}}>

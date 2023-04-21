@@ -1,8 +1,18 @@
 import "../styles/search.css"
 import boxer from "../images/boxer.jpg"
 import {FaSearch, FaLockOpen, FaLock} from "react-icons/fa"
-import { useState } from "react"
+import { useState, useContext, useEffect } from "react"
+import SideBarModal from "./SideBarModal"
+import Sidebar from "./Sidebar"
+import Navbar from "./Navbar"
+import { appContext } from "../App"
+
 const Search = () => {
+  const { setRouteIdentification } = useContext(appContext)  
+  useEffect(() => {
+    setRouteIdentification("search")
+  }, [])
+  
   const [switchPage, setSwitchPage] = useState<boolean>(true)
   const openuserPage = () => {
     alert(30)
@@ -13,7 +23,8 @@ const Search = () => {
     
   }
   return (
-      <div className="search_home_div">
+    <>
+        <div className="search_home_div">
           <div className="search_home_head">
                 <div className="search_home_input_div">
               <input type="text" /> <button>
@@ -60,7 +71,12 @@ const Search = () => {
         
     </div> }
         
-    </div>
+      </div>
+      <Navbar/>
+      <SideBarModal />
+      <Sidebar/>
+    </>
+    
   )
 }
 

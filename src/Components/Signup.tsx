@@ -7,24 +7,24 @@ import { useContext, useReducer, useState } from "react"
 import axios from "axios"
 import{UserDetailsModel} from "../Model/AppModelContext"
 import LoginSpinner from "./LoginSpinner"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 const Signup = () => {
 
 
   const {
-  appEndPoint, 
+  userEndPoint, 
    setLoginModalState,
       setLoginModalMessage,
       // 
       setSpinnerState 
 } = useContext(appContext)
-// let navigate =
+let navigate = useNavigate()
 
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [checkIfInValidPassword, setCheckIfInvalidPassword] = useState<boolean>(false)
 
-  const userSignupEndpoint: string = `${appEndPoint}/user/signup`
+  const userSignupEndpoint: string = `${userEndPoint}/signup`
  
 
   const userDetails: UserDetailsModel = {
@@ -32,12 +32,11 @@ const Signup = () => {
     password:password
 
   }
-  // password.includes(*|&|@")
+  
   const checkPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-setPassword(e.target.value)
+    setPassword(e.target.value)
     if (e.target.value.trim().length < 6  ) {
       setCheckIfInvalidPassword(true)
-    
     } else {
       setCheckIfInvalidPassword(false)
        
@@ -71,6 +70,7 @@ interface DetailModel  {
               id:result.data.client_Token
             }
             localStorage.xxxxxxxxxxxxxxx = JSON.stringify(details)
+            navigate(`/${result.data.username}`)
           }else{
             loadFunction(false)
             messageAlertFunction(true, result.data.message)
@@ -114,7 +114,7 @@ interface DetailModel  {
               </div>
               <div className="signup_signin_link">
           <div>
-            <p>Got an account ?</p>
+            <p className="gotAccountOrNot">Got an account ?</p>
                    </div>
                    <div className="signup_signin-line"></div>
           <div className="signup_signin_to_div">

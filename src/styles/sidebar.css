@@ -47,6 +47,16 @@ top: 0; */
 
 }
 
+.app_logo .group_identification_add_chat .link{
+    text-decoration: none;
+    height: 40px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    margin: 0 auto;   
+}
 
 .app_logo .group_identification_add_chat button{
     height: 40px;
@@ -75,46 +85,46 @@ top: 0; */
 .group_identification .group_chat{
     width: 100%;
 }
-.group_identification .group_chat button{
+
+.group_identification .group_chat .link{
     width: 100%;
     display: grid;
     grid-template-columns: 50% 50%;
     justify-content: space-between;
-    border: none;
-    background: none;
+    text-decoration: none;
 
 }
-.group_identification .group_chat button .group_img_div{
+.group_identification .group_chat .link .group_img_div{
     display: flex;
     height: 42px;
     align-items: flex-end;
 
 }
-.group_identification .group_chat button .group_img_div span{
+.group_identification .group_chat .link .group_img_div span{
     color: #f2f2f2;
     display: flex;
     padding-left: 10px;
 
 
 }
-.group_identification  .group_chat button img{
+.group_identification  .group_chat .link img{
     width: 40px;
     height: 40px;  
     border-radius: 40px;
 }
 
-.group_identification .group_chat button .notifications{
+.group_identification .group_chat .link .notifications{
     width: 100%;
     margin-top: 10px;
     display: flex;
     justify-content: center;
 }
-.group_identification .group_chat button .notifications .notifying_bell{
+.group_identification .group_chat .link .notifications .notifying_bell{
     width: 30px;
     color: #ff1111;
     display: flex;
 }
-.group_identification .group_chat button .notifications .notifying_bell .dot{
+.group_identification .group_chat .link .notifications .notifying_bell .dot{
     color: white;
     width: 5px;
     height: 5px;
@@ -124,7 +134,7 @@ top: 0; */
     /* margin-top: 10px; */
 }
 
-.group_identification .group_chat button .notifications .unreadmessage{
+.group_identification .group_chat .link .notifications .unreadmessage{
     width: 20px;
     height: 20px;
     background-color: #ff1111;
@@ -140,15 +150,15 @@ top: 0; */
     height: 30%;
 }
 .exit{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     position: relative;
     background: none;
     left: 300px;
     top: 20px;
    
     /* outline: 3px solid black; */
-    border: 2px solid #ffffff;
+    border: 1px solid #ffffff;
 
     display: none;
 }
@@ -231,4 +241,10 @@ top: 0; */
 
 
 
+}
+
+@media (max-width:344px){
+    .exit{
+        left: 280px;
+    }
 }

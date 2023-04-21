@@ -11,12 +11,12 @@
     width: 5px;
 }
 .home_post{
-    width: 90%;
+    width: 40%;
     margin:  0 auto 10px 0;
     
 }
 .home_div .date{
-    width: 400px;
+    width: 100%;
 border-top: 1px solid #5b5b5b;
 border-bottom: 1px solid #5b5b5b;
 border-left: 1px solid #5b5b5b;
@@ -32,20 +32,20 @@ border-radius: 20px 0 0 20px;
     border-radius: 0 10px 10px 0;
 }
 .home_post .caption_div{
-    width: 40%;
+    width: 100%;
 }
 .home_post .caption_div p{
     font-size: 0.9rem;
 }
 .home_post .post_img img{
     height: 200px;
-    width: 400px;
+    width: 100%;
     object-fit: cover;
     border-radius: 10px;
 }
 
 .home_post .action_div{
-    width: 420px;
+    width: 100%;
    display: grid;
    grid-template-columns: 30% 80%;
    background: black;
@@ -69,7 +69,7 @@ border-radius: 20px 0 0 20px;
 .home_div .action_div .action_btn_div{
     display: grid;
     grid-template-columns: 30% 30%;
-    justify-content: space-evenly;
+    justify-content: center;
    
 }
 .home_div .action_div .action_btn_div button{
@@ -78,6 +78,11 @@ border-radius: 20px 0 0 20px;
     color: white;
     display: flex;
     align-items: center;
+    border: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
 }
 
 
@@ -171,6 +176,8 @@ border-radius: 20px 0 0 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+  
 }
 .post_modal_comment{
     width: 90%;
@@ -327,19 +334,30 @@ align-items:center;
 }
 
 /* CREATE POST */
-.create_group_post .create_post{
-    width: 600px;
+.create_group_post_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    background:#00000042;
+    display: flex;
+    justify-content: center;
+  
+}
+.create_group_post_div .create_post_div{
+    width: 590px;
     background: black;
-    /* height: 80%; */
+
     overflow-y: scroll;
     padding: 10px 0;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
+    /* display: block; */
 
 }
-.create_group_post .create_post::-webkit-scrollbar{
+.create_group_post_div .create_post_div::-webkit-scrollbar{
     width: 5px;
 }
-.create_group_post .create_post .go_back{
+.create_group_post_div .create_post_div .go_back{
     width: 90%;
     margin:  0 auto;
     color: #eaeaea;
@@ -348,11 +366,11 @@ align-items:center;
     
 }
 
-.create_group_post .create_post .input_post_div{
+.create_group_post_div .create_post_div .input_post_div{
     width: 90%;
     margin: 0 auto;
 }
-.create_group_post .create_post .input_post_div textarea{
+.create_group_post_div .create_post_div .input_post_div textarea{
     width: 100%;
     border: none;
      height: 100px;
@@ -365,33 +383,59 @@ align-items:center;
     border-radius: 20px;
     padding-left: 10px;
 }
-.create_group_post .create_post .input_post_div textarea:focus{
+.create_group_post_div .create_post_div .input_post_div textarea:focus{
     outline: none;
 }
-.create_group_post .create_post .img_post_div{
+.create_group_post_div .create_post_div .img_post_div{
     width: 90%;
     margin:  0 auto;
 
 }
 
-.create_group_post .create_post .img_post_div img{
+.create_group_post_div .create_post_div .img_post_div img{
     width: 100%;
     height: 500px;
     border-radius: 20px;
+    object-fit: cover;
 }
-.create_group_post .create_post .action_post{
+.create_group_post_div .create_post_div .action_post{
     width: 90%;
     margin:  0 auto;
     display: flex;
     justify-content: space-between;
+    border-top: 1px solid #5b5b5b;
+    padding: 5px  0;
 }
-.create_group_post .create_post .action_post label .icon{
+.create_group_post_div .create_post_div .action_post label .icon{
     color: white;
     font-size: 1.2rem;
 }
-.create_group_post .create_post .action_post button{
+.create_group_post_div .create_post_div .action_post button{
     border: none;
     background: white;
     padding: 10px 30px;
     border-radius: 20px;
+}
+@media (max-width:1001px){
+    .home_div{
+        width: 100%;
+    }
+    .home_post{
+        width: 80%;
+        margin: 10px auto 5px auto;
+    }
+}
+
+@media (max-width:600px){
+    .create_group_post_div .create_post_div{
+        width: 95%;
+       
+        
+    }
+}
+@media (max-width:500px){
+    .home_post{
+        width: 95%;
+        margin: 10px auto 5px auto;
+    }
 }
