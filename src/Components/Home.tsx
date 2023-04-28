@@ -10,9 +10,11 @@ import Create from "./Create"
 import { useContext, useEffect } from "react"
 import { appContext } from "../App"
 const Home = () => {
-    const { getUserProfile } = useContext(appContext)
+    const { setRouteIdentification,getUserProfile } = useContext(appContext)
     useEffect(() => {
-        getUserProfile("-;;'kjg","home")
+        getUserProfile("-;;'kjg", "home")
+        setRouteIdentification("home")
+        
     },[])
     return (
         <>

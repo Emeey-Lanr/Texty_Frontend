@@ -7,9 +7,11 @@ export interface UserProfile {
     img_url: string | null;
     followers: {}[] | [] | null;
     following: {}[] | [] | null;
-    checkBothFollowing: {}[] | null | [];
-    checkBothFollwers: {}[] | null | [];
+    ifUserFollowing: {}[] | null | [];
+    ifUserFollowers: {}[] | null | [];
     post: {}[] | [] | null;
+    homePost: {}[] | [] | null;
+    notification: [] | null;
     isLoggedIn: boolean;
 
 }

@@ -29,7 +29,14 @@ let navigate = useNavigate()
 
   const userDetails: UserDetailsModel = {
     username: username,
-    password:password
+    password: password,
+     img_url: "",
+    about_me: "",
+    post:[],
+    following: [],
+    followers: [],
+    notification: [],
+     state:""
 
   }
   

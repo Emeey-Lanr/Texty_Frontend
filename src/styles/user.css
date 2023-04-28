@@ -1,11 +1,12 @@
 
 
 .friends_space{
-    width: 80%;
-    height: 80%;
+    width: 81.5%;
+    height: 90%;
     position: fixed;
     bottom: 0;
    right: 0;
+   background:white;
 }
 
 .friends_heading{
@@ -122,8 +123,20 @@ border-bottom: 2px solid black;
     height: 50px;
     border-radius: 50px;
 }
+.following_user_head .name_div div{
+    display: flex;
+    align-items: center;
+   
+}
+.following_user_head .name_div div div{
+     background-color: #eeeeee;
+     height: 20px;
+     padding: 0 3px;
+     border-radius: 5px;
+}
 .following_user_head .name_div h2{
     font-size: 1rem;
+    margin-right: 5px;
 }
 .following_user_details .name_div p{
     font-size: 0.8rem;
@@ -183,10 +196,24 @@ border-radius: 20px;
 }
 .user_profile_div .user_username{
     width: 100%;
+   ;
 }
 .user_profile_div .user_username h2{
     text-align: center;
     color: #363636;
+}
+.user_profile_div .user_username div{
+    display: flex;
+    justify-content: center;
+}
+.user_profile_div .user_username button{
+    border: none;
+    margin-left: 5px;
+    width: 200px;
+    padding: 10px 0;
+   color: #303030;
+   border-radius: 5px;
+
 }
 .user_profile_div .following_followers{
     display: flex;
@@ -327,6 +354,63 @@ padding-bottom: 10px;
 .post_div .posted p{
     text-align: left;
     color: #3e3e3e;
+}
+
+/* USER NOTIFICATION DIV*/
+.userNotificationDiv{
+    width: 82%;
+    height: 90%;
+   position: fixed;
+   bottom: 0;
+   right: 0;
+   overflow-y: scroll;
+   background: #e9e9e9;
+}
+.userNotificationDiv::-webkit-scrollbar{
+    width: 5px;
+}
+.userNotificationDiv .heading_demacation_div{
+    width: 100%;
+    position: sticky;
+    top: 0;
+
+}
+.userNotificationDiv .heading_demacation_div .userNofication_heading{
+    width: 200px;
+    margin:  0 auto;
+    text-align: center;
+    background-color: #000000;
+  color: #eaeaea;
+    border-radius: 10px;
+    padding: 0.3px 0;
+   font-size: 0.9rem;
+}
+.userNotificationDiv .heading_demacation_div .demacation{
+    width: 80%;
+    margin:  0 auto;
+    height: 1px;
+    background: black;
+    margin-top: 20px;
+}
+.userNotificationDiv .user_notification_div{
+    width: 80%;
+    margin:  0 auto;
+}
+.userNotificationDiv .user_notification_div .user_notification_img_text_description{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    margin: 10px 0;
+}
+.userNotificationDiv .user_notification_div .user_notification_img_text_description img{
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+}
+.userNotificationDiv .user_notification_div .user_notification_img_text_description p{
+    font-size: 0.9rem;
+    color: #3b3b3b;
+    margin-left: 5px;
 }
 @media(max-width:1001px){
     .user_profile_div{

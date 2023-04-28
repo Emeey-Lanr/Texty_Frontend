@@ -24,7 +24,8 @@ const SignIn = () => {
   
   const userInfo: UserDetailsModel = {
     username:username,
-    password:password
+    password: password,
+   
     
   }
   const messageAlertFunction = (onModal: boolean, message: string) => {
@@ -86,7 +87,7 @@ const SignIn = () => {
                </div>
               </div>
               <div className="signup_btn">
-                  <button onClick={()=>verfifyUserBtn()}>Signup</button>
+                  <button onClick={()=>verfifyUserBtn()}>Signin</button>
               </div>
               <div className="signup_signin_link">
           <div>
@@ -95,7 +96,7 @@ const SignIn = () => {
                    <div className="signup_signin-line"></div>
           <div className="signup_signin_to_div">
             <Link to="/signup" className="signup_signin_to">
-              Signin
+              Signup
             </Link>
                    </div>
               </div>

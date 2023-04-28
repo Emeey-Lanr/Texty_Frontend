@@ -5,9 +5,11 @@ import {FaBell, FaTimes, FaTrash, FaUserFriends,} from "react-icons/fa"
 import Logo from "./Logo"
 import boxer from "../images/boxer.jpg"
 import { BiPlus, BiSearch, BiLogOut, BiTrash, BiUserCircle, BiBell } from "react-icons/bi"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { io, Socket } from "socket.io-client";
 import { useSelector } from "react-redux"
+import { link } from "fs"
+
 const Sidebar = () => {
   // interface comingAppDetails {
   //    hideSideBar:string
@@ -15,6 +17,8 @@ const Sidebar = () => {
   // }
   const appEndPoint: string = "http://localhost:2001"
   let socket = useRef<Socket>()
+  let location = useLocation()
+  let navigate = useNavigate()
  
   const userDetail = useSelector((state:any)=>state.userprofile.value)
   useEffect(() => {
@@ -26,7 +30,9 @@ const Sidebar = () => {
       
     }
   },[])
-  const { hideSideBar,
+  const { 
+    routeIdentification
+    , hideSideBar,
     setHideSideBar,
     hidebarBool,
     hideSideBarBtn,
@@ -38,6 +44,15 @@ const Sidebar = () => {
     hideSideBarBtn()
   }
  
+  const checkNotification = () => {
+    if (location.pathname !== "/notification") {
+      navigate("/notification")
+    } 
+
+    // if (routeIdentification !== "usernotification") {
+      
+    // }
+  }
 
   return (
    
@@ -91,20 +106,10 @@ const Sidebar = () => {
 
       </div>
       <div className="user_Profile_details" style={{marginBottom:"100px"}}>
-        <button>
-          <FaBell/> <span>Notification</span>
+        <button onClick={()=>checkNotification()} style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+          <FaBell/><span className="number_Of_Notification">12</span> <span>Notification</span>
         </button>
-        <button>
-          {userDetail.registerdUserIdentification === "" ?
-            <Link to="/signin">
-              <BiUserCircle/> <span>Profile</span>
-            </Link> :
-              <Link to={`/${userDetail.registerdUserIdentification}`}>
-              <BiUserCircle/> <span>Profile</span>
-            </Link> 
-          }
-          
-        </button>
+        <button><BiUserCircle/> <span>Profile</span></button>
         <button>
           <BiLogOut/> <span>Logout</span>
         </button>

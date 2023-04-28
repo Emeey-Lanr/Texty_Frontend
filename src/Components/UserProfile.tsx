@@ -13,11 +13,19 @@ import { io, Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux"
 import {collectUserProfile} from "../Features/Profile"
 import axios from "axios"
+import UserNotification from "./UserNotification"
+import { useNavigate } from "react-router-dom"
+// import { followerUser} from "../Features/Profile"
 const UserProfile = () => {
-  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound } = useContext(appContext)
+  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound, } = useContext(appContext)
+  let naviagte = useNavigate()
+  let dispatch = useDispatch()
   const socket = useSelector((state: any) => state.socket.value)
   const userProfileDetails = useSelector((state: any) => state.userprofile.value)
- 
+  const [openFollowersFollowing, setOpenFollowersFollowing] = useState<boolean>(false)
+  const [checkIfFollowing, setCheckIfFollowing] = useState([])
+  // the number used to open either follwers or following
+  const [openFFNumber, setOpenFFNumber] = useState<number>(0)
   
   const [m, setM] = useState(0)
   let id = useParams()
@@ -26,10 +34,13 @@ const UserProfile = () => {
   
   useEffect(() => {
     getUserProfile(`${id.id}`, "")
-    console.log(userProfileDetails, "Kjhgfdfghjklkjhgf")
+  
     socket.on("hello", (data: Object) => {
       console.log(data)
     })
+      
+        
+     
     if (socket) {
       socket.on("get", (nn: string) => {
         setUsername(nn)
@@ -58,6 +69,37 @@ const UserProfile = () => {
     setM(2)
 
   }
+  const openFollowers = () => {
+    setOpenFollowersFollowing(true)
+    setOpenFFNumber(0)
+  }
+  const openFollowing = () => {
+    setOpenFollowersFollowing(true)
+    setOpenFFNumber(1)
+    
+  }
+  const followerDetail = {
+    accountOwner: "",
+    personTheyWantToFollow:"",
+  }
+
+  // const followerUserEndPoint = 
+
+  const follow = () => {
+    if (userProfileDetails.registerdUserIdentification !== "") {
+        axios.post(`${userEndPoint}/followUser`, {ownerUsername:userProfileDetails.registerdUserIdentification, userTheyTryingToFollow:userProfileDetails.username}).then((result) => {
+        if (result.data.status) {
+            getUserProfile(`${id.id}`, "")
+        } else {
+            
+        }
+    })
+    }
+  
+  }
+  const unfollow = () => {
+    
+  }
   return (
     <>
       {noUserFound ? <>
@@ -78,10 +120,24 @@ const UserProfile = () => {
             </div>
             <div className="user_username">
               <h2>{userProfileDetails.username}</h2>
+              <div>
+                {(userProfileDetails.username !== userProfileDetails.registerdUserIdentification) &&
+                  <>
+                  {userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification) ?
+                    <button onClick={() => unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button onClick={() => follow()}>Follow</button>}
+                  </>
+                  
+                }
+                
+                {/* {userProfileDetails.username !== userProfileDetails.registerdUserIdentification && <button>Following</button>} */}
+              </div>
+              
             </div>
+            
+            
             <div className="following_followers">
-              <button>{userProfileDetails.following.length} Following</button>
-              <button>{userProfileDetails.followers.length} Folowers</button>
+              <button onClick={()=>openFollowing()}>{userProfileDetails.following.length} Following</button>
+              <button onClick={()=>openFollowers()}>{userProfileDetails.followers.length} Folowers</button>
             </div>
             <div className="about_Me">
               <div className="caption_edit_div">
@@ -116,6 +172,7 @@ const UserProfile = () => {
                   <div className="postaction" style={{ position: "relative" }}>
                     <button onClick={() => preventBtn()}><BiHeart /> <span>12k</span></button> <button><BiChat /> <span>12k</span></button>
                     {userProfileDetails.username === userProfileDetails.registerdUserIdentification && <button><BiTrash /></button>}
+                    
                   </div>
             
                 </div>
@@ -126,7 +183,7 @@ const UserProfile = () => {
      
       
           </div>
-          {/* <Friends /> */}
+          {openFollowersFollowing && <Friends setOpenFollowersFollowing={setOpenFollowersFollowing} openFFNumber={ openFFNumber} setOpenFFNumber={ setOpenFFNumber} />}
           <PostModal />
           <Create />
           <Navbar />

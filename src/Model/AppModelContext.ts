@@ -69,8 +69,15 @@ export const appModelContext = {
 //   }
  
 export  interface UserDetailsModel  {
-    username: string,
-    password:string
+  username: string;
+  password: string;
+  img_url?: string;
+  about_me?: string;
+  post?: {}[]
+  following?: [];
+  followers?: [];
+  notification?: [];
+  state?: string;
   }
 
 
