@@ -11,7 +11,7 @@ export interface UserProfile {
     ifUserFollowers: {}[] | null | [];
     post: {}[] | [] | null;
     homePost: {}[] | [] | null;
-    notification: [] | null;
     isLoggedIn: boolean;
+    loggedInUserNotification:{}[] |  []
 
 }

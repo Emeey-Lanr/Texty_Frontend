@@ -11,11 +11,13 @@ import Friends from "./Friends"
 import { appContext, } from "../App"
 import { io, Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux"
-import {collectUserProfile} from "../Features/Profile"
+import {collectUserProfile, followUser} from "../Features/Profile"
 import axios from "axios"
 import UserNotification from "./UserNotification"
 import { useNavigate } from "react-router-dom"
 // import { followerUser} from "../Features/Profile"
+
+
 const UserProfile = () => {
   const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound, } = useContext(appContext)
   let naviagte = useNavigate()
@@ -31,22 +33,38 @@ const UserProfile = () => {
   let id = useParams()
 
 
+
   
   useEffect(() => {
     getUserProfile(`${id.id}`, "")
-  
-    socket.on("hello", (data: Object) => {
-      console.log(data)
-    })
-      
-        
-     
-    if (socket) {
-      socket.on("get", (nn: string) => {
-        setUsername(nn)
-      })
-    }
+ 
   }, [])
+  // this meant for the user looking for another user
+  // to show the user looked for followers have increased when he follows
+  const followedUserLookedFor = () => {
+     socket.on("followedUserLookedFor", (data:any) => {
+      console.log(data, "Jhgfdfghjk")
+      dispatch(followUser(data.lookedForUserFollowers))
+    })
+  }
+
+  // This is meant for the user looked for if he or she
+  // is online and he's in user profile he recieve the increasement in his followers
+  const ifFollowed = () => {
+    socket.on("followedNotification", (data:{addedFollowers:{}[] | []}) => {
+      dispatch(followUser(data.addedFollowers))
+    })
+  }
+  useEffect(() => {
+    if (socket) {
+      followedUserLookedFor()
+      ifFollowed()
+    
+    }
+     
+  
+    
+  })
   
   
   // const socket = Socket(appEndPoint)
@@ -60,7 +78,7 @@ const UserProfile = () => {
   // }, [])
   const openPost = () => {
     setPostModalStatus(true)
-    socket.emit("shit", { name: "Emmeey" })
+    // socket.emit("shit", { name: "Emmeey" })
     
   }
   const preventBtn = () => {
@@ -86,10 +104,12 @@ const UserProfile = () => {
   // const followerUserEndPoint = 
 
   const follow = () => {
+  
     if (userProfileDetails.registerdUserIdentification !== "") {
+        socket.emit("followUserSearchedForFromProfile", {ownerUsername:userProfileDetails.registerdUserIdentification, userTheyTryingToFollow:userProfileDetails.username} )
         axios.post(`${userEndPoint}/followUser`, {ownerUsername:userProfileDetails.registerdUserIdentification, userTheyTryingToFollow:userProfileDetails.username}).then((result) => {
         if (result.data.status) {
-            getUserProfile(`${id.id}`, "")
+            // getUserProfile(`${id.id}`, "")
         } else {
             
         }

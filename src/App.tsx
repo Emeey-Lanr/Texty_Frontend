@@ -16,28 +16,28 @@ import Search from "./Components/Search";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
 import { collectUserProfile } from "./Features/Profile"
+
 import { useNavigate } from "react-router-dom";
 import { get } from "http";
 import UserNotification from "./Components/UserNotification";
 import Group from "./Components/Group";
+
 
 export const appContext = createContext(appModelContext)
 
 
 const App = () => {
   let navigate = useNavigate()
-// const appEndPoint:string = "http://localhost:2001"
-//   // const socket:<ClientToServer> = new io (appEndPoint)
-//   let socket =  useRef<Socket>()
-//   useEffect(() => {
-//     socket.current = io(appEndPoint)
-//     console.log(socket)
-//   },[])
+  const dispatch = useDispatch()
+  
   // const socket = useRef(Socket("http"))
   
-  // Socket 
+  // Socket
    const socket = useSelector((state: any) => state.socket.value)
   //Route identification 
+  // useEffect(() => {
+  //   dispatch(connectSocket())
+  // },[  ])
   const [routeIdentification, setRouteIdentification] = useState<string>("")
   const [hideSideBar, setHideSideBar] = useState<string>("hidesidebar")
   const [hidebarBool, setHideBarBool] = useState<boolean>(true)
@@ -74,23 +74,24 @@ const App = () => {
   const verifyUserProfile: string = `${userEndPoint}/verifyUserProfile`
   // const userProfileDetails = useSelector((state: any) => state.userprofile.value)
   
-  const dispatch = useDispatch()
+  
   const sendUserData = (
     currentUserIdentification: string, id: number, username: string, about_me: string | null, img_url: string | null, followers:[], following: [],checkBothFollowing: [],
-    checkBothFollowers: [], post: [], isLoggedIn: boolean) => {
+    checkBothFollowers: [], post: [], isLoggedIn: boolean, loggedInUserNotification:[]) => {
     dispatch(collectUserProfile({
       registerdUserIdentification: currentUserIdentification,
       id: id,
       username: username,
       about_me: about_me,
       img_url: img_url,
-      followers: followers,
+       followers: followers,
       following: following,
       // these two get the looged in user followers and following incase both user are found if not it's empty
       ifUserFollowing: checkBothFollowing,
       ifUserFollowers: checkBothFollowers,
       post: post,
-      isLoggedIn:isLoggedIn
+      isLoggedIn: isLoggedIn,
+      loggedInUserNotification:loggedInUserNotification
      }))
            
   }
@@ -119,20 +120,21 @@ const App = () => {
           switch (result.data.message) {
             case "Only the user logged in is found": {
               return sendUserData(result.data.userData.username, result.data.userData.id, result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
-               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post, result.data.loggedIn)
+               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post, result.data.loggedIn, result.data.userData.notification
+)
             };
             case "User Searched for not found": {
               return sendUserData(result.data.userData.username, result.data.userData.id, result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
-               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post, result.data.loggedIn), setNoUserFound(true)
+               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post, result.data.loggedIn, result.data.userData.notification), setNoUserFound(true)
             }
             
             case "Both users found": {
               return sendUserData(result.data.userData.username, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
-                 result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post, result.data.loggedIn  )
+                 result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post, result.data.loggedIn, result.data.userData.notification  )
             };
             case "Only the user searched for is found":{
               return sendUserData(result.data.userData.username, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
-                 result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.loggedIn  
+                 result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.loggedIn, []  
               )
               }
             
@@ -160,7 +162,7 @@ const App = () => {
   return (
   
     <appContext.Provider value={{
-    
+
       routeIdentification,
       setRouteIdentification,
         userEndPoint,
@@ -207,7 +209,7 @@ const App = () => {
         <Route path="/group/:id/:nid" element={<Group />} />
         <Route path="/home" element={<Home />} />
         <Route path="/search" element={<Search/>}/>
-        <Route path="/:id" element={<UserProfile />} />
+        <Route path="/:id" element={<UserProfile />}/>
         <Route path="/notification" element={<UserNotification/>}/>
       
       </Routes>

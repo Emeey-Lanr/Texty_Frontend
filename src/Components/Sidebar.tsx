@@ -9,27 +9,43 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { io, Socket } from "socket.io-client";
 import { useSelector } from "react-redux"
 import { link } from "fs"
+import { useDispatch } from "react-redux"
+import {getFollowedNotification} from "../Features/Profile"
 
 const Sidebar = () => {
   // interface comingAppDetails {
   //    hideSideBar:string
   //       setHideSideBar:React.Dispatch<React.SetStateAction<string>>
   // }
-  const appEndPoint: string = "http://localhost:2001"
-  let socket = useRef<Socket>()
+  // const appEndPoint: string = "http://localhost:2001"
+  // let socket = useRef<Socket>()
   let location = useLocation()
   let navigate = useNavigate()
+  let dispatch = useDispatch()
  
-  const userDetail = useSelector((state:any)=>state.userprofile.value)
-  useEffect(() => {
-    socket.current = io(appEndPoint)
-    socket.current.on("hello", (data:string) => {
-      console.log(data)
-    })
-    if (socket.current) {
+  const userDetail = useSelector((state: any) => state.userprofile.value)
+  const socket = useSelector((state:any)=>state.socket.value)
+  // const socket
+  // useEffect(() => {
+  //   socket.current = io(appEndPoint)
+  //   socket.current.on("hello", (data:string) => {
+  //     console.log(data)
+  //   })
+  //   if (socket.current) {
       
-    }
+  //   }
+  // },[])
+  useEffect(() => {
+    console.log(userDetail)
   },[])
+  useEffect(() => {
+    if (socket) {
+      socket.on("followedNotification", (data: { notification: {}[] | []})=>{
+        console.log(data)
+        dispatch(getFollowedNotification(data.notification))
+      })
+    }
+  })
   const { 
     routeIdentification
     , hideSideBar,
@@ -45,6 +61,7 @@ const Sidebar = () => {
   }
  
   const checkNotification = () => {
+    
     if (location.pathname !== "/notification") {
       navigate("/notification")
     } 
@@ -106,8 +123,22 @@ const Sidebar = () => {
 
       </div>
       <div className="user_Profile_details" style={{marginBottom:"100px"}}>
-        <button onClick={()=>checkNotification()} style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-          <FaBell/><span className="number_Of_Notification">12</span> <span>Notification</span>
+        <button onClick={() => checkNotification()} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          
+          <FaBell />
+          <>
+            {userDetail.loggedInUserNotification.length > 0 && 
+              <>{userDetail.loggedInUserNotification.filter((details: { checked: boolean }) => details.checked === false).length > 0 &&
+                <span className="number_Of_Notification">
+                  {userDetail.loggedInUserNotification.filter((details: { checked: boolean }) => details.checked === false).length}
+                </span>
+              }
+            </>
+               
+          } 
+        </>
+         
+         <span>Notification</span>
         </button>
         <button><BiUserCircle/> <span>Profile</span></button>
         <button>

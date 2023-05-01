@@ -7,9 +7,9 @@ import { BrowserRouter } from "react-router-dom"
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
-import socketIoReducer from "./Features/Socketio"
 import chatRedux from "./Features/Chat"
 import userProfileReducer from "./Features/Profile"
+import Socketio from './Features/Socketio';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -17,8 +17,7 @@ const root = ReactDOM.createRoot(
 const store = configureStore({
 
   reducer: {
- 
-    socket: socketIoReducer,
+   socket:  Socketio, 
     chat: chatRedux,
     userprofile:userProfileReducer
   }

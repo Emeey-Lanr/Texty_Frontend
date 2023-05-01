@@ -20,8 +20,8 @@ const userProfileIntialState: UserProfile = {
     ifUserFollowers:[],
     post: [],
     homePost: [],
-    notification:[],
-    isLoggedIn:false
+    isLoggedIn: false,
+    loggedInUserNotification:[]
     
 } 
 
@@ -46,23 +46,17 @@ export const userProfileSlice = createSlice({
         collectUserProfile: (state, action) => {
             state.value = action.payload
         },
+        followUser: (state, action) => {
+            state.value.followers = action.payload
+        },
+        getFollowedNotification: (state, action) => {
+            state.value.loggedInUserNotification = action.payload
 
-    
+        }    
 
-        // followerUser: (state, action) => {
-        //     switch (state.value.registerdUserIdentification) {
-        //         case "": {
-        //             return check(action.payload, action.payload, state.value.registerdUserIdentification, state.value.username)
-        //             // action.payload.navigate
-        //         };
-        //         default: {
-        //             return action.payload
-        //         }
-        //     }
-        // }
     }
 })
 
 
-export const  {collectUserProfile, }  = userProfileSlice.actions
+export const  {collectUserProfile, followUser, getFollowedNotification}  = userProfileSlice.actions
 export default userProfileSlice.reducer
