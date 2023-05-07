@@ -1,12 +1,13 @@
 import "../styles/user.css"
 import { CiChat1 } from "react-icons/ci"
 import boxer from "../images/boxer.jpg"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import { FaArrowLeft } from "react-icons/fa"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
-
-
+import { appContext } from "../App"
+import { useContext } from "react"
+import {unfollowFollowingR} from "../Features/Profile"
 interface FriendsInterface {
     setOpenFollowersFollowing: React.Dispatch<React.SetStateAction<boolean>>;
     openFFNumber: number;
@@ -15,7 +16,36 @@ interface FriendsInterface {
 
 const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: FriendsInterface) => {
     let navigate = useNavigate()
-    const userDetails = useSelector((state:any)=>state.userprofile.value)
+    const dispatch = useDispatch()
+    const {followFunction, unfollowFunction} = useContext(appContext)
+    const userDetails = useSelector((state: any) => state.userprofile.value)
+    const socket = useSelector((state: any) => state.socket.value)
+//      const followed = () => {
+//          socket.on("followedUserLookedFor", (data: any) => {
+//           console.log(data)
+//     //   dispatch(unfollowFollowingR(data.followingDetails))
+//     })
+//   }
+//      const unFollowed = () =>{
+//     socket.on("unFollowed", (data: any) => {
+//         if (userDetails.username === userDetails.registerdUserIdentification) {
+//             console.log(data)
+//             // dispatch(unfollowFollowingR(data.userLoggedInFollowing))
+//         //   I'm using unfollow via notification reducer because it works
+//         // dispatch(unfollowViaProfile(data.userTheyWantToUnFollowFollowers))
+//       }
+      
+//     })
+//     }
+
+    
+    useEffect(() => {
+        if (socket) {
+            // unFollowed()
+            // followed()
+        }
+        
+    })
     const friendsBtn = () => {
         setOpenFFNumber(0)
         
@@ -29,6 +59,17 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
         navigate(`/chat/${name}`)
         
     }
+    const followViaSocket3Btn = (userYouWantToFollow: string) => {
+        const checkifUserExistInYourFollowers = userDetails.ifUserFollowers.find((name: { username: string }) => name.username === userYouWantToFollow)
+        let followWords = ""
+        if (checkifUserExistInYourFollowers) {
+            followWords = "followed you back"
+        } else {
+            followWords = "follows you"
+        }
+        followFunction("followSocket3", userDetails.registerdUserIdentification, userYouWantToFollow, followWords)
+    }
+   
   return (
       <div className="friends_space">
           <div>
@@ -56,7 +97,7 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                           </div>
                           <div className="name_div">
                               <div>
-                                      <h2>{name.username}</h2> <>
+                                      <h2>{name.username} followers</h2> <>
                                           {userDetails.ifUserFollowers.length > 0 ? 
                                               (name.username === userDetails.registerdUserIdentification ? <></> : 
                                            userDetails.ifUserFollowers.find((namee:{username:string})=> namee.username === name.username) && <div><p>Follows you</p></div> ) : <>
@@ -76,8 +117,8 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                                   </button>
                                   
                                   {userDetails.following.find((namee: { username: string }) => namee.username === name.username) ?
-                                      <button style={{ marginLeft: "10px", background: "black", color: "white" }}>Following</button> :
-                                       <button style={{ marginLeft: "10px"}}>Follow</button>
+                                      <button onClick={()=>unfollowFunction("unfollowSocket2", userDetails.registerdUserIdentification, name.username)} style={{ marginLeft: "10px", background: "black", color: "white" }}>Following</button> :
+                                       <button onClick={()=>followFunction("followSocket2", userDetails.registerdUserIdentification, name.username, "followed you back")}  style={{ marginLeft: "10px"}}>Follow</button>
                                       } 
                                   
                                   <button style={{ marginLeft: "10px" }}>Block</button>
@@ -183,7 +224,7 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                               <button onClick={() => chatWith(name.username)} style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                   <CiChat1 />
                               </button>
-                             <button style={{ marginLeft: "10px",}}>Unfollow</button> 
+                             <button onClick={()=>unfollowFunction("unfollowSocket2", userDetails.registerdUserIdentification,name.username)} style={{ marginLeft: "10px",}}>Unfollow</button> 
                               <button style={{ marginLeft: "10px" }}>Block</button>
                           
                           </div>
@@ -199,8 +240,8 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                               </button>
                               <>
                                   {userDetails.ifUserFollowing.find((namee: { username: string }) => namee.username === name.username) ?
-                                      <button style={{ marginLeft: "10px", background:"black", color:"white" }}>Following</button> :
-                                      <button style={{ marginLeft: "10px" }}>Follow</button>
+                                      <button onClick={()=> unfollowFunction("unfollowSocket3", userDetails.registerdUserIdentification, name.username)} style={{ marginLeft: "10px", background:"black", color:"white" }}>Following</button> :
+                                      <button onClick={()=>followViaSocket3Btn(name.username)} style={{ marginLeft: "10px" }}>Follow</button>
                                     }
                               </>
                               <button style={{ marginLeft: "10px" }}>Block</button>

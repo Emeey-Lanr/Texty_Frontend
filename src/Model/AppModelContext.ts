@@ -38,6 +38,8 @@ export const appModelContext = {
   // 
   getUserProfile: (id: string, route: string) => { },
   noUserFound: false,
+  followFunction: (socketName:string, loggedInUsername: string, userTheyWantToFollow: string, notificationWords: string, ) => { },
+  unfollowFunction:(socketName:string, userLoggedInUserName: string, userTheyWantToUnfollow: string, )=>{}
 }
 
 // export  const appValue = {

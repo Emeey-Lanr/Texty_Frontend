@@ -40,12 +40,15 @@ const Sidebar = () => {
   },[])
   useEffect(() => {
     if (socket) {
-      socket.on("followedNotification", (data: { notification: {}[] | []})=>{
-        console.log(data)
-        dispatch(getFollowedNotification(data.notification))
+      socket.on("followedNotification", (data: { notification: {}[] | [], error:boolean }) => {
+        if (!data.error) {
+          dispatch(getFollowedNotification(data.notification))
+        }
       })
+
     }
   })
+
   const { 
     routeIdentification
     , hideSideBar,
@@ -69,6 +72,14 @@ const Sidebar = () => {
     // if (routeIdentification !== "usernotification") {
       
     // }
+  }
+  const openFFChat = () => {
+     if (location.pathname !== "/chat") {
+      navigate("/chat")
+    } 
+  }
+  const openGroupChat = () => {
+    
   }
 
   return (
@@ -97,6 +108,13 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="group_identification">
+        <div className="group_ff_chat_indication">
+          <button onClick={() => openFFChat()} style={{ borderBottom: "3px solid white" }}>FF Chats
+            <span>10</span>
+          </button><button onClick={() => openGroupChat()}>Group Chats
+            <span>10</span>
+          </button>
+        </div>
         
         <div className="group_chat">
           

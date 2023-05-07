@@ -15,7 +15,7 @@ import {io, Socket }  from "socket.io-client";
 import Search from "./Components/Search";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
-import { collectUserProfile } from "./Features/Profile"
+import { collectUserProfile, followUser } from "./Features/Profile"
 
 import { useNavigate } from "react-router-dom";
 import { get } from "http";
@@ -159,6 +159,23 @@ const App = () => {
     })
   }
  
+  // follow someone function
+  const followFunction = async (socketName:string, loggedInUsername: string, userTheyWantToFollow: string, notificationWords:string) => {
+    socket.emit(`${socketName}`, { ownerUsername: loggedInUsername, userTheyTryingToFollow: userTheyWantToFollow, notificationWords:notificationWords})
+      const follow = await axios.post(`${userEndPoint}/followUser`, {ownerUsername:loggedInUsername, userTheyTryingToFollow:userTheyWantToFollow, notificationWords:notificationWords})
+    
+  }
+
+  const unfollowFunction = async (socketName:string, userLoggedInUserName: string, userTheyWantToUnfollow: string) => {
+    socket.emit(`${socketName}`, { userLoggedInUserName, userTheyWantToUnfollow})
+    const unfollow = await axios.post(`${userEndPoint}/unfollowUser`, {userLoggedInUserName, userTheyWantToUnfollow})
+    
+  }
+  //  const ifFollowed = () => {
+  //   socket.on("followedNotification", (data:{addedFollowers:{}[] | []}) => {
+  //     dispatch(followUser(data.addedFollowers))
+  //   })
+  // }
   return (
   
     <appContext.Provider value={{
@@ -196,8 +213,11 @@ const App = () => {
       getUserProfile,
 
       // if no user is found
-      noUserFound
-        
+      noUserFound,
+        // follow Function
+        followFunction,
+        // unfollow User
+        unfollowFunction
     
 
   } }>

@@ -11,7 +11,7 @@ import Friends from "./Friends"
 import { appContext, } from "../App"
 import { io, Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux"
-import {collectUserProfile, followUser} from "../Features/Profile"
+import {collectUserProfile, followUser, unfollowViaProfile, unfollowFollowingR, unfollowFollowingViaAnotherUserFFlistR} from "../Features/Profile"
 import axios from "axios"
 import UserNotification from "./UserNotification"
 import { useNavigate } from "react-router-dom"
@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom"
 
 
 const UserProfile = () => {
-  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound, } = useContext(appContext)
+  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction} = useContext(appContext)
   let naviagte = useNavigate()
   let dispatch = useDispatch()
   const socket = useSelector((state: any) => state.socket.value)
@@ -41,25 +41,109 @@ const UserProfile = () => {
   }, [])
   // this meant for the user looking for another user
   // to show the user looked for followers have increased when he follows
-  const followedUserLookedFor = () => {
-     socket.on("followedUserLookedFor", (data:any) => {
-      console.log(data, "Jhgfdfghjk")
-      dispatch(followUser(data.lookedForUserFollowers))
+  // Both are meant for following
+  // used when user registeredUsername is the same as the user
+  const followSocket = () => {
+    socket.on("followedUserLookedFor", (data: any) => {
+      console.log(data.loggedInUser, data)
+      // This errors happens based on the user yo want to follow is not found as the backend
+      if(!data.error){
+      // if (data.loggedInUser === userProfileDetails.username) {
+      
+      //    console.log("You are the one on your profile", data)
+      // } else {
+        dispatch(followUser(data.lookedForUserFollowers))
+      //  console.log("you are not the one on your profile")
+    //  }
+      } else {
+        alert("an error occured")
+     }
+              
+   })
+     
+      
+  }
+  const followSocket2Function = () => {
+    socket.on("userFollowingWhenFollowing", (data:any)=>{
+      if(!data.error){
+          dispatch(unfollowFollowingR(data.followingDetails))
+      }else{
+        alert("an error occured couldn't follow")
+      }
+    })
+    
+  }
+  const followSocket3Function = () => {
+    socket.on("followingViaAnotherPersonFFlist", (data: any) => {
+      if (!data.error) {
+        dispatch(unfollowFollowingViaAnotherUserFFlistR(data.followingDetails))
+      } else {
+        alert("an error occured, couldn't follow")
+      }
     })
   }
+ 
 
   // This is meant for the user looked for if he or she
   // is online and he's in user profile he recieve the increasement in his followers
   const ifFollowed = () => {
-    socket.on("followedNotification", (data:{addedFollowers:{}[] | []}) => {
-      dispatch(followUser(data.addedFollowers))
+    socket.on("followedNotification", (data:any) => {
+      console.log(data.loggedInUser)
+      if (!data.error) {
+        if (data.loggedInUser === userProfileDetails.username) {
+          dispatch(followUser(data.addedFollowers))
+        }
+      }
+      
+    })
+  }
+
+
+  const unFollowedSocket = () =>{
+    socket.on("unFollowed", (data: any) => {
+      console.log(data)
+      if (!data.error) {
+       
+          dispatch(unfollowViaProfile(data.userTheyWantToUnFollowFollowers))
+      
+      } else {
+        alert("an error occured, couldn't unfollow")
+      }
+       
+      
+      
+    })
+  }
+
+  const unfollowSocket2Function = () => {
+    socket.on("userFollowingWhenUnFollowing", (data: any) => {
+      if (!data.error) {
+        dispatch(unfollowFollowingR(data.userLoggedInFollowing))
+      } else {
+        alert("an error occur couldn't unfollow")
+      }
+    })
+  }
+  const unfollowSocket3Function = () => {
+    socket.on("unfollowingViaAnotherPersonFFlist", (data: any) => {
+      if (!data.error) {
+        dispatch(unfollowFollowingViaAnotherUserFFlistR(data.userLoggedInFollowing))
+      } else {
+        alert("an error occured, couldn't unfollow")
+      }
     })
   }
   useEffect(() => {
     if (socket) {
-      followedUserLookedFor()
+      followSocket()
+      followSocket2Function()
+      followSocket3Function()
       ifFollowed()
+      unFollowedSocket()
+      unfollowSocket2Function()
+      unfollowSocket3Function()
     
+   
     }
      
   
@@ -106,19 +190,26 @@ const UserProfile = () => {
   const follow = () => {
   
     if (userProfileDetails.registerdUserIdentification !== "") {
-        socket.emit("followUserSearchedForFromProfile", {ownerUsername:userProfileDetails.registerdUserIdentification, userTheyTryingToFollow:userProfileDetails.username} )
-        axios.post(`${userEndPoint}/followUser`, {ownerUsername:userProfileDetails.registerdUserIdentification, userTheyTryingToFollow:userProfileDetails.username}).then((result) => {
-        if (result.data.status) {
-            // getUserProfile(`${id.id}`, "")
-        } else {
-            
-        }
-    })
+      // this check if probably you are among the searched for user followers that means you are following the search for user nad if he not folloing you
+      // the notification should be "followed back not follows you"
+      let notificationWords = ""
+      if (userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification)) {
+        notificationWords = "followed you"
+      } else {
+        notificationWords = "follows you"
+      }
+
+       followFunction("followSocket1" ,userProfileDetails.registerdUserIdentification, userProfileDetails.username, notificationWords)
+     
+      
     }
   
   }
+
+  
   const unfollow = () => {
-    
+    console.log(userProfileDetails.registerdUserIdentification, userProfileDetails.username)
+    unfollowFunction("unfollowSocket1",userProfileDetails.registerdUserIdentification, userProfileDetails.username)
   }
   return (
     <>
@@ -144,7 +235,7 @@ const UserProfile = () => {
                 {(userProfileDetails.username !== userProfileDetails.registerdUserIdentification) &&
                   <>
                   {userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification) ?
-                    <button onClick={() => unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button onClick={() => follow()}>Follow</button>}
+                    <button onClick={() =>  unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button onClick={() => follow()}>Follow</button>}
                   </>
                   
                 }
