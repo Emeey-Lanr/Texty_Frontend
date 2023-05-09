@@ -15,11 +15,14 @@ import {collectUserProfile, followUser, unfollowViaProfile, unfollowFollowingR, 
 import axios from "axios"
 import UserNotification from "./UserNotification"
 import { useNavigate } from "react-router-dom"
+import ActionModal from "./ActionModal"
+import ChattingSpace from "./ChattingSpace"
+import Chat from "./Chat"
 // import { followerUser} from "../Features/Profile"
 
 
 const UserProfile = () => {
-  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction} = useContext(appContext)
+  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction,  setGroupChatOrPrivateChatOpening} = useContext(appContext)
   let naviagte = useNavigate()
   let dispatch = useDispatch()
   const socket = useSelector((state: any) => state.socket.value)
@@ -211,6 +214,9 @@ const UserProfile = () => {
     console.log(userProfileDetails.registerdUserIdentification, userProfileDetails.username)
     unfollowFunction("unfollowSocket1",userProfileDetails.registerdUserIdentification, userProfileDetails.username)
   }
+  const chatWithBtn = () => {
+    setGroupChatOrPrivateChatOpening(1) 
+  }
   return (
     <>
       {noUserFound ? <>
@@ -256,7 +262,7 @@ const UserProfile = () => {
                   <h3>About Me</h3>
                 </div>
                  <div>
-                  {userProfileDetails.username === userProfileDetails.registerdUserIdentification ? <button>Edit</button> : <button>{<BiChat/>}</button>}
+                  {userProfileDetails.username === userProfileDetails.registerdUserIdentification ? <button>Edit</button> : <button onClick={()=>chatWithBtn()}>{<BiChat/>}</button>}
                 </div>
              
             
@@ -294,11 +300,13 @@ const UserProfile = () => {
      
       
           </div>
-          {openFollowersFollowing && <Friends setOpenFollowersFollowing={setOpenFollowersFollowing} openFFNumber={ openFFNumber} setOpenFFNumber={ setOpenFFNumber} />}
+          {openFollowersFollowing && <Friends setOpenFollowersFollowing={setOpenFollowersFollowing} openFFNumber={openFFNumber} setOpenFFNumber={setOpenFFNumber} />}
+          <ChattingSpace/>
           <PostModal />
           <Create />
           <Navbar />
           <Sidebar />
+          <ActionModal/>
         </>}
       
      

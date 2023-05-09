@@ -1,12 +1,15 @@
 import boxer from "../images/boxer.jpg"
 import { FaTimes } from "react-icons/fa"
-import {BiChat, BiPlus,BiLock} from "react-icons/bi"
+import { BiChat, BiPlus, BiLock } from "react-icons/bi"
+import { useContext } from "react"
+import { appContext } from "../App"
 const GroupDetails = () => {
+    const {setShowGroupModal} = useContext(appContext)
   return (
       <div className="group_details_info">
           <div className="group_details_info_div">
               <div className="group_details_exit">
-                  <button>
+                  <button onClick={()=>setShowGroupModal(0)}>
                       <FaTimes/>
                   </button>
               </div>

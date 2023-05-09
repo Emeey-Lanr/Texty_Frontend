@@ -1,11 +1,15 @@
-import {FaTimes} from "react-icons/fa"
+import { FaTimes } from "react-icons/fa"
+import "../styles/chat.css"
+import { useContext } from "react"
+import { appContext } from "../App"
 const GroupNotification = () => {
+        const {setShowGroupModal} = useContext(appContext)
   return (
       <div className="group_notification_info">
           <div className="group_notifictaion_div">
               <div className="group_notification_header">
                   <div className="group_notification_header_exist">
-                      <button>
+                      <button onClick={()=>setShowGroupModal(0)}>
                           <FaTimes/>
                       </button>
                   </div>

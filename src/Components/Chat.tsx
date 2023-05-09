@@ -21,17 +21,10 @@ const Chat = () => {
   },[])
   return (
     <div className="chat-div">
-{/* <Home/> */}
+
  
       <ChattingSpace /> 
-      <SideBarModal />
-      {/* <Create/> */}
-      {/* <Friends/> */}
-      {/* <UserNotification /> */}
-      {/* <UserProfile/> */}
-      {/* <CreateGroup/> */}
-      <Navbar/>
-      <Sidebar />
+     
   
     </div>
   )

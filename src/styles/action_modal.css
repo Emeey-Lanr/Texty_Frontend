@@ -1,0 +1,118 @@
+.actionModal_body{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: #0000004f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+}
+.logout_action_modal_div{
+    width: 400px;
+       background: #000000da;
+       padding: 10px 0;
+       border-radius: 10px;
+       animation: am 1 1s running normal;
+}
+@keyframes am {
+    0%{
+        transform: translateX(70px);
+    }
+}
+.exitBtn{
+    width: 98%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+.exitBtn button{
+    border: none;
+    background: none;
+    color: white;
+}
+.action_modal_text_div p{
+text-align: center;
+font-size: 0.8rem;
+color: white;
+font-weight: 300;
+
+}
+.action_modal_proceed_div{
+    width: 98%;
+    margin: 0 auto;
+}
+.action_modal_proceed_div button{
+    width: 100%;
+    border: 1px solid #fafafa;
+    background: none;
+    padding: 10px 0;
+    color: white;
+    border-radius: 10px;
+}
+
+.exitAnimation {
+    animation: exitAnimation 1s 1 running normal;
+}
+@keyframes exitAnimation {
+    0%{
+        background-color: #ffffff1f;
+    }
+    
+}
+
+
+/* DELETE ACC */
+.delete_account_modal_div{
+    background: #000000da;
+    width: 400px;
+    padding: 10px 0;
+    border-radius: 5px;
+}
+.delete_accoun_instruction{
+    width: 98%;
+    margin:  0 auto;
+    padding: 1px 0;
+}
+.delete_accoun_instruction p{
+    color: white;
+    font-size: 0.8rem;
+    font-weight: lighter;
+    text-align: center;
+}
+.delete_account_input_div {
+    width: 98%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+
+}
+.delete_account_input_div input{
+    width: 90%;
+    background: none;
+    border: 1px solid #fafafa;
+    height: 35px;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.delete_account_btn_div{
+    width: 98%;
+margin: 0 auto;
+display: flex;
+justify-content: center;
+padding: 6px 0;
+}
+.delete_account_btn_div button{
+    width: 92%;
+    border: none;
+    background-color: #fafafa;
+    color: #000000da;
+    border-radius: 5px;
+    padding: 12px 0;
+}

@@ -1,6 +1,6 @@
 import "../styles/sidebar.css"
 import { appContext } from "../App"
-import {useContext, useRef, useEffect} from "react"
+import {useContext, useRef, useEffect, useState} from "react"
 import {FaBell, FaTimes, FaTrash, FaUserFriends,} from "react-icons/fa"
 import Logo from "./Logo"
 import boxer from "../images/boxer.jpg"
@@ -10,14 +10,11 @@ import { io, Socket } from "socket.io-client";
 import { useSelector } from "react-redux"
 import { link } from "fs"
 import { useDispatch } from "react-redux"
-import {getFollowedNotification} from "../Features/Profile"
+import { getFollowedNotification } from "../Features/Profile"
+
 
 const Sidebar = () => {
-  // interface comingAppDetails {
-  //    hideSideBar:string
-  //       setHideSideBar:React.Dispatch<React.SetStateAction<string>>
-  // }
-  // const appEndPoint: string = "http://localhost:2001"
+  
   // let socket = useRef<Socket>()
   let location = useLocation()
   let navigate = useNavigate()
@@ -25,16 +22,9 @@ const Sidebar = () => {
  
   const userDetail = useSelector((state: any) => state.userprofile.value)
   const socket = useSelector((state:any)=>state.socket.value)
-  // const socket
-  // useEffect(() => {
-  //   socket.current = io(appEndPoint)
-  //   socket.current.on("hello", (data:string) => {
-  //     console.log(data)
-  //   })
-  //   if (socket.current) {
-      
-  //   }
-  // },[])
+  
+  // PrivateChat or Group Chat
+  const [privateChatOrGroupChat, setPrivateChatOrGroupChat] =useState<boolean>(true)
   useEffect(() => {
     console.log(userDetail)
   },[])
@@ -56,7 +46,11 @@ const Sidebar = () => {
     hidebarBool,
     hideSideBarBtn,
     setOpenPrePost,
-   username
+    username,
+    setActionModalId,
+    setOpenActionModal,
+
+    setGroupChatOrPrivateChatOpening
   } = useContext(appContext)
   const OpenPrePostBtn = () => {
     setOpenPrePost(true)
@@ -73,12 +67,39 @@ const Sidebar = () => {
       
     // }
   }
+
+  // switch btn
   const openFFChat = () => {
-     if (location.pathname !== "/chat") {
-      navigate("/chat")
-    } 
+    setPrivateChatOrGroupChat(true)
+    //  if (location.pathname !== "/chat") {
+    //   navigate("/chat")
+    // } 
   }
   const openGroupChat = () => {
+   setPrivateChatOrGroupChat(false)
+    
+  }
+
+  // chat opening btn
+  const privateChatBtn = () => {
+
+    setGroupChatOrPrivateChatOpening(1)
+  }
+
+  const groupChatBtn = () => {
+    setGroupChatOrPrivateChatOpening(2)
+    
+  }
+  const openModalActionFunction = (state:boolean, id:number)=>{
+     setOpenActionModal(state)
+    setActionModalId(id)
+  }
+  const logoutBtn = () => {
+   openModalActionFunction(true, 1)
+    
+  }
+  const deleteAccountBtn = () => {
+    openModalActionFunction(true, 2)
     
   }
 
@@ -108,17 +129,44 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="group_identification">
-        <div className="group_ff_chat_indication">
-          <button onClick={() => openFFChat()} style={{ borderBottom: "3px solid white" }}>FF Chats
+        <div className="group_ff_chat_indication" style={{paddingBottom:"5px"}}>
+          <button onClick={() => openFFChat()} style={ privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" } }>FF Chats
             <span>10</span>
-          </button><button onClick={() => openGroupChat()}>Group Chats
+          </button><button style={!privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" }} onClick={() => openGroupChat()}>Group Chats
             <span>10</span>
           </button>
         </div>
-        
-        <div className="group_chat">
+        <>
+          {privateChatOrGroupChat ?
+            //PRIVATE CHAT  //////////////////////////////////////////////////////////////////////////////
+            <div className="group_chat">
+              <div>
+                <button className="link"  onClick={()=>privateChatBtn()}>
+          <span className="group_img_div">
+              <img src={boxer} alt="" /> <span>{username }</span>
+          </span>
+          <span className="notifications">
+            {/* <div className="notifying_bell">
           
-          <Link className="link" to={`/chat/${`emeey`}`}>
+                <FaBell />
+                    <div className="dot"></div>
+            </div> */}
+            <div className="unreadmessage">
+             <span> 12</span>
+            </div>
+          </span>
+          </button>
+          </div>
+          
+          
+          
+            </div>
+            
+            :
+            //GROUP CHAT  //////////////////////////////////////////////////////////////////////////////
+            <div className="group_chat">
+              <div>
+                <button className="link" onClick={()=>groupChatBtn()} >
           <span className="group_img_div">
               <img src={boxer} alt="" /> <span>{username }</span>
           </span>
@@ -132,9 +180,17 @@ const Sidebar = () => {
              <span> 12</span>
             </div>
           </span>
-          </Link>
+          </button>
+          </div>
           
-       </div>
+          
+        </div>
+          }
+          
+        </>
+        
+        
+        
   
        
         
@@ -159,10 +215,10 @@ const Sidebar = () => {
          <span>Notification</span>
         </button>
         <button><BiUserCircle/> <span>Profile</span></button>
-        <button>
+        <button onClick={()=>logoutBtn()}>
           <BiLogOut/> <span>Logout</span>
         </button>
-          <button>
+          <button onClick={()=>deleteAccountBtn()}>
           <BiTrash/> <span>Delete Account</span>
       </button>
       </div>

@@ -83,10 +83,12 @@ top: 0; */
 }
 .group_identification .group_ff_chat_indication{
   
-    width: 98%;
+    width: 96%;
     margin:  0 auto;
     display: grid;
     grid-template-columns: 50% 50%;
+    position: sticky;
+    top: 0;
 }
 
 .group_identification .group_ff_chat_indication button{
@@ -115,46 +117,52 @@ top: 0; */
 .group_identification .group_chat{
     width: 100%;
 }
+.group_identification .group_chat div{
+    width: 96%;
+    margin: auto;
+}
 
-.group_identification .group_chat .link{
+.group_identification .group_chat div .link{
     width: 100%;
     display: grid;
     grid-template-columns: 50% 50%;
     justify-content: space-between;
-    text-decoration: none;
+  background: none;
+  border: none;
+
 
 }
-.group_identification .group_chat .link .group_img_div{
+.group_identification .group_chat div .link .group_img_div{
     display: flex;
     height: 42px;
     align-items: flex-end;
 
 }
-.group_identification .group_chat .link .group_img_div span{
+.group_identification .group_chat div .link .group_img_div span{
     color: #f2f2f2;
     display: flex;
     padding-left: 10px;
 
 
 }
-.group_identification  .group_chat .link img{
+.group_identification  .group_chat div  .link img{
     width: 40px;
     height: 40px;  
     border-radius: 40px;
 }
 
-.group_identification .group_chat .link .notifications{
+.group_identification .group_chat div .link .notifications{
     width: 100%;
     margin-top: 10px;
     display: flex;
     justify-content: center;
 }
-.group_identification .group_chat .link .notifications .notifying_bell{
+.group_identification .group_chat div .link .notifications .notifying_bell{
     width: 30px;
     color: #ff1111;
     display: flex;
 }
-.group_identification .group_chat .link .notifications .notifying_bell .dot{
+.group_identification .group_chat div .link .notifications .notifying_bell .dot{
     color: white;
     width: 5px;
     height: 5px;

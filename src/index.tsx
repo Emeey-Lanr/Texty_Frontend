@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import chatRedux from "./Features/Chat"
 import userProfileReducer from "./Features/Profile"
 import Socketio from './Features/Socketio';
+import Message from './Features/Message';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -19,7 +20,8 @@ const store = configureStore({
   reducer: {
    socket:  Socketio, 
     chat: chatRedux,
-    userprofile:userProfileReducer
+    userprofile: userProfileReducer,
+    privatemessagechat:Message
   }
 
 })

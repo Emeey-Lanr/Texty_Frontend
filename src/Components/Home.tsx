@@ -9,6 +9,8 @@ import Navbar from "./Navbar"
 import Create from "./Create"
 import { useContext, useEffect } from "react"
 import { appContext } from "../App"
+import Group from "./Group"
+import ChattingSpace from "./ChattingSpace"
 const Home = () => {
     const { setRouteIdentification,getUserProfile } = useContext(appContext)
     useEffect(() => {
@@ -40,6 +42,8 @@ const Home = () => {
               </div>
           </div>
             </div>
+            <Group />
+            <ChattingSpace/>
             <Create/>
             {/* <PostModal/> */}
             <SideBarModal/>

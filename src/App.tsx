@@ -75,12 +75,21 @@ const App = () => {
   // const userProfileDetails = useSelector((state: any) => state.userprofile.value)
   
   
+  // Action modal for state, includes delete,logout
+  const [actionModalId, setActionModalId] = useState<number>(-1)
+  const [openActionModal, setOpenActionModal] = useState<boolean>(false)
+
+  // Meant for opening private and group chat 
+  const [groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening] = useState<number>(0)
+  // For opening notifiaction and group details modal
+  const [showGroupModal, setShowGroupModal] =useState<number>(0)
   const sendUserData = (
-    currentUserIdentification: string, id: number, username: string, about_me: string | null, img_url: string | null, followers:[], following: [],checkBothFollowing: [],
+    currentUserIdentification: string, userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, followers:[], following: [],checkBothFollowing: [],
     checkBothFollowers: [], post: [], isLoggedIn: boolean, loggedInUserNotification:[]) => {
     dispatch(collectUserProfile({
       registerdUserIdentification: currentUserIdentification,
-      id: id,
+      userId: userId,
+      notuserId:notUserId,
       username: username,
       about_me: about_me,
       img_url: img_url,
@@ -119,21 +128,21 @@ const App = () => {
            socket.emit("userInfoOrSearchedForInfo", {userinfo:result.data.userData,userLookedFor:result.data.lookedForUser})
           switch (result.data.message) {
             case "Only the user logged in is found": {
-              return sendUserData(result.data.userData.username, result.data.userData.id, result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
+              return sendUserData(result.data.userData.username, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
                result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post, result.data.loggedIn, result.data.userData.notification
 )
             };
             case "User Searched for not found": {
-              return sendUserData(result.data.userData.username, result.data.userData.id, result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
+              return sendUserData(result.data.userData.username, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
                result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post, result.data.loggedIn, result.data.userData.notification), setNoUserFound(true)
             }
             
             case "Both users found": {
-              return sendUserData(result.data.userData.username, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
+              return sendUserData(result.data.userData.username,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
                  result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post, result.data.loggedIn, result.data.userData.notification  )
             };
             case "Only the user searched for is found":{
-              return sendUserData(result.data.userData.username, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
+              return sendUserData(result.data.userData.username,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
                  result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.loggedIn, []  
               )
               }
@@ -171,11 +180,7 @@ const App = () => {
     const unfollow = await axios.post(`${userEndPoint}/unfollowUser`, {userLoggedInUserName, userTheyWantToUnfollow})
     
   }
-  //  const ifFollowed = () => {
-  //   socket.on("followedNotification", (data:{addedFollowers:{}[] | []}) => {
-  //     dispatch(followUser(data.addedFollowers))
-  //   })
-  // }
+
   return (
   
     <appContext.Provider value={{
@@ -217,7 +222,17 @@ const App = () => {
         // follow Function
         followFunction,
         // unfollow User
-        unfollowFunction
+      unfollowFunction,
+        
+      // action modal
+      actionModalId,
+      setActionModalId,
+      openActionModal,
+      setOpenActionModal,
+      groupChatOrPrivateChatOpening,
+      setGroupChatOrPrivateChatOpening,
+      showGroupModal,
+      setShowGroupModal
     
 
   } }>

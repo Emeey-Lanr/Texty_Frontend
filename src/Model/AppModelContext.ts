@@ -39,7 +39,15 @@ export const appModelContext = {
   getUserProfile: (id: string, route: string) => { },
   noUserFound: false,
   followFunction: (socketName:string, loggedInUsername: string, userTheyWantToFollow: string, notificationWords: string, ) => { },
-  unfollowFunction:(socketName:string, userLoggedInUserName: string, userTheyWantToUnfollow: string, )=>{}
+  unfollowFunction: (socketName: string, userLoggedInUserName: string, userTheyWantToUnfollow: string,) => { },
+   actionModalId:-1,
+     setActionModalId:(actionModalId:number)=>{},
+    openActionModal:false,
+  setOpenActionModal: (openActionModal: boolean) => { },
+  groupChatOrPrivateChatOpening:-1,
+  setGroupChatOrPrivateChatOpening: (groupChatOrPrivateChatOpening: number) => { },
+    showGroupModal:0,
+      setShowGroupModal:(showGroupModal:number)=>{}
 }
 
 // export  const appValue = {

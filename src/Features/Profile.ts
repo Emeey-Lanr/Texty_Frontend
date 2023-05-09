@@ -10,7 +10,8 @@ import axios from "axios";
 
 const userProfileIntialState: UserProfile = {
     registerdUserIdentification:"",
-    id:0,
+    userId: '0',
+     notuserId:'0',
     username: "",
     about_me: "",
     img_url:"",

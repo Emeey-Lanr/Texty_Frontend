@@ -5,18 +5,26 @@ import { appContext } from "../App"
 import {useContext} from "react"
 import GroupNotification from "./GroupNotification"
 import GroupDetails from "./GroupDetails"
+import { FaArrowLeft } from "react-icons/fa"
+
 const ChattingSpace = () => {
-      const {hideSideBar, setHideSideBar,  showSideBarBtn} = useContext (appContext)
+      const {hideSideBar, setHideSideBar,  showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening} = useContext (appContext)
   return (
       <>
-           <div className="chatting_space">
-         
+          {groupChatOrPrivateChatOpening === 1 && 
+              
+         <div className="chatting_space">
+                  <div className="goBack_chatting_space">
+                      <button onClick={()=>setGroupChatOrPrivateChatOpening(0)}>
+                          <FaArrowLeft/>
+                      </button>
+         </div>
           <div className="chat_group">
               <div className="chat-message_div_1">
                   <div className="chat-message_imgdiv_1">
                       <img src={boxer} alt="" />
                       <div>
-                          <span>Emeey</span><span style={{borderLeft:"2px solid white"}}>12:30pm</span>
+                          <span>Emeey</span><span style={{borderLeft:"2px solid white", textAlign:"center"}}>12:30pm</span>
                        </div>
                 </div>    
                   <div className="chat_message_1">
@@ -66,8 +74,9 @@ const ChattingSpace = () => {
               
               </div>
           </div>
-    <GroupNotification/> 
-    <GroupDetails/> 
+          }
+          
+
     </>
      
   )
