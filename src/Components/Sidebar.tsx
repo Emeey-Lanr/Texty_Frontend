@@ -11,6 +11,7 @@ import { useSelector } from "react-redux"
 import { link } from "fs"
 import { useDispatch } from "react-redux"
 import { getFollowedNotification } from "../Features/Profile"
+import {getCurrentMessageId} from "../Features/Message"
 
 
 const Sidebar = () => {
@@ -22,6 +23,7 @@ const Sidebar = () => {
  
   const userDetail = useSelector((state: any) => state.userprofile.value)
   const socket = useSelector((state:any)=>state.socket.value)
+  const messageStore = useSelector((state:any)=>state.privatemessagechat.value)
   
   // PrivateChat or Group Chat
   const [privateChatOrGroupChat, setPrivateChatOrGroupChat] =useState<boolean>(true)
@@ -81,9 +83,10 @@ const Sidebar = () => {
   }
 
   // chat opening btn
-  const privateChatBtn = () => {
+  const privateChatBtn = (name:string) => {
 
     setGroupChatOrPrivateChatOpening(1)
+    dispatch(getCurrentMessageId(name))
   }
 
   const groupChatBtn = () => {
@@ -131,7 +134,7 @@ const Sidebar = () => {
       <div className="group_identification">
         <div className="group_ff_chat_indication" style={{paddingBottom:"5px"}}>
           <button onClick={() => openFFChat()} style={ privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" } }>FF Chats
-            <span>10</span>
+           {messageStore.unCheckedMessageNumber > 0 && <span> {messageStore.unCheckedMessageNumber}</span>}
           </button><button style={!privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" }} onClick={() => openGroupChat()}>Group Chats
             <span>10</span>
           </button>
@@ -140,10 +143,14 @@ const Sidebar = () => {
           {privateChatOrGroupChat ?
             //PRIVATE CHAT  //////////////////////////////////////////////////////////////////////////////
             <div className="group_chat">
-              <div>
-                <button className="link"  onClick={()=>privateChatBtn()}>
+              {messageStore.allMessage.map((name:{owner:string, notowner:string,notowner_imgurl:string, message:{checked:boolean, text:string}[] })=>(
+ <div>
+                <button className="link"  onClick={()=>privateChatBtn(name.notowner)}>
           <span className="group_img_div">
-              <img src={boxer} alt="" /> <span>{username }</span>
+                      <img src={boxer} alt="" />   <div>
+                        <h3>{name.notowner}</h3>
+                        <p>{name.message[name.message.length - 1].text}</p>
+                      </div>
           </span>
           <span className="notifications">
             {/* <div className="notifying_bell">
@@ -151,12 +158,13 @@ const Sidebar = () => {
                 <FaBell />
                     <div className="dot"></div>
             </div> */}
-            <div className="unreadmessage">
-             <span> 12</span>
-            </div>
+                      {name.message.filter((details)=> details.checked === false).length > 0  &&  <div className="unreadmessage">
+                        <span>{name.message.filter((details)=> details.checked === false).length }</span>
+                      </div>}
           </span>
           </button>
           </div>
+              ))}
           
           
           

@@ -6,14 +6,20 @@ import boxer from "../images/boxer.jpg"
 import { Link, Navigate, useNavigate} from "react-router-dom"
 import { useSelector } from "react-redux"
 import { BiNews } from "react-icons/bi"
+import noImage from "../images/noImage.png"
+// import Message from "../Features/Message"
   const Navbar = () => {
     const { showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening, setShowGroupModal, } = useContext(appContext)
     const groupStatus = useSelector((state: any) => state.chat.value) 
+    const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
 let navigate = useNavigate()
     const goToSerachBtn = () => {
       setGroupChatOrPrivateChatOpening(0)
       navigate("/search")
       
+    }
+    const viewProfile = () => {
+      navigate(`/${messageRedux.currentDetails.notowner}`)
     }
     return (
     
@@ -40,7 +46,7 @@ let navigate = useNavigate()
           <button >
                <img src={boxer} alt="" />
           </button>
-          <span>AdeWale</span>
+              <span>{messageRedux.currentDetails.notowner}</span>
          </div>
           }
            {
@@ -71,7 +77,7 @@ let navigate = useNavigate()
                 <button>
                   <FaBell style={{ paddingRight: "10px" }} />
                 </button>
-                <button>
+                <button onClick={()=>viewProfile()}>
                   <FaPeopleCarry style={{ paddingRight: "10px" }} /> View Profile
                 </button>
                 <button>

@@ -1,6 +1,7 @@
 
 export interface UserProfile {
     registerdUserIdentification: string;
+    registeredUserImgUrl: string;
     userId: string;
     notuserId: string;
     username: string;

@@ -47,7 +47,8 @@ export const appModelContext = {
   groupChatOrPrivateChatOpening:-1,
   setGroupChatOrPrivateChatOpening: (groupChatOrPrivateChatOpening: number) => { },
     showGroupModal:0,
-      setShowGroupModal:(showGroupModal:number)=>{}
+      setShowGroupModal:(showGroupModal:number)=>{},
+      incomingMessageDetails:()=>{}
 }
 
 // export  const appValue = {

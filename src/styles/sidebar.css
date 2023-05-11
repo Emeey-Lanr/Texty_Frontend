@@ -127,16 +127,42 @@ top: 0; */
     display: grid;
     grid-template-columns: 50% 50%;
     justify-content: space-between;
+    align-items: center;
   background: none;
   border: none;
+ 
 
 
 }
 .group_identification .group_chat div .link .group_img_div{
     display: flex;
     height: 42px;
-    align-items: flex-end;
+    align-items: center;
+    /* align-items: flex-end; */
 
+}
+.group_identification .group_chat div .link .group_img_div div{
+    height: 40px;
+    
+    text-align: left;
+    display: grid;
+    grid-template-rows:50% 50%;
+    align-items: flex-start;
+    position: relative;
+    margin-left: 3px;
+    
+}
+.group_identification .group_chat div .link .group_img_div div h3{
+    color: white;
+    font-size: 0.9rem;
+    position: absolute;
+    top: -10px;
+}
+.group_identification .group_chat div .link .group_img_div div p{
+    font-size: 0.65rem;
+    color: white;
+  position: absolute;
+    top: 14px;
 }
 .group_identification .group_chat div .link .group_img_div span{
     color: #f2f2f2;

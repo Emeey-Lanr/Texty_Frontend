@@ -9,7 +9,8 @@ import axios from "axios";
 // let navigate = useNavigate()
 
 const userProfileIntialState: UserProfile = {
-    registerdUserIdentification:"",
+    registerdUserIdentification: "",
+    registeredUserImgUrl:"",
     userId: '0',
      notuserId:'0',
     username: "",

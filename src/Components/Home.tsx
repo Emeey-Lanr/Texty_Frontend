@@ -11,13 +11,22 @@ import { useContext, useEffect } from "react"
 import { appContext } from "../App"
 import Group from "./Group"
 import ChattingSpace from "./ChattingSpace"
+import { useSelector } from "react-redux"
 const Home = () => {
-    const { setRouteIdentification,getUserProfile } = useContext(appContext)
+    const { setRouteIdentification, getUserProfile, incomingMessageDetails, setGroupChatOrPrivateChatOpening } = useContext(appContext)
+     const socket = useSelector((state: any) => state.socket.value)
     useEffect(() => {
         getUserProfile("-;;'kjg", "home")
         setRouteIdentification("home")
+        setGroupChatOrPrivateChatOpening(0)
         
-    },[])
+    }, [])
+    useEffect(() => {
+        if (socket) {
+            incomingMessageDetails()
+        }
+        
+    })
     return (
         <>
               <div className="home_div">

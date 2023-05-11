@@ -17,12 +17,13 @@ import UserNotification from "./UserNotification"
 import { useNavigate } from "react-router-dom"
 import ActionModal from "./ActionModal"
 import ChattingSpace from "./ChattingSpace"
+import {setOrOpenChat} from "../Features/Message"
 import Chat from "./Chat"
 // import { followerUser} from "../Features/Profile"
 
 
 const UserProfile = () => {
-  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction,  setGroupChatOrPrivateChatOpening} = useContext(appContext)
+  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction,  setGroupChatOrPrivateChatOpening, incomingMessageDetails} = useContext(appContext)
   let naviagte = useNavigate()
   let dispatch = useDispatch()
   const socket = useSelector((state: any) => state.socket.value)
@@ -145,7 +146,7 @@ const UserProfile = () => {
       unFollowedSocket()
       unfollowSocket2Function()
       unfollowSocket3Function()
-    
+      incomingMessageDetails()
    
     }
      
@@ -215,6 +216,7 @@ const UserProfile = () => {
     unfollowFunction("unfollowSocket1",userProfileDetails.registerdUserIdentification, userProfileDetails.username)
   }
   const chatWithBtn = () => {
+    dispatch(setOrOpenChat({ name:userProfileDetails.username, notuser_imgUrl: userProfileDetails.img_url}))
     setGroupChatOrPrivateChatOpening(1) 
   }
   return (

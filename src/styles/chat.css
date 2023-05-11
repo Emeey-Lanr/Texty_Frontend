@@ -181,6 +181,15 @@ color: white;
 .chat_input div textarea:focus{
     outline: none;
 }
+.chat_input_div  .chat_btn button{
+    font-weight: 800;
+    height: 40px;
+    width: 40px;
+    border: none;
+    background: black;
+    color: white;
+    border-radius: 40px;
+}
 
 
  .chat_input textarea::-webkit-scrollbar{

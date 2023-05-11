@@ -16,6 +16,7 @@ import Search from "./Components/Search";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
 import { collectUserProfile, followUser } from "./Features/Profile"
+import {loadMessage, incomingMesageR} from "./Features/Message"
 
 import { useNavigate } from "react-router-dom";
 import { get } from "http";
@@ -84,10 +85,11 @@ const App = () => {
   // For opening notifiaction and group details modal
   const [showGroupModal, setShowGroupModal] =useState<number>(0)
   const sendUserData = (
-    currentUserIdentification: string, userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, followers:[], following: [],checkBothFollowing: [],
-    checkBothFollowers: [], post: [], isLoggedIn: boolean, loggedInUserNotification:[]) => {
+    currentUserIdentification: string, registeredUserImgUrl:string, userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, followers:[], following: [],checkBothFollowing: [],
+    checkBothFollowers: [], post: [], isLoggedIn: boolean, loggedInUserNotification:[], userMessages: []) => {
     dispatch(collectUserProfile({
       registerdUserIdentification: currentUserIdentification,
+      registeredUserImgUrl: registeredUserImgUrl,
       userId: userId,
       notuserId:notUserId,
       username: username,
@@ -102,6 +104,7 @@ const App = () => {
       isLoggedIn: isLoggedIn,
       loggedInUserNotification:loggedInUserNotification
      }))
+     dispatch(loadMessage(userMessages))
            
   }
 
@@ -125,25 +128,26 @@ const App = () => {
           console.log(result.data,"this is your data")
           setNoUserFound(false)
           //  switch(result.data.)
-           socket.emit("userInfoOrSearchedForInfo", {userinfo:result.data.userData,userLookedFor:result.data.lookedForUser})
+           socket.emit("userInfoOrSearchedForInfo", {userinfo:result.data.userData,userLookedFor:result.data.lookedForUser, usermessage:result.data.userMessage})
           switch (result.data.message) {
             case "Only the user logged in is found": {
-              return sendUserData(result.data.userData.username, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
-               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post, result.data.loggedIn, result.data.userData.notification
+              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
+               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post, result.data.loggedIn, result.data.userData.notification,  result.data.userMessage
+
 )
             };
             case "User Searched for not found": {
-              return sendUserData(result.data.userData.username, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
-               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post, result.data.loggedIn, result.data.userData.notification), setNoUserFound(true)
+              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
+               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post, result.data.loggedIn, result.data.userData.notification, result.data.userMessage), setNoUserFound(true)
             }
             
             case "Both users found": {
-              return sendUserData(result.data.userData.username,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
-                 result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post, result.data.loggedIn, result.data.userData.notification  )
+              return sendUserData(result.data.userData.username, result.data.userData.img_url,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
+                 result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post, result.data.loggedIn, result.data.userData.notification, result.data.userMessage )
             };
             case "Only the user searched for is found":{
-              return sendUserData(result.data.userData.username,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
-                 result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.loggedIn, []  
+              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
+                 result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.loggedIn, [], []  
               )
               }
             
@@ -167,6 +171,16 @@ const App = () => {
       
     })
   }
+  const incomingMessageDetails = () => {
+        socket.on("incomingMessage", (data:{owner:string, notowner:string, notowner_imgurl:string})=>{
+          console.log(data)
+           dispatch(incomingMesageR(
+            {
+                chattingWithName: data.notowner,
+                incomingMessage: data
+            }))
+        })
+    }
  
   // follow someone function
   const followFunction = async (socketName:string, loggedInUsername: string, userTheyWantToFollow: string, notificationWords:string) => {
@@ -232,8 +246,10 @@ const App = () => {
       groupChatOrPrivateChatOpening,
       setGroupChatOrPrivateChatOpening,
       showGroupModal,
-      setShowGroupModal
+      setShowGroupModal,
     
+      // Incoming message
+      incomingMessageDetails,
 
   } }>
       <Routes>
