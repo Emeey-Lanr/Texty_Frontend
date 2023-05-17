@@ -1,5 +1,6 @@
 import "../styles/user.css"
 import boxer from "../images/boxer.jpg"
+import noImg from "../images/noImage.png"
 import {useEffect, useState, useContext, useRef, useReducer} from "react"
 import { BiHeart, BiTrash, BiImageAdd, BiPlus, BiChat } from "react-icons/bi"
 import { useParams, } from "react-router-dom"
@@ -19,11 +20,12 @@ import ActionModal from "./ActionModal"
 import ChattingSpace from "./ChattingSpace"
 import {setOrOpenChat} from "../Features/Message"
 import Chat from "./Chat"
+import ProfileEdit from "./ProfileEdit"
 // import { followerUser} from "../Features/Profile"
 
 
 const UserProfile = () => {
-  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction,  setGroupChatOrPrivateChatOpening, incomingMessageDetails} = useContext(appContext)
+  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction,  setGroupChatOrPrivateChatOpening, incomingMessageDetails, setOpenEditProfile} = useContext(appContext)
   let naviagte = useNavigate()
   let dispatch = useDispatch()
   const socket = useSelector((state: any) => state.socket.value)
@@ -230,11 +232,14 @@ const UserProfile = () => {
         
           <div className="user_profile_div">
    
-            <div className="background_pic">
+            <div className="background_pic" style={{backgroundImage:`url(${boxer})`, backgroundPosition:"center", backgroundSize:"cover"}}>
+              <div className="background_pic" style={{backgroundColor:"#0000004a"}}>
+                
+               </div>
 
             </div>
             <div className="user_pic" >
-              <img src={boxer} alt="" />
+              <img src={userProfileDetails.img_url === "" ? noImg : userProfileDetails.img_url} alt="" />
 
             </div>
             <div className="user_username">
@@ -264,7 +269,7 @@ const UserProfile = () => {
                   <h3>About Me</h3>
                 </div>
                  <div>
-                  {userProfileDetails.username === userProfileDetails.registerdUserIdentification ? <button>Edit</button> : <button onClick={()=>chatWithBtn()}>{<BiChat/>}</button>}
+                  {userProfileDetails.username === userProfileDetails.registerdUserIdentification ? <button onClick={()=>setOpenEditProfile(true)}>Edit</button> : <button onClick={()=>chatWithBtn()}>{<BiChat/>}</button>}
                 </div>
              
             
@@ -278,14 +283,15 @@ const UserProfile = () => {
             </div>
             <div className="post_container">
         
-              <button className="post_div" onClick={() => openPost()}>
+              {userProfileDetails.post > 0 ? userProfileDetails.post.map((details:{text:string, img_url:string, comment:[], likes:[]}) => (
+                <button className="post_div" onClick={() => openPost()}>
                 <div className="posted">
-                  <p>I'm not fine, It's good to okay</p>
+                    <p>{details.text }</p>
                 </div>
                 <div className="poster">
                   <div className="username_img">
-                    <img src={boxer} alt="" />
-                    <span>Emeey Lanr</span>
+                    <img src={userProfileDetails.img_url === "" ? noImg : userProfileDetails.img_url } alt="" />
+                      <span>{userProfileDetails.username}</span>
                   </div>
           
                   <div className="postaction" style={{ position: "relative" }}>
@@ -296,6 +302,7 @@ const UserProfile = () => {
             
                 </div>
               </button>
+              )) : <div></div>}
 
         
             </div>
@@ -308,7 +315,8 @@ const UserProfile = () => {
           <Create />
           <Navbar />
           <Sidebar />
-          <ActionModal/>
+          <ActionModal />
+          <ProfileEdit/>
         </>}
       
      

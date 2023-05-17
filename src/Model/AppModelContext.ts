@@ -26,8 +26,8 @@ export const appModelContext = {
   // 
     openPrePost:false,
    setOpenPrePost:(openPrePost:boolean)=>{},
-   createPostModal:false,
-   setCreatePostModal:(createPostModal:boolean)=>{},
+   createPostModal:0,
+   setCreatePostModal:(createPostModal:number)=>{},
    createGroupModal:false,
    setCreateGroupModal:(createGroupModal:boolean)=>{},
    postModalStatus:false,
@@ -48,7 +48,10 @@ export const appModelContext = {
   setGroupChatOrPrivateChatOpening: (groupChatOrPrivateChatOpening: number) => { },
     showGroupModal:0,
       setShowGroupModal:(showGroupModal:number)=>{},
-      incomingMessageDetails:()=>{}
+      incomingMessageDetails:()=>{},
+  messageEndPoint: "",
+  openEditProfile:false,
+  setOpenEditProfile:(openEditProfile:boolean)=>{}
 }
 
 // export  const appValue = {
@@ -83,6 +86,7 @@ export  interface UserDetailsModel  {
   username: string;
   password: string;
   img_url?: string;
+  background_img_url?:string,
   about_me?: string;
   post?: {}[]
   following?: [];

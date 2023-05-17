@@ -73,13 +73,21 @@ export const messageSlice = createSlice({
             
         },
         getCurrentMessageId: (state, action) => {   
-             state.value.currentName = action.payload 
-              state.value.allMessage.map((name: { owner: string, notowner: string }, id) => {
+            state.value.currentName = action.payload 
+            
+            state.value.allMessage.map((name: currentDetailsInterface, id) => {
                   if (name.notowner === action.payload) {
-                     state.value.currentDetails = name
-                     
+                      name.message?.map((data) => {
+                        data.checked = true
+                    })
+                  state.value.currentDetails = name
+                
                 }
+                
+              const totalUnchecked =  name.message?.filter((details)=>details.checked === false).length
+              state.value.unCheckedMessageNumber = Number(totalUnchecked)
             })
+            
         },
         incomingMesageR: (state, action) => {
             state.value.allMessage = state.value.allMessage.filter((name: { owner: string, notowner: string }) => name.notowner !== action.payload.chattingWithName)
@@ -98,10 +106,27 @@ export const messageSlice = createSlice({
            
             // state.value.allMessage[value] = action.payload.details
             
+        }, deleteMessage: (state, action) => {
+            if (state.value.currentName === action.payload.notowner) {
+                state.value.currentDetails.message = action.payload.data   
+                state.value.allMessage = state.value.allMessage.filter((details)=> details.owner !== action.payload.owner && details.notowner !== action.payload.notowner)
+            } else {
+                state.value.allMessage = state.value.allMessage.filter((details)=> details.owner !== action.payload.owner && details.notowner !== action.payload.notowner)
+              
+            }
+        //     switch (state.value.currentName) {
+        //         case `${action.payload.notowner}`: {
+        //             return
+        //         }; default: {
+        //          return state.value.allMessage = state.value.allMessage.filter((details)=>details.owner !== action.payload.owner && details.notowner !== action.payload.notowner)
+              
+        //         }
+        //    }
+            
         }
         
     }
 })
 
-export const {loadMessage,setOrOpenChat, getCurrentMessageId, incomingMesageR} = messageSlice.actions
+export const {loadMessage,setOrOpenChat, getCurrentMessageId, incomingMesageR, deleteMessage} = messageSlice.actions
 export default messageSlice.reducer

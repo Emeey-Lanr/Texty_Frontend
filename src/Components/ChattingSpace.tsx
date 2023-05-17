@@ -9,9 +9,10 @@ import { FaArrowLeft } from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux"
 import {incomingMesageR}from "../Features/Message"
 import axios from "axios"
+import ActionModal from "./ActionModal"
 
 const ChattingSpace = () => {
-      const { userEndPoint,hideSideBar, setHideSideBar,  showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening, incomingMessageDetails} = useContext (appContext)
+      const {hideSideBar, setHideSideBar,  showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening, incomingMessageDetails,messageEndPoint} = useContext (appContext)
     const socket = useSelector((state: any) => state.socket.value)
     const userDetails = useSelector((state: any) => state.userprofile.value)
     const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
@@ -23,7 +24,7 @@ const ChattingSpace = () => {
         
     })
 
-    const messageEndpoint =`${userEndPoint}/sendMessageOrCreate`
+    const messageEndpointt =`${messageEndPoint}/sendMessageOrCreate`
     const sendMessageBtn = async () => {
         const date = new Date()
         const info = {
@@ -41,7 +42,7 @@ const ChattingSpace = () => {
         // console.log(`${info.year}`.split(" "))
         // // console.log(message)
         socket.emit("privateMessage", info)
-        const sendMessage = await axios.post(messageEndpoint, info)
+        const sendMessage = await axios.post(messageEndpointt, info)
       
         // dispatch(incomingMesageR(
         //     {
@@ -128,7 +129,7 @@ const ChattingSpace = () => {
           </div>
           }
           
-
+<ActionModal/>
     </>
      
   )

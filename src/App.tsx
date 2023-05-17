@@ -43,11 +43,15 @@ const App = () => {
   const [hideSideBar, setHideSideBar] = useState<string>("hidesidebar")
   const [hidebarBool, setHideBarBool] = useState<boolean>(true)
   const [userEndPoint, setuserEndPoint] = useState<string>("http://localhost:2001/user")
+  const [messageEndPoint, setMessageEndPoint] = useState<string>("http://localhost:2001/message")
   // 
   const [loginModalState, setLoginModalState] = useState<boolean>(false)
   const [loginModalMessage, setLoginModalMessage] = useState<string>("")
   // Spinner
   const [spinnerState, setSpinnerState] = useState<boolean>(false)
+
+  // Edit Profile modal state
+  const [openEditProfile, setOpenEditProfile] =  useState<boolean>(false)
 
   
   const showSideBarBtn = () => {
@@ -60,7 +64,7 @@ const App = () => {
 
   // Group, Post Creation status
   const [openPrePost, setOpenPrePost] = useState<boolean>(false)
-  const [createPostModal, setCreatePostModal] = useState<boolean>(false)
+  const [createPostModal, setCreatePostModal] = useState<number>(0)
   const [createGroupModal, setCreateGroupModal] = useState<boolean>(false)
 
   // Post Modal
@@ -85,7 +89,7 @@ const App = () => {
   // For opening notifiaction and group details modal
   const [showGroupModal, setShowGroupModal] =useState<number>(0)
   const sendUserData = (
-    currentUserIdentification: string, registeredUserImgUrl:string, userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, followers:[], following: [],checkBothFollowing: [],
+    currentUserIdentification: string, registeredUserImgUrl:string, userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, background_img_url:string, followers:[], following: [],checkBothFollowing: [],
     checkBothFollowers: [], post: [], isLoggedIn: boolean, loggedInUserNotification:[], userMessages: []) => {
     dispatch(collectUserProfile({
       registerdUserIdentification: currentUserIdentification,
@@ -95,12 +99,14 @@ const App = () => {
       username: username,
       about_me: about_me,
       img_url: img_url,
+      background_img_url:background_img_url,
        followers: followers,
       following: following,
       // these two get the looged in user followers and following incase both user are found if not it's empty
       ifUserFollowing: checkBothFollowing,
       ifUserFollowers: checkBothFollowers,
       post: post,
+      socketPost:[],
       isLoggedIn: isLoggedIn,
       loggedInUserNotification:loggedInUserNotification
      }))
@@ -128,25 +134,25 @@ const App = () => {
           console.log(result.data,"this is your data")
           setNoUserFound(false)
           //  switch(result.data.)
-           socket.emit("userInfoOrSearchedForInfo", {userinfo:result.data.userData,userLookedFor:result.data.lookedForUser, usermessage:result.data.userMessage})
+           socket.emit("userInfoOrSearchedForInfo", {userinfo:result.data.userData,userLookedFor:result.data.lookedForUser, usermessage:result.data.userMessage, post:result.data.post})
           switch (result.data.message) {
             case "Only the user logged in is found": {
-              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
+              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,result.data.userData.background_img_url,
                result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post, result.data.loggedIn, result.data.userData.notification,  result.data.userMessage
 
 )
             };
             case "User Searched for not found": {
-              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,
+              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,result.data.userData.background_img_url,
                result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post, result.data.loggedIn, result.data.userData.notification, result.data.userMessage), setNoUserFound(true)
             }
             
             case "Both users found": {
-              return sendUserData(result.data.userData.username, result.data.userData.img_url,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
+              return sendUserData(result.data.userData.username, result.data.userData.img_url,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url, result.data.lookedForUser.background_img_url,
                  result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post, result.data.loggedIn, result.data.userData.notification, result.data.userMessage )
             };
             case "Only the user searched for is found":{
-              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,
+              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,result.data.lookedForUser.background_img_url,
                  result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.loggedIn, [], []  
               )
               }
@@ -198,7 +204,7 @@ const App = () => {
   return (
   
     <appContext.Provider value={{
-
+       
       routeIdentification,
       setRouteIdentification,
         userEndPoint,
@@ -250,6 +256,11 @@ const App = () => {
     
       // Incoming message
       incomingMessageDetails,
+      messageEndPoint,
+
+      // Edit profile modal
+      openEditProfile,
+      setOpenEditProfile
 
   } }>
       <Routes>

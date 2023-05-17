@@ -415,7 +415,68 @@ align-items:center;
     background: white;
     padding: 10px 30px;
     border-radius: 20px;
+    display: flex;
+    justify-content: center;
 }
+.btnAction_spin span{
+    display: block;
+    width: 10px;
+    height: 10px;
+    /* border-radius: 5px 5px 10px; */
+    background-color: black;
+    animation: span infinite 0.9s running normal;
+    
+}
+@keyframes span {
+    0%{
+        transition: 0.9s ease-in;
+        margin: 0 2px;
+        border-radius: 10px;
+        
+    }
+    100%{
+        transition: 0.9s ease-in;
+        margin: 0px 0px;
+        transform: rotate(360deg);
+      
+    }
+}
+.create_post_error_message_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #00000064;
+}
+.create_post_error_message_div  .error_div{
+    width: 400px;
+    background: black;
+}
+.create_post_error_message_div  .error_div  .error_exit_action_div{
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+.create_post_error_message_div  .error_div  .error_exit_action_div button{
+    border: none;
+    background: none;
+    color: white;
+}
+.create_post_error_message_div   .error_message_div{
+    width: 95%;
+    margin: 0 auto;
+}
+.create_post_error_message_div   .error_message_div p{
+    color: white;
+    text-align: center;
+    font-weight: lighter;
+    letter-spacing: 2px;
+}
+
 @media (max-width:1001px){
     .home_div{
         width: 100%;

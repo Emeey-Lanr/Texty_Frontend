@@ -20,7 +20,7 @@ const Create:React.FC = () => {
             </button>
           </div>
           <div className="c_create">
-            <button onClick={()=>setCreatePostModal(true)}>Post</button><button onClick={()=>setCreateGroupModal(true)}>Group</button>
+            <button onClick={()=>setCreatePostModal(1)}>Post</button><button onClick={()=>setCreateGroupModal(true)}>Group</button>
           </div>
       
         </div>

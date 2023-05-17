@@ -1,28 +1,62 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "../styles/action_modal.css"
 import {useContext, useState} from "react"
 import { appContext } from '../App'
 import { FaTimes } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import {deleteMessage} from "../Features/Message"
+import axios from 'axios'
 const ActionModal = () => {
-    const { actionModalId, setActionModalId, openActionModal, setOpenActionModal } = useContext(appContext)
+    const { actionModalId, setActionModalId, openActionModal, setOpenActionModal, messageEndPoint } = useContext(appContext)
+    const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
+    const socket = useSelector((state: any) => state.socket.value)
+    let dispatch = useDispatch()
     let navigate = useNavigate()
     const [exitAnimation, setExitAnimation] = useState<string>("") 
-    const [errorMessage, setErrorMessage] =useState<string>("")
-    const exitActionModal = () => {
-        setExitAnimation("exitAnimation")
+    const [errorMessage, setErrorMessage] = useState<string>("")
+    const [deleteIndication, setDeleteIndication] = useState("Delete")
+    const exitFunction = () => {
+         setExitAnimation("exitAnimation")
         setTimeout(() => {
              setActionModalId(-1)
             setOpenActionModal(false)
             setExitAnimation("")
+            setDeleteIndication("Delete")
         },500)
-       
+    }
+    const deletedMessageFunction = () => {
+        socket.on("messageDeleted", (data: any) => {
+            console.log(data,'deleted')
+             setDeleteIndication("Deleted")
+             exitFunction()
+             dispatch(deleteMessage({ data: [], owner: data.owner, notowner: data.notowner }))
+          
+           
+        })
+    }
+    useEffect(() => {
+        if (socket) {
+            deletedMessageFunction()
+            
+        }
+    })
+    const exitActionModal = () => {
+       exitFunction()
         
     }
     const logOut = () => {
         localStorage.removeItem("xxxxxxxxxxxxxxx")
         navigate("/signin")
         
+    }
+    const deleteMessageBtn = async () => {
+              setDeleteIndication("Deleting...")
+         const details = { owner: messageRedux.currentDetails.owner, notOwner: messageRedux.currentDetails.notowner }
+      socket.emit("deleteUserMessageBox", details)
+      const deleteM = await axios.post(`${messageEndPoint}/deleteMessage`, details)
+  
+
     }
     return (
         <>
@@ -56,6 +90,22 @@ const ActionModal = () => {
                         <button>Proceed</button>
                     </div>
               
+                </div>}
+                {actionModalId === 3 && <div className='deleteChat_modal'>
+                    <div className='deleteChat_div'>
+                        <div className='deleteChat_exit'>
+                            <button onClick={()=>exitActionModal()}>
+                                <FaTimes />
+                            </button>
+                        </div>
+                        <div className='deleteChat_info'>
+                            <p>Are you sure you want to delete your chat with {messageRedux.currentDetails.notowner}</p>
+                        </div>
+                        <div className='deleteChat_action_btn'>
+                            <button onClick={() => deleteMessageBtn()}>{deleteIndication}</button>
+                        </div>
+                    </div>
+                    
                 </div>}
           
             </div>}

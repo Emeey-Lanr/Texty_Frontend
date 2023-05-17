@@ -12,6 +12,7 @@ import { link } from "fs"
 import { useDispatch } from "react-redux"
 import { getFollowedNotification } from "../Features/Profile"
 import {getCurrentMessageId} from "../Features/Message"
+import axios from "axios"
 
 
 const Sidebar = () => {
@@ -52,7 +53,8 @@ const Sidebar = () => {
     setActionModalId,
     setOpenActionModal,
 
-    setGroupChatOrPrivateChatOpening
+    setGroupChatOrPrivateChatOpening,
+    messageEndPoint
   } = useContext(appContext)
   const OpenPrePostBtn = () => {
     setOpenPrePost(true)
@@ -83,10 +85,13 @@ const Sidebar = () => {
   }
 
   // chat opening btn
-  const privateChatBtn = (name:string) => {
+  const privateChatBtn = async (name:string) => {
 
     setGroupChatOrPrivateChatOpening(1)
     dispatch(getCurrentMessageId(name))
+    socket.emit("updatechecked", {owner:userDetail.registerdUserIdentification, notowner:name})
+    const updatcheck = await axios.post(`${messageEndPoint}/updatechecked`, {owner:userDetail.registerdUserIdentification, notowner:name})
+    
   }
 
   const groupChatBtn = () => {
@@ -104,6 +109,12 @@ const Sidebar = () => {
   const deleteAccountBtn = () => {
     openModalActionFunction(true, 2)
     
+  }
+  const profileCheck = () => {
+    console.log(userDetail.registerdUserIdentification)
+    navigate(`/${userDetail.registerdUserIdentification}`)
+
+
   }
 
   return (
@@ -214,7 +225,7 @@ const Sidebar = () => {
                 <span className="number_Of_Notification">
                   {userDetail.loggedInUserNotification.filter((details: { checked: boolean }) => details.checked === false).length}
                 </span>
-              }
+              }usew
             </>
                
           } 
@@ -222,7 +233,7 @@ const Sidebar = () => {
          
          <span>Notification</span>
         </button>
-        <button><BiUserCircle/> <span>Profile</span></button>
+        <button onClick={()=>profileCheck()}><BiUserCircle/> <span>Profile</span></button>
         <button onClick={()=>logoutBtn()}>
           <BiLogOut/> <span>Logout</span>
         </button>

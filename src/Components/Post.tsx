@@ -4,9 +4,16 @@ import {BiImageAdd} from "react-icons/bi"
 import boxer from "../images/boxer.jpg"
 import { useState, useContext } from "react"
 import { appContext } from "../App"
+import { upload } from "@testing-library/user-event/dist/upload"
+import axios from "axios"
+import {useSelector, useDispatch} from "react-redux"
 
 const Post = () => {
-    const {createPostModal, setCreatePostModal} = useContext(appContext)
+    const {userEndPoint, createPostModal, setCreatePostModal } = useContext(appContext)
+    const socket = useSelector((state: any) => state.socket.value)
+    const userDetails = useSelector((state: any) => state.userprofile.value)
+    const [fireAction, setFireAction] = useState<boolean>(false)
+    const [text, setText] = useState<string>("")
     const [image, setImage] = useState<any>("")
     
     interface name {
@@ -35,18 +42,35 @@ webkitRelativePath:string;
         
    
     }
+    const uploadPostBtn = () => {
+        const post = {
+            text: text,
+            img_url: "",
+            comment: [],
+            likes:[],
+        }
+        setCreatePostModal(2)
+             setFireAction(true)
+        // axios.post(`${userEndPoint}/createPost`, {username:userDetails.registerdUserIdentification, postContent:post}).then((result) => {
+        //     console.log(result.data)
+        // }).catch((error) => {
+        //     console.log(error.messsage)
+        // })
+   
+        
+    }
     return (
         <>
-            {createPostModal && <div className="create_group_post_div" style={image === "" ? { alignItems: "center" } : { alignItems: "flex-end" }}>
+            {createPostModal === 1 && <div className="create_group_post_div" style={image === "" ? { alignItems: "center" } : { alignItems: "flex-end" }}>
                 <div className="create_post_div" style={image === "" ? { height: "unset" } : { height: "80%" }}>
                     <div className="go_back" >
-                        <button style={{border:"none",background:"none"}} onClick={()=>setCreatePostModal(false)}>
+                        <button style={{border:"none",background:"none"}} onClick={()=>setCreatePostModal(0)}>
                             <FaArrowLeft style={{color:"white"}}/>
                         </button>
                         
                     </div>
                     <div className="input_post_div">
-                        <textarea ></textarea>
+                        <textarea onChange={(e)=>setText(e.target.value)} ></textarea>
                     </div>
                     <div className="img_post_div">
                         {image !== "" && <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -62,13 +86,33 @@ webkitRelativePath:string;
                             <BiImageAdd className="icon" />
                             <input type="file" hidden id="upload" onChange={(e) => pickImg(e)} />
                         </label>
-                        <button>
-                            post
+                        <button className="btnAction_spin" onClick={()=>uploadPostBtn()}>
+                            {!fireAction ? <>
+                                post
+                            </> :
+                                <>
+                                    <span className="spin1"></span><span className="spin2"></span><span className="spin3"></span><span className="spin4"></span>
+                                </>}
                         </button>
                     </div>
 
                 </div>
 
+            </div>}
+            {createPostModal === 2 && <div className="create_post_error_message_div">
+                <div className="error_div">
+                      <div className="error_exit_action_div">
+                    <button onClick={()=>setCreatePostModal(0)}>
+                        <FaTimes/>
+                    </button>
+                </div>
+                <div className="error_message_div">
+                    <p>An Error Occured!</p>
+                </div>
+
+                </div>
+              
+            
             </div>}
       </>
      

@@ -7,11 +7,13 @@ import { Link, Navigate, useNavigate} from "react-router-dom"
 import { useSelector } from "react-redux"
 import { BiNews } from "react-icons/bi"
 import noImage from "../images/noImage.png"
+import axios from "axios"
 // import Message from "../Features/Message"
   const Navbar = () => {
-    const { showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening, setShowGroupModal, } = useContext(appContext)
+    const { showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening, setShowGroupModal,setOpenActionModal,setActionModalId,  messageEndPoint } = useContext(appContext)
     const groupStatus = useSelector((state: any) => state.chat.value) 
     const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
+    const socket = useSelector((state:any)=>state.socket.value)
 let navigate = useNavigate()
     const goToSerachBtn = () => {
       setGroupChatOrPrivateChatOpening(0)
@@ -20,6 +22,10 @@ let navigate = useNavigate()
     }
     const viewProfile = () => {
       navigate(`/${messageRedux.currentDetails.notowner}`)
+    }
+    const deleteChat = () => {
+      setOpenActionModal(true)
+      setActionModalId(3)
     }
     return (
     
@@ -83,7 +89,7 @@ let navigate = useNavigate()
                 <button>
                   <FaPlus style={{ paddingRight: "10px" }} /> Block
                 </button>
-                <button>
+                <button onClick={()=>deleteChat()}>
                   <FaTrash style={{ paddingRight: "10px" }} />   Delete Chat
                 </button>
               </div>}
