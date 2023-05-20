@@ -20,8 +20,9 @@ const ChattingSpace = () => {
     const [message, setMessage] = useState<string>("")
 
     useEffect(() => {
-        incomingMessageDetails()
-        
+        incomingMessageDetails() 
+    
+     
     })
 
     const messageEndpointt =`${messageEndPoint}/sendMessageOrCreate`

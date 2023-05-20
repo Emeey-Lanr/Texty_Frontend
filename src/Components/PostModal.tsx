@@ -4,11 +4,14 @@ import boxer from "../images/boxer.jpg"
 import { FaComment, FaHeart } from "react-icons/fa"
 import { useContext, } from "react"
 import { appContext } from "../App"
+import { useSelector } from "react-redux"
 const PostModal: React.FC = () => {
     const {postModalStatus, setPostModalStatus}=useContext(appContext)
+    const currentPost = useSelector((state:any)=>state.current_post.value)
     
     return (
         <>
+       
             {postModalStatus && <div className="post_modal_back_cover" onClick={() => setPostModalStatus(false)}>
             </div>}
             {postModalStatus &&<div className="post_modal_p_div">
@@ -18,7 +21,7 @@ const PostModal: React.FC = () => {
                             <span>17hours ago</span>
                         </div>
                         <div className="post_modal_caption_div">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, consequatur.</p>
+                            <p>{currentPost.text}</p>
                         </div>
                         <div className="post_modal_post_img">
                             <img src={boxer} alt="" />
@@ -26,10 +29,10 @@ const PostModal: React.FC = () => {
                         <div className="post_modal_action_div">
                             <div className="post_modal_name_img">
                                 <img src={boxer} alt="" />
-                                <span>Emeey</span>
+                                <span>{currentPost.postedBy}</span>
                             </div>
                             <div className="post_modal_action_btn_div">
-                                <button><FaHeart /><span>12k</span></button><button><FaComment /><span>12k</span></button>
+                                <button><FaHeart /><span>{currentPost.likes.length > 0 && currentPost.likes.length}</span></button><button><FaComment /><span>{currentPost.comment.length > 0 && currentPost.comment.length}</span></button>
                             </div>
                         </div>
                     </div>

@@ -10,7 +10,7 @@ import axios from "axios";
 
 const userProfileIntialState: UserProfile = {
     registerdUserIdentification: "",
-    registeredUserImgUrl:"",
+    registeredUserImgUrl: "",
     userId: '0',
      notuserId:'0',
     username: "",
@@ -25,9 +25,9 @@ const userProfileIntialState: UserProfile = {
     socketPost:[],
     homePost: [],
     isLoggedIn: false,
-    loggedInUserNotification:[]
-    
+    loggedInUserNotification:[] 
 } 
+
 
 const follwerUserData = {
     ownerUsername: "",
@@ -68,6 +68,12 @@ export const userProfileSlice = createSlice({
         },
         unfollowFollowingViaAnotherUserFFlistR: (state, action) => {
             state.value.ifUserFollowing = action.payload
+        },
+        newUserPost: (state, action) => {
+            if (state.value.registerdUserIdentification === state.value.username) {
+                state.value.post = action.payload.reverse()
+            }
+            
         }
 
     }
@@ -80,6 +86,7 @@ export const {
     getFollowedNotification,
     unfollowViaProfile,
     unfollowFollowingR,
-    unfollowFollowingViaAnotherUserFFlistR
+    unfollowFollowingViaAnotherUserFFlistR,
+    newUserPost
 } = userProfileSlice.actions
 export default userProfileSlice.reducer

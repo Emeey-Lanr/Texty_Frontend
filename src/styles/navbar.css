@@ -44,7 +44,21 @@ outline: none;
     border-radius: 0 20px 20px 0;
     border-left: 1px solid #8b8b8b;
 }
-
+.navbar_new_post button{
+    border: none;
+    background: none;
+    color: white;
+    font-size: 1.4rem;
+}
+.navbar_new_post button span{
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: red;
+    position: relative;
+    margin-bottom: -10px;
+    border-radius: 20px;
+}
 /* group details action */
 .navbar_group_details{
     width: 30%;

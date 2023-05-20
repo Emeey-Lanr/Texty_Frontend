@@ -43,19 +43,31 @@ webkitRelativePath:string;
    
     }
     const uploadPostBtn = () => {
+        const date = new Date()
+        console.log(`${date.getUTCMonth()}/${date.getDate()}/${date.getFullYear()}`)
         const post = {
             text: text,
+            date:`${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
+            time:date.getTime(),
+            postedBy:userDetails.registerdUserIdentification,
             img_url: "",
             comment: [],
             likes:[],
         }
-        setCreatePostModal(2)
-             setFireAction(true)
-        // axios.post(`${userEndPoint}/createPost`, {username:userDetails.registerdUserIdentification, postContent:post}).then((result) => {
-        //     console.log(result.data)
-        // }).catch((error) => {
-        //     console.log(error.messsage)
-        // })
+    
+        setFireAction(true)
+
+        console.log(post)
+        axios.post(`${userEndPoint}/createPost`, {username:userDetails.registerdUserIdentification, postContent:post}).then((result) => {
+            console.log(result.data)
+            if (result.data.status) {
+                socket.emit("emitPost", {username:userDetails.registerdUserIdentification, post:post})
+                setFireAction(false)
+            }
+        }).catch((error) => {
+            console.log(error)
+                setCreatePostModal(2)
+        })
    
         
     }

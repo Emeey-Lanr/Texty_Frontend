@@ -8,13 +8,39 @@ import { useSelector } from "react-redux"
 import { BiNews } from "react-icons/bi"
 import noImage from "../images/noImage.png"
 import axios from "axios"
+import { useEffect } from "react"
+import { useLocation } from "react-router-dom"
 // import Message from "../Features/Message"
   const Navbar = () => {
-    const { showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening, setShowGroupModal,setOpenActionModal,setActionModalId,  messageEndPoint } = useContext(appContext)
+    const { showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening,
+      setShowGroupModal, setOpenActionModal, setActionModalId, messageEndPoint, newPostForFollowersFunction, userNewPostFunction, newPostAlert,
+      setNewPostAlert } = useContext(appContext)
     const groupStatus = useSelector((state: any) => state.chat.value) 
     const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
-    const socket = useSelector((state:any)=>state.socket.value)
-let navigate = useNavigate()
+    const socket = useSelector((state: any) => state.socket.value)
+    const location = useLocation()
+    let navigate = useNavigate()
+    useEffect(() => {
+      if (socket) {
+           newPostForFollowersFunction()
+            userNewPostFunction()
+       }
+    })
+
+    const scrollOrNavigateToNewPostBtn = () => {
+      console.log(location.pathname)
+      if (location.pathname === "/home") {
+        window.scrollTo({
+          top: 0,
+          behavior:"auto"
+        })
+      } else {
+        navigate("/home")
+      }
+      
+    }
+     
+
     const goToSerachBtn = () => {
       setGroupChatOrPrivateChatOpening(0)
       navigate("/search")
@@ -35,10 +61,11 @@ let navigate = useNavigate()
           <span></span><span></span><span></span>
       </button>
        <div className="navbar_new_post">
-            <Link to="/" className="new_post_link">
+          <button onClick={()=>scrollOrNavigateToNewPostBtn()} className="new_post_link">
+            {newPostAlert && <span></span>}
             <BiNews className="icon" />
-            
-            </Link>
+             
+            </button>
           </div>
       <div className="navbar_group_details">
         <div className="search_div">

@@ -225,7 +225,7 @@ const Sidebar = () => {
                 <span className="number_Of_Notification">
                   {userDetail.loggedInUserNotification.filter((details: { checked: boolean }) => details.checked === false).length}
                 </span>
-              }usew
+              }
             </>
                
           } 

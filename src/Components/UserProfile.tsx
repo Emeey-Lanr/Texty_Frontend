@@ -21,6 +21,8 @@ import ChattingSpace from "./ChattingSpace"
 import {setOrOpenChat} from "../Features/Message"
 import Chat from "./Chat"
 import ProfileEdit from "./ProfileEdit"
+import { POST } from "../Features/HomePost"
+import {getCurrentPost} from "../Features/CurrentPost"
 // import { followerUser} from "../Features/Profile"
 
 
@@ -166,17 +168,14 @@ const UserProfile = () => {
   //   // socket.emit("name", {name:"oyelowo"})
   //   // console.log(id.id)
   // }, [])
-  const openPost = () => {
+  const openPost = (name:string, time:string) => {
     setPostModalStatus(true)
+    dispatch(
+      getCurrentPost(userProfileDetails.post.find((details: { postedBy: string, time: string })=>details.postedBy === name && details.time === time)))
     // socket.emit("shit", { name: "Emmeey" })
     
   }
-  const preventBtn = () => {
-    alert(20)
   
-    setM(2)
-
-  }
   const openFollowers = () => {
     setOpenFollowersFollowing(true)
     setOpenFFNumber(0)
@@ -220,6 +219,13 @@ const UserProfile = () => {
   const chatWithBtn = () => {
     dispatch(setOrOpenChat({ name:userProfileDetails.username, notuser_imgUrl: userProfileDetails.img_url}))
     setGroupChatOrPrivateChatOpening(1) 
+  }
+  const likesBtn = (name:string, time:string) => {
+   socket.emit("like", {loggedInUser:userProfileDetails.registerdUserIdentification, postedBy:name, time:time})
+
+  }
+  const unlikeBtn = (name:string, time:string) => {
+    
   }
   return (
     <>
@@ -275,27 +281,35 @@ const UserProfile = () => {
             
               </div>
        
-              <p>  de  praesentium architecto soluta officia quae earum cupiditate neque ullam? Nostrum ab consequuntur ad nesciunt?</p>
+              <p>{userProfileDetails.about_Me}</p>
         
             </div>
             <div className="post_heading">
               <h2>POST</h2>
             </div>
             <div className="post_container">
-        
-              {userProfileDetails.post > 0 ? userProfileDetails.post.map((details:{text:string, img_url:string, comment:[], likes:[]}) => (
-                <button className="post_div" onClick={() => openPost()}>
-                <div className="posted">
-                    <p>{details.text }</p>
+  
+              {userProfileDetails.post.length > 0 ? userProfileDetails.post.map((details:POST) => (
+                <button className="post_div" disabled={true}  onClick={() => openPost(details.postedBy, details.time)}>
+                <div className="posted" onClick={()=>openPost(details.postedBy, details.time)}>
+                    <p>{details.text}</p>
                 </div>
                 <div className="poster">
                   <div className="username_img">
-                    <img src={userProfileDetails.img_url === "" ? noImg : userProfileDetails.img_url } alt="" />
+                    <img onClick={()=>alert(20)} src={userProfileDetails.img_url === "" ? noImg : userProfileDetails.img_url } alt="" />
                       <span>{userProfileDetails.username}</span>
                   </div>
           
-                  <div className="postaction" style={{ position: "relative" }}>
-                    <button onClick={() => preventBtn()}><BiHeart /> <span>12k</span></button> <button><BiChat /> <span>12k</span></button>
+                    <div className="postaction" style={{ position: "relative" }}>
+                      <>
+                        {details.likes.find((data: { username: string }) => data.username === userProfileDetails.registerdUserIdentification) ?
+                          <button onClick={() => unlikeBtn(details.postedBy, details.time)}>
+                            <BiHeart style={{color:"red"}}/> <span>{details.likes.length > 0 && details.likes.length}</span>
+                          </button> :
+                          <button onClick={() => likesBtn(details.postedBy, details.time)}><BiHeart/> <span>{details.likes.length > 0 && details.likes.length}</span></button>
+                      }
+                      </>
+                       <button onClick={()=>openPost(details.postedBy, details.time)}><BiChat /> <span>{details.comment.length > 0 && details.comment.length }</span></button>
                     {userProfileDetails.username === userProfileDetails.registerdUserIdentification && <button><BiTrash /></button>}
                     
                   </div>

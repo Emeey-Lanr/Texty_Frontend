@@ -11,6 +11,8 @@ import chatRedux from "./Features/Chat"
 import userProfileReducer from "./Features/Profile"
 import Socketio from './Features/Socketio';
 import Message from './Features/Message';
+import HomePost from './Features/HomePost';
+import CurrentPost from './Features/CurrentPost';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -21,7 +23,9 @@ const store = configureStore({
    socket:  Socketio, 
     chat: chatRedux,
     userprofile: userProfileReducer,
-    privatemessagechat:Message
+    privatemessagechat: Message,
+    home_post: HomePost,
+    current_post:CurrentPost,
   }
 
 })

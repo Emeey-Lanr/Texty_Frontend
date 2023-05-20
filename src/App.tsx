@@ -15,13 +15,14 @@ import {io, Socket }  from "socket.io-client";
 import Search from "./Components/Search";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
-import { collectUserProfile, followUser } from "./Features/Profile"
+import { collectUserProfile, followUser,newUserPost } from "./Features/Profile"
 import {loadMessage, incomingMesageR} from "./Features/Message"
 
 import { useNavigate } from "react-router-dom";
 import { get } from "http";
 import UserNotification from "./Components/UserNotification";
 import Group from "./Components/Group";
+import {followerNewHomePost,userNewHomePost} from "./Features/HomePost"
 
 
 export const appContext = createContext(appModelContext)
@@ -88,6 +89,9 @@ const App = () => {
   const [groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening] = useState<number>(0)
   // For opening notifiaction and group details modal
   const [showGroupModal, setShowGroupModal] =useState<number>(0)
+
+  // New Post Alert
+  const [newPostAlert, setNewPostAlert] = useState<boolean>(false)
   const sendUserData = (
     currentUserIdentification: string, registeredUserImgUrl:string, userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, background_img_url:string, followers:[], following: [],checkBothFollowing: [],
     checkBothFollowers: [], post: [], isLoggedIn: boolean, loggedInUserNotification:[], userMessages: []) => {
@@ -177,6 +181,29 @@ const App = () => {
       
     })
   }
+  
+  
+
+  const newPostForFollowersFunction = () => {
+    socket.on("newPostForFollowers", (data: any) => {
+      setNewPostAlert(true)
+      console.log(data)
+      const postComing = [data.newPost]
+      dispatch(followerNewHomePost(data.newPost))
+      // dispatch()
+      
+    })
+  }
+  const userNewPostFunction = () => {
+    socket.on("userNewPost", (data: any) => {
+      console.log(data)
+      setOpenPrePost(false)
+      setCreatePostModal(0)
+      dispatch(userNewHomePost(data.homePost.post))
+      dispatch(newUserPost(data.post))
+      
+    })
+  }
   const incomingMessageDetails = () => {
         socket.on("incomingMessage", (data:{owner:string, notowner:string, notowner_imgurl:string})=>{
           console.log(data)
@@ -253,6 +280,12 @@ const App = () => {
       setGroupChatOrPrivateChatOpening,
       showGroupModal,
       setShowGroupModal,
+
+      // New Post
+      newPostAlert,
+      setNewPostAlert,
+      newPostForFollowersFunction,
+      userNewPostFunction,
     
       // Incoming message
       incomingMessageDetails,
