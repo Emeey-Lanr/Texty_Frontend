@@ -20,11 +20,24 @@ export const currentPostSlice = createSlice({
     reducers: {
         getCurrentPost: (state, action) => {
             state.value = action.payload
+        },
+        // work for like and unlike
+        getCurrentLikes: (state, action) => {
+            if (state.value.time === action.payload.time && state.value.postedBy === action.payload.postedBy) {
+                state.value.likes = action.payload.likesBox
+            }
+            
+        },
+        commentR:(state, action)=>{
+            if (state.value.time === action.payload.time && state.value.postedBy === action.payload.postedBy) {
+                state.value.comment = action.payload.commentBox
+            }
         }
+
     }
 })
 
 
-export  const {getCurrentPost} = currentPostSlice.actions
+export  const {getCurrentPost, getCurrentLikes, commentR} = currentPostSlice.actions
 export default currentPostSlice.reducer
 

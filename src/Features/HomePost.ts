@@ -7,7 +7,7 @@ export interface POST {
     img_url: string;
     postedBy: string;
     comment: [];
-    likes: [];
+    likes:string [];
 }
 
 const post:POST[] = []
@@ -32,16 +32,29 @@ export const homePostSlice = createSlice({
             } else {
                   console.log("user exist")
         }
-       
-           
+         
         },
         userNewHomePost: (state, action) => {
-          state.value = action.payload  
-        }
+            state.value = action.payload  
+           
+        },
+        getLikesHomePost: (state, action) => {
+            const currentPostLiked = state.value.find((details) => details.postedBy === action.payload.postedBy && details.time === action.payload.time)
+             if (currentPostLiked) {
+                currentPostLiked.likes = action.payload.likesBox
+             }
+        },
+        commentHomePostR: (state, action) => {
+                const currentPostLiked = state.value.find((details) => details.postedBy === action.payload.postedBy && details.time === action.payload.time)
+             if (currentPostLiked) {
+                currentPostLiked.comment = action.payload.commentBox
+             }
+       }
+
     }
 })
 
 
 
-export const {socketHomePost, followerNewHomePost, userNewHomePost} = homePostSlice.actions
+export const {socketHomePost, followerNewHomePost, userNewHomePost,getLikesHomePost, commentHomePostR} = homePostSlice.actions
 export default homePostSlice.reducer

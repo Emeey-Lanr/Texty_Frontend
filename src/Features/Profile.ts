@@ -1,12 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { UserProfile } from "../Interface/UserProfile"
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react"
-import { appContext } from "../App";
-import axios from "axios";
-// const {userEndPoint} = useContext(appContext)
-// let navigate = useNavigate()
+
+
+
 
 const userProfileIntialState: UserProfile = {
     registerdUserIdentification: "",
@@ -74,9 +71,32 @@ export const userProfileSlice = createSlice({
                 state.value.post = action.payload.reverse()
             }
             
-        }
+        },
+        // If is by user logged in 
+        likesUserPost: (state, action) => {
 
+                //   let v = state.value.find((details) => details.postedBy === action.payload.postedBy && details.time === action.payload.time)
+                state.value.post.map((details) => {
+                    if (details.postedBy === action.payload.postedBy && details.time === action.payload.time) {
+                        details.likes = action.payload.likesBox
+                    }
+               
+                })
+         
+            
+        },
+        commentProfileR: (state, action) => {
+             state.value.post.map((details) => {
+                    if (details.postedBy === action.payload.postedBy && details.time === action.payload.time) {
+                        details.comment = action.payload.commentBox
+                    }
+               
+                })
+        }
+       
     }
+
+    
 })
 
 
@@ -87,6 +107,8 @@ export const {
     unfollowViaProfile,
     unfollowFollowingR,
     unfollowFollowingViaAnotherUserFFlistR,
-    newUserPost
+    newUserPost,
+    likesUserPost,
+    commentProfileR
 } = userProfileSlice.actions
 export default userProfileSlice.reducer

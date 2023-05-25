@@ -23,7 +23,7 @@ const IndexPage = () => {
           <Logo/>
         </div>
         <div className="index_app_name">
-          <p>Groupie</p>
+          <p>Texty</p>
         </div>
         <div className="index_loading_indication">
 <Loading/>

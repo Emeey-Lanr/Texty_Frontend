@@ -35,7 +35,9 @@ const App = () => {
   // const socket = useRef(Socket("http"))
   
   // Socket
-   const socket = useSelector((state: any) => state.socket.value)
+  const socket = useSelector((state: any) => state.socket.value)
+  // userprofile details
+  const userProfileDetails = useSelector((state: any) => state.userprofile.value)
   //Route identification 
   // useEffect(() => {
   //   dispatch(connectSocket())
@@ -228,6 +230,15 @@ const App = () => {
     
   }
 
+  const likeUnlikeSocketFunction = (socketName:string, time:string, name:string, state:string) => {
+
+    socket.emit(socketName, {user:userProfileDetails.registerdUserIdentification, postedBy:name, time:time, state:state})
+
+  }
+  const unlikeBtnFunction = () => {
+
+  }
+
   return (
   
     <appContext.Provider value={{
@@ -293,7 +304,8 @@ const App = () => {
 
       // Edit profile modal
       openEditProfile,
-      setOpenEditProfile
+      setOpenEditProfile,
+    likeUnlikeSocketFunction
 
   } }>
       <Routes>

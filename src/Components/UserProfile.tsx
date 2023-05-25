@@ -12,7 +12,10 @@ import Friends from "./Friends"
 import { appContext, } from "../App"
 import { io, Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux"
-import {collectUserProfile, followUser, unfollowViaProfile, unfollowFollowingR, unfollowFollowingViaAnotherUserFFlistR} from "../Features/Profile"
+import {
+  collectUserProfile, followUser, unfollowViaProfile, unfollowFollowingR,
+  unfollowFollowingViaAnotherUserFFlistR, likesUserPost, commentProfileR
+} from "../Features/Profile"
 import axios from "axios"
 import UserNotification from "./UserNotification"
 import { useNavigate } from "react-router-dom"
@@ -23,11 +26,16 @@ import Chat from "./Chat"
 import ProfileEdit from "./ProfileEdit"
 import { POST } from "../Features/HomePost"
 import {getCurrentPost} from "../Features/CurrentPost"
+import { FaHeart } from "react-icons/fa"
 // import { followerUser} from "../Features/Profile"
 
 
 const UserProfile = () => {
-  const { userEndPoint, setPostModalStatus, setUsername, getUserProfile, noUserFound,followFunction , unfollowFunction,  setGroupChatOrPrivateChatOpening, incomingMessageDetails, setOpenEditProfile} = useContext(appContext)
+  const { userEndPoint, setPostModalStatus,
+    setUsername, getUserProfile,
+    noUserFound, followFunction, unfollowFunction,
+    setGroupChatOrPrivateChatOpening, incomingMessageDetails,
+    setOpenEditProfile, likeUnlikeSocketFunction} = useContext(appContext)
   let naviagte = useNavigate()
   let dispatch = useDispatch()
   const socket = useSelector((state: any) => state.socket.value)
@@ -141,6 +149,35 @@ const UserProfile = () => {
       }
     })
   }
+
+  const incomingLikesSocketFunction = () => {
+    const dispatchFunction = (postedBy:string, time:string, likesBox:string) => {
+          dispatch(likesUserPost({postedBy: postedBy, time:time, likesBox:likesBox}))
+    }
+
+    socket.on("likeOrUnlike1", (data: any) => {
+      console.log(data)
+  
+      dispatchFunction(data.postedBy, data.time, data.likes)
+    })
+     socket.on("likeOrUnlike2", (data: any) => {
+       dispatchFunction(data.postedBy, data.time, data.likes)
+    })
+  }
+   const incomingCommentSocketFunction = () => {
+    const dispatchFunction = (postedBy:string, time:string, commentBox:string) => {
+          dispatch(commentProfileR({postedBy: postedBy, time:time, commentBox}))
+    }
+
+    socket.on("comment1", (data: any) => {
+      console.log(data)
+  
+      dispatchFunction(data.postedBy, data.time, data.likes)
+    })
+     socket.on("comment2", (data: any) => {
+       dispatchFunction(data.postedBy, data.time, data.likes)
+    })
+  }
   useEffect(() => {
     if (socket) {
       followSocket()
@@ -151,6 +188,8 @@ const UserProfile = () => {
       unfollowSocket2Function()
       unfollowSocket3Function()
       incomingMessageDetails()
+      incomingLikesSocketFunction()
+     incomingCommentSocketFunction()
    
     }
      
@@ -220,10 +259,10 @@ const UserProfile = () => {
     dispatch(setOrOpenChat({ name:userProfileDetails.username, notuser_imgUrl: userProfileDetails.img_url}))
     setGroupChatOrPrivateChatOpening(1) 
   }
-  const likesBtn = (name:string, time:string) => {
-   socket.emit("like", {loggedInUser:userProfileDetails.registerdUserIdentification, postedBy:name, time:time})
+  // const likesBtn = (name:string, time:string) => {
+  //  socket.emit("like", {user:userProfileDetails.registerdUserIdentification, postedBy:name, time:time, route:"profile"})
 
-  }
+  // }
   const unlikeBtn = (name:string, time:string) => {
     
   }
@@ -297,16 +336,16 @@ const UserProfile = () => {
                 <div className="poster">
                   <div className="username_img">
                     <img onClick={()=>alert(20)} src={userProfileDetails.img_url === "" ? noImg : userProfileDetails.img_url } alt="" />
-                      <span>{userProfileDetails.username}</span>
+                      <span style={{color:"white"}}>{userProfileDetails.username}</span>
                   </div>
           
-                    <div className="postaction" style={{ position: "relative" }}>
+                    <div className="postaction" style={userProfileDetails.username === userProfileDetails.registerdUserIdentification ? {position:"relative", gridTemplateColumns:"30% 30% 30%" }: { position: "relative", gridTemplateColumns:"30% 30%" }}>
                       <>
-                        {details.likes.find((data: { username: string }) => data.username === userProfileDetails.registerdUserIdentification) ?
-                          <button onClick={() => unlikeBtn(details.postedBy, details.time)}>
-                            <BiHeart style={{color:"red"}}/> <span>{details.likes.length > 0 && details.likes.length}</span>
+                        {details.likes.find((data) => data === userProfileDetails.registerdUserIdentification) ?
+                          <button onClick={() => likeUnlikeSocketFunction("unlike", details.time, details.postedBy, "unlike")}>
+                            <FaHeart style={{color:"red"}}/> <span>{details.likes.length > 0 && details.likes.length}</span>
                           </button> :
-                          <button onClick={() => likesBtn(details.postedBy, details.time)}><BiHeart/> <span>{details.likes.length > 0 && details.likes.length}</span></button>
+                          <button onClick={() => likeUnlikeSocketFunction("like", details.time, details.postedBy, "like")}><BiHeart/> <span>{Number(details.likes.length) > 0 && details.likes.length}</span></button>
                       }
                       </>
                        <button onClick={()=>openPost(details.postedBy, details.time)}><BiChat /> <span>{details.comment.length > 0 && details.comment.length }</span></button>

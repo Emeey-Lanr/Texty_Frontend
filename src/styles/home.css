@@ -37,76 +37,71 @@
     
 }
 
-.home_div .date{
-    width: 100%;
-border-top: 1px solid #5b5b5b;
-border-bottom: 1px solid #5b5b5b;
-border-left: 1px solid #5b5b5b;
-border-radius: 20px 0 0 20px;
+.home_post_container{
+    width: 90%;
+    margin: 0 auto;
 }
-.home_div .date span{
-    display: block;
-    background: black;
-    font-size: 0.8rem;
-    width: 100px;
-    margin: 5px 0;
-    color: white;
-    border-radius: 0 10px 10px 0;
-}
-.home_post .caption_div{
-    width: 100%;
-}
-.home_post .caption_div p{
-    font-size: 0.9rem;
-}
-.home_post .post_img img{
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.home_post .action_div{
-    width: 100%;
-   display: grid;
-   grid-template-columns: 30% 80%;
-   background: black;
-   border-radius: 30px;
-   padding: 5px 10px;
-   box-sizing: border-box;
-}
-
-.home_div .action_div img{
-    height: 40px;
-    width: 40px;
-    border-radius: 40px;
-}
-.home_div .action_div .name_img{
-    display: flex;
-    align-items: center;
-}
-.home_div .action_div .name_img span{
-    color: #ffffff;
-}
-.home_div .action_div .action_btn_div{
-    display: grid;
-    grid-template-columns: 30% 30%;
-    justify-content: center;
-   
-}
-.home_div .action_div .action_btn_div button{
+.home_post_div {
+    width: 70%;
     border: none;
+    margin: 20px 0;
     background: none;
-    color: white;
+    align-items: center;
+    
+}
+.home_post_div .home_poster{
+   display: grid;
+   grid-template-columns: 50% 50%;
+    align-items: center;
+    background: rgb(0, 0, 0);
+    width: 400px;
+    padding: 5px 5px;
+    border-radius: 30px;
+  
+}
+.home_post_div .home_poster .home_username_img{
+    width: 100%;
     display: flex;
     align-items: center;
-    border: 1px solid white;
+  
+}
+.home_post_div .home_postaction{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; 
+    /* display: grid;
+    grid-template-columns: 50% 50%;*/
+    
+    
+}
+.home_post_div .home_postaction button {
+    border: 1px solid #d9d8d8;
+    background: none;
+    color: #ffffff;
+    padding: 5px 0;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
+    width: 30%;
+
+}
+.home_post_div .home_poster img{
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+
+
 }
 
+.home_post_div .home_posted{
+padding-bottom: 10px;
+
+}
+.home_post_div .home_posted p{
+    text-align: left;
+    color: #3e3e3e;
+}
 
 
 

@@ -13,13 +13,18 @@ import Group from "./Group"
 import ChattingSpace from "./ChattingSpace"
 import { useSelector } from "react-redux"
 import { POST } from "../Features/HomePost"
-import { socketHomePost } from "../Features/HomePost"
+import { socketHomePost,getLikesHomePost,commentHomePostR } from "../Features/HomePost"
 import { useDispatch } from "react-redux"
-import {getCurrentPost} from "../Features/CurrentPost"
+import { getCurrentPost } from "../Features/CurrentPost"
+import { BiHeart, BiChat } from "react-icons/bi"
+
+
 const Home = () => {
-    const { setRouteIdentification, getUserProfile, incomingMessageDetails, setGroupChatOrPrivateChatOpening,  setPostModalStatus, newPostAlert, setNewPostAlert, newPostForFollowersFunction, userNewPostFunction } = useContext(appContext)
-    const socket = useSelector((state: any) => state.socket.value)
+    const { setRouteIdentification, getUserProfile, incomingMessageDetails,
+        setGroupChatOrPrivateChatOpening, setPostModalStatus, newPostAlert, setNewPostAlert, newPostForFollowersFunction, userNewPostFunction, likeUnlikeSocketFunction } = useContext(appContext)
+      const socket = useSelector((state: any) => state.socket.value)
     const homePost = useSelector((state: any) => state.home_post.value)
+    const userProfileDetails = useSelector((state: any) => state.userprofile.value)
     let dispatch = useDispatch()
     useEffect(() => {
         getUserProfile("-;;'kjg", "home")
@@ -33,12 +38,44 @@ const Home = () => {
            dispatch(socketHomePost(data.post))
        })
     }
+
+        
+    const incomingLikesSocketFunction = () => {
+         const dispatchFunction = (postedBy:string, time:string, likesBox:string) => {
+          dispatch(getLikesHomePost({postedBy: postedBy, time:time, likesBox:likesBox}))
+    }
+
+    socket.on("likeOrUnlike1", (data: any) => {
+      console.log(data)
+  
+      dispatchFunction(data.postedBy, data.time, data.likes)
+    })
+     socket.on("likeOrUnlike2", (data: any) => {
+        console.log(data.likes)
+       dispatchFunction(data.postedBy, data.time, data.likes)
+     })
+    }
+     const incomingCommentSocketFunction = () => {
+    const dispatchFunction = (postedBy:string, time:string, commentBox:string) => {
+          dispatch(commentHomePostR({postedBy: postedBy, time:time, commentBox}))
+    }
+
+    socket.on("comment1", (data: any) => {
+      console.log(data)
+  
+      dispatchFunction(data.postedBy, data.time, data.likes)
+    })
+     socket.on("comment2", (data: any) => {
+       dispatchFunction(data.postedBy, data.time, data.likes)
+    })
+  }
     useEffect(() => {
         if (socket) {
             socketHomePostFunction()
             incomingMessageDetails()
             newPostForFollowersFunction()
             userNewPostFunction()
+            incomingLikesSocketFunction()
         }
         
     })
@@ -57,6 +94,7 @@ const Home = () => {
     interface HOMEPOST {
 
     }
+ 
     return (
         <>
             <div className="home_div">
@@ -65,30 +103,38 @@ const Home = () => {
                         New Post
                     </button>
                 </div>}
-           
-                {homePost.map((details:POST) => (
-                    <div className="home_post">
+            
+                <div className="home_post_container">
+  
+                    {homePost.map((details: POST) => (
+                        <button className="home_post_div" disabled={true} onClick={() => openPost(details.postedBy, details.time)}>
+                            <div className="home_posted" onClick={() => openPost(details.postedBy, details.time)}>
+                                <p>{details.text}</p>
+                            </div>
+                            <div className="home_poster">
+                                <div className="home_username_img">
+                                    <img onClick={() => alert(20)} src={boxer} alt="" />
+                                    <span style={{color:"white"}}>{details.postedBy}</span>
+                                </div>
+          
+                                <div className="home_postaction" style={userProfileDetails.username === userProfileDetails.registerdUserIdentification ? {position:"relative", gridTemplateColumns:"30% 30% 30%" }: { position: "relative",}}>
+                                    <>
+                                        {details.likes.find((data) => data === userProfileDetails.registerdUserIdentification) ?
+                                            <button onClick={()=>likeUnlikeSocketFunction("unlike", details.time, details.postedBy, "unlike")}>
+                                                <FaHeart style={{ color: "red" }} /> <span>{details.likes.length > 0 && details.likes.length}</span>
+                                            </button> :
+                                            <button onClick={() => likeUnlikeSocketFunction("like", details.time, details.postedBy, "like")}><BiHeart /> <span>{Number(details.likes.length) > 0 && details.likes.length}</span></button>
+                                        }
+                                    </>
+                                    <button onClick={() => openPost(details.postedBy, details.time)}><BiChat /> <span>{details.comment.length > 0 && details.comment.length}</span></button>
                     
-                    <div className="date">
-                        <span>17hours ago</span>
-                    </div>
-                    <div className="caption_div" onClick={()=>openPost(details.postedBy, details.time)}>
-                            <p>{details.text}</p>
-                    </div>
-                    <div className="post_img">
-                        <img src={boxer} alt="" />
-                    </div>
-                    <div className="action_div">
-                        <div className="name_img">
-                            <img src={boxer} alt="" />
-                            <span>Emeey</span>
-                        </div>
-                        <div className="action_btn_div">
-                                <button><FaHeart /><span>{details.likes.length > 0  && details.likes.length}</span></button><button  onClick={()=>openPost(details.postedBy,details.time)}><FaComment /><span>{details.comment.length > 0 && details.comment.length}</span></button>
-                        </div>
-                    </div>
-                </div>
-                )) }
+                                </div>
+            
+                            </div>
+                        </button>
+                    ))}
+
+            </div>
             </div>
             <PostModal/>
             <Group />

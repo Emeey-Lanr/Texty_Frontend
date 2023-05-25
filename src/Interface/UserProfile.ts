@@ -1,11 +1,5 @@
 
-interface POST {
-    text: string;
-    img_url: string;
-    comment: {username:string, words:string}[],
-    likes:string[],
-    
-}
+import {POST} from "../Features/HomePost"
 export interface UserProfile {
     registerdUserIdentification: string;
     registeredUserImgUrl: string;
@@ -19,7 +13,7 @@ export interface UserProfile {
     following: {}[] | [] | null;
     ifUserFollowing: {}[] | null | [];
     ifUserFollowers: {}[] | null | [];
-    post: POST[] | [] | null;
+    post: POST[] ;
     socketPost: {}[] | [];
     homePost: {}[] | [] | null;
     isLoggedIn: boolean;

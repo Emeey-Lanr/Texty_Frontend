@@ -55,7 +55,8 @@ export const appModelContext = {
       incomingMessageDetails:()=>{},
   messageEndPoint: "",
   openEditProfile:false,
-  setOpenEditProfile:(openEditProfile:boolean)=>{}
+  setOpenEditProfile: (openEditProfile: boolean) => { },
+  likeUnlikeSocketFunction:(socketName:string,time:string,name:string, state:string)=>{}
 }
 
 // export  const appValue = {

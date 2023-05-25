@@ -326,7 +326,7 @@ text-align: center;
 .post_div .postaction{
     width: 100%;
     display: grid;
-    grid-template-columns: 30% 30% 30%;
+ 
 }
 .post_div .postaction button {
     border: 1px solid #d9d8d8;
