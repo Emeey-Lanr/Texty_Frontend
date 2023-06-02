@@ -37,6 +37,7 @@ let navigate = useNavigate()
     following: [],
     followers: [],
     notification: [],
+    blocked:[],
      state:""
 
   }

@@ -146,9 +146,10 @@ const Sidebar = () => {
         <div className="group_ff_chat_indication" style={{paddingBottom:"5px"}}>
           <button onClick={() => openFFChat()} style={ privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" } }>FF Chats
            {messageStore.unCheckedMessageNumber > 0 && <span> {messageStore.unCheckedMessageNumber}</span>}
-          </button><button style={!privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" }} onClick={() => openGroupChat()}>Group Chats
-            <span>10</span>
           </button>
+         {/*  <button style={!privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" }} onClick={() => openGroupChat()}>Group Chats
+            <span>10</span>
+          </button>*/} 
         </div>
         <>
           {privateChatOrGroupChat ?

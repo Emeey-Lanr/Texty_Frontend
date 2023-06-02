@@ -1,8 +1,11 @@
 
 import {POST} from "../Features/HomePost"
 export interface UserProfile {
+     blockedState:boolean,
+      blockedNumber:number,
     registerdUserIdentification: string;
     registeredUserImgUrl: string;
+    registeredUserBlocked: { username: string }[];
     userId: string;
     notuserId: string;
     username: string;
@@ -14,6 +17,7 @@ export interface UserProfile {
     ifUserFollowing: {}[] | null | [];
     ifUserFollowers: {}[] | null | [];
     post: POST[] ;
+    blocked: { username: string }[];
     socketPost: {}[] | [];
     homePost: {}[] | [] | null;
     isLoggedIn: boolean;

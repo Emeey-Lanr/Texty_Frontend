@@ -7,17 +7,26 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { appContext } from "../App"
 import { useContext } from "react"
-import {unfollowFollowingR} from "../Features/Profile"
+import { unfollowFollowingR } from "../Features/Profile"
+import {setOrOpenChat} from "../Features/Message"
+import axios from "axios"
 interface FriendsInterface {
     setOpenFollowersFollowing: React.Dispatch<React.SetStateAction<boolean>>;
     openFFNumber: number;
     setOpenFFNumber: React.Dispatch<React.SetStateAction<number>>;
 }
+interface FollowersFollowingDetails {
+    username: string;
+    state: string;
+    img_url: string;
+    about_me: string;
+
+}
 
 const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: FriendsInterface) => {
     let navigate = useNavigate()
     const dispatch = useDispatch()
-    const {followFunction, unfollowFunction} = useContext(appContext)
+    const {userEndPoint, followFunction, unfollowFunction, setGroupChatOrPrivateChatOpening} = useContext(appContext)
     const userDetails = useSelector((state: any) => state.userprofile.value)
     const socket = useSelector((state: any) => state.socket.value)
 //      const followed = () => {
@@ -69,7 +78,34 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
         }
         followFunction("followSocket3", userDetails.registerdUserIdentification, userYouWantToFollow, followWords)
     }
-   
+
+    const chatWithBtn = (name:string, img_Url:string) => {
+        dispatch(setOrOpenChat({ name:name, notuser_imgUrl: img_Url}))
+        setGroupChatOrPrivateChatOpening(1)
+    }
+    const blockUserBtn = async(name:string) => {
+        try {
+            
+            const blockUser = await axios.put(`${userEndPoint}/blockUser`, { userLoggedIn: userDetails.registerdUserIdentification, userToBeBlocked: name })
+            socket.emit("blockUser",{ userLoggedIn: userDetails.registerdUserIdentification, userToBeBlocked: name })
+        } catch (error) {
+            
+        }
+    }
+    const unBlockUserBtn = async(name: string) => {
+        try {
+              const blockUser =  axios.put(`${userEndPoint}/unBlockUser`, { userLoggedIn: userDetails.registerdUserIdentification, userToBeBlocked: name })
+            socket.emit("unblockUser",{ userLoggedIn: userDetails.registerdUserIdentification, userToBeBlocked: name })
+        } catch (error) {
+             
+        }
+    }
+    const blockViaOtherProfile = (name:string) => {
+        
+    }
+    const unblockViaOtherProfile = (name:string) => {
+       
+   }
   return (
       <div className="friends_space">
           <div>
@@ -89,7 +125,7 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
               {/* Friends */}
           {openFFNumber === 0 ?
                <div className="following_user_div">
-                  {userDetails.followers.map((name: { username: string, state:string }) => (
+                  {userDetails.followers.map((name: FollowersFollowingDetails) => (
                       <div className="following_user_details">
                       <div className="following_user_head">
                           <div className="img_div">
@@ -97,7 +133,7 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                           </div>
                           <div className="name_div">
                               <div>
-                                      <h2>{name.username} followers</h2> <>
+                                      <h2>{name.username}</h2> <>
                                           {userDetails.ifUserFollowers.length > 0 ? 
                                               (name.username === userDetails.registerdUserIdentification ? <></> : 
                                            userDetails.ifUserFollowers.find((namee:{username:string})=> namee.username === name.username) && <div><p>Follows you</p></div> ) : <>
@@ -106,36 +142,41 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                                             }
                                       </>
                               </div>
-                              <p>I'm a jungle nigga, who does what we wants when he wants to</p>
+                                  <p>{ name.about_me}</p>
                           </div>
                           </div>
                         {/* For logged in user */}
                           {userDetails.registerdUserIdentification === userDetails.username ? <>
                           <div className="following_user_action">
-                                  <button style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                  <button onClick={()=>chatWithBtn(name.username, name.img_url)} style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                       <CiChat1 />
                                   </button>
                                   
-                                  {userDetails.following.find((namee: { username: string }) => namee.username === name.username) ?
+                                  {userDetails.following.find((namee:FollowersFollowingDetails) => namee.username === name.username) ?
                                       <button onClick={()=>unfollowFunction("unfollowSocket2", userDetails.registerdUserIdentification, name.username)} style={{ marginLeft: "10px", background: "black", color: "white" }}>Following</button> :
                                        <button onClick={()=>followFunction("followSocket2", userDetails.registerdUserIdentification, name.username, "followed you back")}  style={{ marginLeft: "10px"}}>Follow</button>
                                       } 
                                   
-                                  <button style={{ marginLeft: "10px" }}>Block</button>
+                                   {userDetails.registeredUserBlocked.find((namee: { username: string }) => namee.username === name.username) ? <button onClick={()=>unBlockUserBtn(name.username)} style={{ marginLeft: "10px", background:"red", color:"white" }}>Blocked</button> :
+                                          <button onClick={()=>blockUserBtn(name.username)} style={{ marginLeft: "10px" }}>Block</button>
+                                    }
+                          
                             </div>
                           
                           </> :
                             //   For looked for user
                               <>
                               {name.username === userDetails.registerdUserIdentification ? <></> : <div className="following_user_action">
-                                  <button style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                  <button onClick={()=>chatWithBtn(name.username, name.img_url)} style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                       <CiChat1 />
                                   </button>
-                                  {userDetails.ifUserFollowing.find((namee: { username: string }) => namee.username === name.username) ?
-                                      <button style={{ marginLeft: "10px", background: "black", color: "white" }}>Following</button> :
-                                      <button style={{ marginLeft: "10px" }}>Follow</button>
+                                  {userDetails.ifUserFollowing.find((namee:FollowersFollowingDetails) => namee.username === name.username) ?
+                                      <button onClick={()=> unfollowFunction("unfollowSocket3", userDetails.registerdUserIdentification, name.username)} style={{ marginLeft: "10px", background: "black", color: "white" }}>Following</button> :
+                                      <button  onClick={()=>followViaSocket3Btn(name.username)} style={{ marginLeft: "10px" }}>Follow</button>
                                   }
-                                  <button style={{ marginLeft: "10px" }}>Block</button>
+                                      {userDetails.registeredUserBlocked.find((namee: { username: string }) => namee.username === name.username) ? <button onClick={()=>unBlockUserBtn(name.username)}  style={{ color:"white", marginLeft: "10px", background:"red" }}>Blocked</button> :
+                                          <button onClick={()=>blockUserBtn(name.username)}  style={{ marginLeft: "10px", }}>Block</button>
+                                    }
                           
                               </div>}
                           </>}
@@ -187,7 +228,7 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                   
             //       </div>:
               <div className="following_user_div">
-                  {userDetails.following.map((name:{username:string, state:string})=>(
+                  {userDetails.following.map((name:FollowersFollowingDetails)=>(
                     <div className="following_user_details">
                       <div className="following_user_head">
                           <div className="img_div">
@@ -215,17 +256,20 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                                     
                               </div>
                              
-                              <p>I'm a jungle nigga, who does what we wants when he wants to</p>
+                                  <p>{name.about_me}</p>
                           </div>
                           </div>
                           {/* For user logged in*/}
                           {userDetails.registerdUserIdentification === userDetails.username ? <>
                               <div className="following_user_action">
-                              <button onClick={() => chatWith(name.username)} style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                              <button onClick={() => chatWithBtn(name.username, name.img_url)} style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                   <CiChat1 />
                               </button>
                              <button onClick={()=>unfollowFunction("unfollowSocket2", userDetails.registerdUserIdentification,name.username)} style={{ marginLeft: "10px",}}>Unfollow</button> 
-                              <button style={{ marginLeft: "10px" }}>Block</button>
+                              {userDetails.registeredUserBlocked.find((namee: { username: string }) => namee.username === name.username) ? <button style={{ marginLeft: "10px", background:"red" }}>Blocked</button> :
+                                          <button style={{ marginLeft: "10px"}}>Block</button>
+                                    }
+                          
                           
                           </div>
                               
@@ -235,7 +279,7 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                             //   For searched user
                               <>
                                {name.username === userDetails.registerdUserIdentification ? <></> : <div className="following_user_action">
-                              <button onClick={() => chatWith(name.username)} style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                              <button onClick={() => chatWithBtn(name.username, name.img_url)} style={{ fontSize: "1.2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                   <CiChat1 />
                               </button>
                               <>
@@ -244,7 +288,10 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
                                       <button onClick={()=>followViaSocket3Btn(name.username)} style={{ marginLeft: "10px" }}>Follow</button>
                                     }
                               </>
-                              <button style={{ marginLeft: "10px" }}>Block</button>
+                              {userDetails.registeredUserBlocked.find((namee: { username: string }) => namee.username === name.username) ? <button onClick={()=>unBlockUserBtn(name.username)} style={{ marginLeft: "10px", background:"red" }}>Blocked</button> :
+                                          <button onClick={()=>blockUserBtn(name.username)}  style={{ marginLeft: "10px" }}>Block</button>
+                                    }
+                          
                           
                           </div>}
                           </>}

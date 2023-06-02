@@ -86,7 +86,8 @@ top: 0; */
     width: 96%;
     margin:  0 auto;
     display: grid;
-    grid-template-columns: 50% 50%;
+    /* grid-template-columns: 50% 50%; */
+    grid-template-columns: 100%;
     position: sticky;
     top: 0;
 }
@@ -151,18 +152,28 @@ top: 0; */
     position: relative;
     margin-left: 3px;
     
+    
 }
 .group_identification .group_chat div .link .group_img_div div h3{
     color: white;
     font-size: 0.9rem;
     position: absolute;
     top: -10px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .group_identification .group_chat div .link .group_img_div div p{
     font-size: 0.65rem;
     color: white;
   position: absolute;
     top: 14px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+   
 }
 .group_identification .group_chat div .link .group_img_div span{
     color: #f2f2f2;

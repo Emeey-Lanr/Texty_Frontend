@@ -6,8 +6,11 @@ import { UserProfile } from "../Interface/UserProfile"
 
 
 const userProfileIntialState: UserProfile = {
+     blockedState:false,
+      blockedNumber:0,
     registerdUserIdentification: "",
     registeredUserImgUrl: "",
+    registeredUserBlocked:[],
     userId: '0',
      notuserId:'0',
     username: "",
@@ -19,6 +22,7 @@ const userProfileIntialState: UserProfile = {
     ifUserFollowing: [],
     ifUserFollowers:[],
     post: [],
+    blocked:[],
     socketPost:[],
     homePost: [],
     isLoggedIn: false,
@@ -92,7 +96,43 @@ export const userProfileSlice = createSlice({
                     }
                
                 })
+        },
+        blockAndUnBlockUserR: (state, action) => {
+            state.value.registeredUserBlocked = action.payload
+        },
+        unBlockedVPR: (state, action) => {
+            // we replace the former with the latter
+            state.value.registeredUserBlocked = action.payload.userBlocked
+            // we check if the profile is still the same with the user theywnat to unblock
+            if (state.value.username === action.payload.userToBeUnBlocked) {
+                console.log(1)
+                // we check if the user still has you in his blocked list i.e the user searched for
+                const searchIfUserIsBlocked = action.payload.userToBeUnBlockedBlocked.find((details:{username:string})=>details.username === state.value.registerdUserIdentification)
+                // if that user does 
+                if (searchIfUserIsBlocked) {
+                    console.log(2)
+                    // that using incoming blcoked will be replaced by the current on
+                    state.value.blocked = action.payload.userToBeUnBlockedBlocked
+                    // we set our blocked number identification to 3 and blocked state to true which means you are blocked
+                    // by the person you wnat to unblock
+                    state.value.blockedNumber = 3
+                    state.value.blockedState = true
+                } else if (state.value.registeredUserBlocked.find((details:{username:string})=>details.username === action.payload.userToBeUnBlocked)) {
+                    state.value.blockedNumber = 2
+                    state.value.blockedState = true
+                    console.log(4)
+                } else {
+                    console.log(3)
+                    // this the opposite of what is above which means
+                    // you are not blocked by the person you've un blocked
+                    state.value.blockedNumber = 1
+                    state.value.blockedState = false
+                }
+            }
+            
+            
         }
+        
        
     }
 
@@ -109,6 +149,8 @@ export const {
     unfollowFollowingViaAnotherUserFFlistR,
     newUserPost,
     likesUserPost,
-    commentProfileR
+    commentProfileR,
+    blockAndUnBlockUserR,
+    unBlockedVPR
 } = userProfileSlice.actions
 export default userProfileSlice.reducer

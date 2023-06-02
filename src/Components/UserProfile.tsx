@@ -14,7 +14,7 @@ import { io, Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux"
 import {
   collectUserProfile, followUser, unfollowViaProfile, unfollowFollowingR,
-  unfollowFollowingViaAnotherUserFFlistR, likesUserPost, commentProfileR
+  unfollowFollowingViaAnotherUserFFlistR, likesUserPost, commentProfileR, unBlockedVPR,
 } from "../Features/Profile"
 import axios from "axios"
 import UserNotification from "./UserNotification"
@@ -33,9 +33,9 @@ import { FaHeart } from "react-icons/fa"
 const UserProfile = () => {
   const { userEndPoint, setPostModalStatus,
     setUsername, getUserProfile,
-    noUserFound, followFunction, unfollowFunction,
+    noUserFound,userProfileLoading,  followFunction, unfollowFunction,
     setGroupChatOrPrivateChatOpening, incomingMessageDetails,
-    setOpenEditProfile, likeUnlikeSocketFunction} = useContext(appContext)
+    setOpenEditProfile, likeUnlikeSocketFunction, blocked, blockedNumber,incomingBlockedSocket} = useContext(appContext)
   let naviagte = useNavigate()
   let dispatch = useDispatch()
   const socket = useSelector((state: any) => state.socket.value)
@@ -178,6 +178,18 @@ const UserProfile = () => {
        dispatchFunction(data.postedBy, data.time, data.likes)
     })
   }
+  const blockedVPFunction = () => {
+    socket.on("blockedVP", (data:any) => {
+      console.log(data)
+       dispatch(unBlockedVPR({ userBlocked: data.userDetails, userToBeUnBlocked:data.userBlockedUsername, userToBeUnBlockedBlocked:data.userBlockedDetails}))
+    })
+  }
+  const unblockedVPFunction = () => {
+    socket.on("unblockedVP", (data: any) => {
+      console.log(data, "you've unblocked this nigga")
+       dispatch(unBlockedVPR({ userBlocked: data.userDetails, userToBeUnBlocked:data.userBlockedUsername, userToBeUnBlockedBlocked:data.userBlockedDetails}))
+    })
+  }
   useEffect(() => {
     if (socket) {
       followSocket()
@@ -189,7 +201,10 @@ const UserProfile = () => {
       unfollowSocket3Function()
       incomingMessageDetails()
       incomingLikesSocketFunction()
-     incomingCommentSocketFunction()
+      incomingCommentSocketFunction()
+      incomingBlockedSocket()
+      blockedVPFunction()
+      unblockedVPFunction()
    
     }
      
@@ -266,9 +281,26 @@ const UserProfile = () => {
   const unlikeBtn = (name:string, time:string) => {
     
   }
+  
+  const unblockBtn = () => {
+    if (userProfileDetails.blockedNumber === 2) {
+          const blockUser =  axios.put(`${userEndPoint}/unBlockUser`, { userLoggedIn: userProfileDetails.registerdUserIdentification, userToBeBlocked:userProfileDetails.username  })
+      socket.emit("unblockVP", {userToBeUnblocked:userProfileDetails.username, user:userProfileDetails.registerdUserIdentification})
+    }
+    
+  }
+  const blockVPBtn = () => {
+    const blockUser = axios.put(`${userEndPoint}/blockUser`, { userLoggedIn: userProfileDetails.registerdUserIdentification, userToBeBlocked: userProfileDetails.username  })
+      socket.emit("blockVP", {userToBeUnblocked:userProfileDetails.username, user:userProfileDetails.registerdUserIdentification}) 
+  }
+  
   return (
     <>
-      {noUserFound ? <>
+      {!userProfileLoading ? <div>
+      
+      </div> : <>
+        
+        {noUserFound ? <>
         <div>
           <p>No user found</p>
         </div>
@@ -277,8 +309,8 @@ const UserProfile = () => {
         
           <div className="user_profile_div">
    
-            <div className="background_pic" style={{backgroundImage:`url(${boxer})`, backgroundPosition:"center", backgroundSize:"cover"}}>
-              <div className="background_pic" style={{backgroundColor:"#0000004a"}}>
+            <div className="background_pic" style={{backgroundImage:`url(${boxer})`}}>
+              <div className="" style={{backgroundColor:"#0000004a"}}>
                 
                </div>
 
@@ -289,22 +321,65 @@ const UserProfile = () => {
             </div>
             <div className="user_username">
               <h2>{userProfileDetails.username}</h2>
-              <div>
+              <div className="state_indication_div">
                 {(userProfileDetails.username !== userProfileDetails.registerdUserIdentification) &&
                   <>
-                  {userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification) ?
-                    <button onClick={() =>  unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button onClick={() => follow()}>Follow</button>}
+
+                  {userProfileDetails.blockedState ? <>
+                    {(userProfileDetails.blockedNumber === 2 || userProfileDetails.blockedNumber === 3) && <button className="bfu" onClick={()=>unblockBtn()} style={{ background: "red", color:"white" }}>Blocked</button>}
+             
+                  </> :
+                    
+                    
+                  <>
+                   { userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification) ?
+                    <button className="bfu" onClick={() =>  unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button className="bfu" onClick={() => follow()}>Follow</button>}
+                  </>}
                   </>
+                
+               
                   
                 }
                 
-                {/* {userProfileDetails.username !== userProfileDetails.registerdUserIdentification && <button>Following</button>} */}
-              </div>
+                    {/* {userProfileDetails.username !== userProfileDetails.registerdUserIdentification && <button>Following</button>} */}
+                    {(userProfileDetails.username !== userProfileDetails.registerdUserIdentification) && <div className="follow_unfollow_block_space">
+                    <button className="follow_unfollow_block_space_action_show_btn">
+                     <span></span><span></span><span></span>
+                  
+                    </button>
+                    <div className="fub_div">
+                          <>
+                   { userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification) ?
+                    <button className="" onClick={() =>  unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button className="" onClick={() => follow()}>Follow</button>}
+                        </>
+                        <>
+                        </>
+                        <>
+                          {userProfileDetails.registeredUserBlocked.find((name: { username: string }) => name.username === userProfileDetails.username) ? <button onClick={()=>unblockBtn()} >Unblock</button>
+                            : <button onClick={()=>blockVPBtn()}>Block</button>
+                          }
+                        </>
+                       
+                    </div>
+                    
+                  </div>}
+                  </div>
+                  
               
             </div>
             
-            
-            <div className="following_followers">
+            {userProfileDetails.blockedState ? <>
+              <div className="block_user">
+                    <div>
+                      {userProfileDetails.blockedNumber === 2 && <p>you blocked <br /> @ { userProfileDetails.username}</p>}
+                      {userProfileDetails.blockedNumber === 3 && <p>@{ userProfileDetails.username} <br></br>has blocked you</p>}
+
+                     </div>
+                  </div>
+                 
+            </>:
+            <>
+               <div className="following_followers">
               <button onClick={()=>openFollowing()}>{userProfileDetails.following.length} Following</button>
               <button onClick={()=>openFollowers()}>{userProfileDetails.followers.length} Folowers</button>
             </div>
@@ -320,7 +395,7 @@ const UserProfile = () => {
             
               </div>
        
-              <p>{userProfileDetails.about_Me}</p>
+              <p>{userProfileDetails.about_me}</p>
         
             </div>
             <div className="post_heading">
@@ -359,6 +434,10 @@ const UserProfile = () => {
 
         
             </div>
+            
+            </>}
+            
+          
      
       
           </div>
@@ -371,6 +450,8 @@ const UserProfile = () => {
           <ActionModal />
           <ProfileEdit/>
         </>}
+      </>}
+      
       
      
     </>

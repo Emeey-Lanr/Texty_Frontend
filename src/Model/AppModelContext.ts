@@ -38,6 +38,10 @@ export const appModelContext = {
   // 
   getUserProfile: (id: string, route: string) => { },
   noUserFound: false,
+   userProfileLoading:false,
+    setUserProfileLoading:(userProfileLoading:boolean)=>{},
+  about_meText: "",
+  setAbout_MeText:(about_meText:string)=>{},
   followFunction: (socketName:string, loggedInUsername: string, userTheyWantToFollow: string, notificationWords: string, ) => { },
   unfollowFunction: (socketName: string, userLoggedInUserName: string, userTheyWantToUnfollow: string,) => { },
    actionModalId:-1,
@@ -56,7 +60,12 @@ export const appModelContext = {
   messageEndPoint: "",
   openEditProfile:false,
   setOpenEditProfile: (openEditProfile: boolean) => { },
-  likeUnlikeSocketFunction:(socketName:string,time:string,name:string, state:string)=>{}
+  likeUnlikeSocketFunction: (socketName: string, time: string, name: string, state: string) => { },
+    blocked:false,
+  setBlocked: (blocked: boolean) => { },
+      blockedNumber:0,
+  setBlockedNumber: (blockedNumber: number) => { },
+  incomingBlockedSocket:()=>{}
 }
 
 // export  const appValue = {
@@ -97,6 +106,7 @@ export  interface UserDetailsModel  {
   following?: [];
   followers?: [];
   notification?: [];
+  blocked?: [];
   state?: string;
   }
 

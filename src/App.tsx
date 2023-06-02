@@ -15,7 +15,7 @@ import {io, Socket }  from "socket.io-client";
 import Search from "./Components/Search";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
-import { collectUserProfile, followUser,newUserPost } from "./Features/Profile"
+import { collectUserProfile, followUser,newUserPost, blockAndUnBlockUserR } from "./Features/Profile"
 import {loadMessage, incomingMesageR} from "./Features/Message"
 
 import { useNavigate } from "react-router-dom";
@@ -53,6 +53,8 @@ const App = () => {
   // Spinner
   const [spinnerState, setSpinnerState] = useState<boolean>(false)
 
+  // about me edit
+   const [about_meText, setAbout_MeText] = useState<string>("")
   // Edit Profile modal state
   const [openEditProfile, setOpenEditProfile] =  useState<boolean>(false)
 
@@ -70,6 +72,7 @@ const App = () => {
   const [createPostModal, setCreatePostModal] = useState<number>(0)
   const [createGroupModal, setCreateGroupModal] = useState<boolean>(false)
 
+
   // Post Modal
   const [postModalStatus, setPostModalStatus] = useState<boolean>(false)
 
@@ -78,6 +81,7 @@ const App = () => {
 
   // get user details 
   // If no user is found 
+  const [userProfileLoading, setUserProfileLoading] = useState<boolean>(false)
   const [noUserFound,setNoUserFound] = useState<boolean>(false)
   const verifyUserProfile: string = `${userEndPoint}/verifyUserProfile`
   // const userProfileDetails = useSelector((state: any) => state.userprofile.value)
@@ -94,12 +98,18 @@ const App = () => {
 
   // New Post Alert
   const [newPostAlert, setNewPostAlert] = useState<boolean>(false)
-  const sendUserData = (
-    currentUserIdentification: string, registeredUserImgUrl:string, userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, background_img_url:string, followers:[], following: [],checkBothFollowing: [],
-    checkBothFollowers: [], post: [], isLoggedIn: boolean, loggedInUserNotification:[], userMessages: []) => {
+  const [blocked, setBlocked] = useState<boolean>(true)
+
+  const [blockedNumber, setBlockedNumber] = useState<number>(0)
+  const sendUserData = ( blockedState:boolean, blockedNumber:number, 
+    currentUserIdentification: string, registeredUserImgUrl:string, registeredUserBlocked:[], userId: string, notUserId:string, username: string, about_me: string | null, img_url: string | null, background_img_url:string, followers:[], following: [],checkBothFollowing: [],
+    checkBothFollowers: [], post: [], blocked:[], isLoggedIn: boolean, loggedInUserNotification:[], userMessages: []) => {
     dispatch(collectUserProfile({
+      blockedState,
+      blockedNumber,
       registerdUserIdentification: currentUserIdentification,
       registeredUserImgUrl: registeredUserImgUrl,
+      registeredUserBlocked,
       userId: userId,
       notuserId:notUserId,
       username: username,
@@ -112,6 +122,7 @@ const App = () => {
       ifUserFollowing: checkBothFollowing,
       ifUserFollowers: checkBothFollowers,
       post: post,
+      blocked,
       socketPost:[],
       isLoggedIn: isLoggedIn,
       loggedInUserNotification:loggedInUserNotification
@@ -139,27 +150,46 @@ const App = () => {
         if (result.data.status) {
           console.log(result.data,"this is your data")
           setNoUserFound(false)
+          setAbout_MeText(result.data.userData.about_me)
+          setUserProfileLoading(true)
+          // if both user have blocked themseleves
+          let blockedS = false
+          let blockedNumber = 0
+          if(result.data.userData.blocked.find((name: { username: string }) => name.username === result.data.lookedForUser.username)) {
+            blockedS = true
+            setBlocked(true)
+            setBlockedNumber(2)
+            blockedNumber = 2
+            // if the user searched for blocks the user logged in
+          } else if (result.data.lookedForUser.blocked.find((name: { username: string }) => name.username === result.data.userData.username)) {
+            setBlocked(true)
+            setBlockedNumber(3)
+            blockedS = true
+            blockedNumber = 3
+          } else {
+            setBlocked(false)
+           }
           //  switch(result.data.)
            socket.emit("userInfoOrSearchedForInfo", {userinfo:result.data.userData,userLookedFor:result.data.lookedForUser, usermessage:result.data.userMessage, post:result.data.post})
           switch (result.data.message) {
             case "Only the user logged in is found": {
-              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,result.data.userData.background_img_url,
-               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post, result.data.loggedIn, result.data.userData.notification,  result.data.userMessage
+              return sendUserData(blockedS, blockedNumber, result.data.userData.username, result.data.userData.img_url, result.data.userData.blocked, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,result.data.userData.background_img_url,
+               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [], [], result.data.userData.post,result.data.userData.blocked, result.data.loggedIn, result.data.userData.notification,  result.data.userMessage
 
 )
             };
             case "User Searched for not found": {
-              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,result.data.userData.background_img_url,
-               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post, result.data.loggedIn, result.data.userData.notification, result.data.userMessage), setNoUserFound(true)
+              return sendUserData(blockedS, blockedNumber,result.data.userData.username, result.data.userData.img_url, result.data.userData.blocked,  result.data.userData.id, '0', result.data.userData.username, result.data.userData.about_me, result.data.userData.img_url,result.data.userData.background_img_url,
+               result.data.followingFollowersUser.followers, result.data.followingFollowersUser.following, [],[], result.data.userData.post,result.data.userData.blocked, result.data.loggedIn, result.data.userData.notification, result.data.userMessage), setNoUserFound(true)
             }
             
             case "Both users found": {
-              return sendUserData(result.data.userData.username, result.data.userData.img_url,result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url, result.data.lookedForUser.background_img_url,
-                 result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post, result.data.loggedIn, result.data.userData.notification, result.data.userMessage )
+              return sendUserData(blockedS, blockedNumber,result.data.userData.username, result.data.userData.img_url,result.data.userData.blocked, result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url, result.data.lookedForUser.background_img_url,
+                 result.data.followingFollowersLookedFor.followers,  result.data.followingFollowersLookedFor.following, result.data.followingFollowersUser.following, result.data.followingFollowersUser.followers, result.data.lookedForUser.post,result.data.lookedForUser.blocked, result.data.loggedIn, result.data.userData.notification, result.data.userMessage )
             };
             case "Only the user searched for is found":{
-              return sendUserData(result.data.userData.username, result.data.userData.img_url, result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,result.data.lookedForUser.background_img_url,
-                 result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.loggedIn, [], []  
+              return sendUserData(blockedS, blockedNumber,result.data.userData.username, result.data.userData.img_url, result.data.userData.blocked, result.data.userData.id, result.data.lookedForUser.id, result.data.lookedForUser.username, result.data.lookedForUser.about_me, result.data.lookedForUser.img_url,result.data.lookedForUser.background_img_url,
+                 result.data.followingFollowersLookedFor.following, result.data.followingFollowersLookedFor.followers,[], [],  result.data.lookedForUser.post, result.data.lookedForUser.blocked, result.data.loggedIn, [], []  
               )
               }
             
@@ -239,6 +269,17 @@ const App = () => {
 
   }
 
+  const incomingBlockedSocket = () => {
+    socket.on("blocked", (data: any) => {
+      console.log(data, "this is the data")
+      dispatch(blockAndUnBlockUserR(data.details))
+    })
+    socket.on("unblocked", (data: any) => {
+      console.log(data, "this is the data")
+      dispatch(blockAndUnBlockUserR(data.details))
+    })
+  }
+  
   return (
   
     <appContext.Provider value={{
@@ -275,12 +316,21 @@ const App = () => {
       setUsername,
       getUserProfile,
 
+      // loading
+      userProfileLoading,
+      setUserProfileLoading,
       // if no user is found
       noUserFound,
+
+      // about_ me
+      about_meText,
+      setAbout_MeText,
         // follow Function
         followFunction,
         // unfollow User
       unfollowFunction,
+
+      // about me edit
         
       // action modal
       actionModalId,
@@ -305,7 +355,13 @@ const App = () => {
       // Edit profile modal
       openEditProfile,
       setOpenEditProfile,
-    likeUnlikeSocketFunction
+      likeUnlikeSocketFunction,
+      blocked,
+      setBlocked,
+      blockedNumber,
+      setBlockedNumber,
+      incomingBlockedSocket
+  
 
   } }>
       <Routes>

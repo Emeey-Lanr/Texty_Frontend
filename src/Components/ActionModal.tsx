@@ -8,14 +8,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import {deleteMessage} from "../Features/Message"
 import axios from 'axios'
 const ActionModal = () => {
-    const { actionModalId, setActionModalId, openActionModal, setOpenActionModal, messageEndPoint } = useContext(appContext)
+    const {userEndPoint, actionModalId, setActionModalId, openActionModal, setOpenActionModal, messageEndPoint } = useContext(appContext)
     const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
     const socket = useSelector((state: any) => state.socket.value)
+    const userProfileDetails = useSelector((state: any) => state.userprofile.value)
     let dispatch = useDispatch()
     let navigate = useNavigate()
     const [exitAnimation, setExitAnimation] = useState<string>("") 
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [deleteIndication, setDeleteIndication] = useState("Delete")
+    const [password, setPassword] = useState("")
     const exitFunction = () => {
          setExitAnimation("exitAnimation")
         setTimeout(() => {
@@ -27,7 +29,7 @@ const ActionModal = () => {
     }
     const deletedMessageFunction = () => {
         socket.on("messageDeleted", (data: any) => {
-            console.log(data,'deleted')
+            console.log(data,'deleted', messageRedux)
              setDeleteIndication("Deleted")
              exitFunction()
              dispatch(deleteMessage({ data: [], owner: data.owner, notowner: data.notowner }))
@@ -50,14 +52,34 @@ const ActionModal = () => {
         navigate("/signin")
         
     }
+    const proceedToDeleteBtn = () => {
+        if (password !== "") {
+            axios.put(`${userEndPoint}/deleteAccount`, {password:password, username:userProfileDetails.registerdUserIdentification })
+                .then((result) => {
+                    if (result.data.status) {
+                               navigate("/signup")
+                    } else {
+                        setErrorMessage(result.data.message)
+                    }
+           
+                }).catch((err) => {
+                    console.log(err)
+                   setErrorMessage(err.message)
+            })
+            
+        }else{
+            setErrorMessage("empty Input, enter your password")
+        }
+    }
     const deleteMessageBtn = async () => {
               setDeleteIndication("Deleting...")
          const details = { owner: messageRedux.currentDetails.owner, notOwner: messageRedux.currentDetails.notowner }
       socket.emit("deleteUserMessageBox", details)
-      const deleteM = await axios.post(`${messageEndPoint}/deleteMessage`, details)
+    //   const deleteM = await axios.post(`${messageEndPoint}/deleteMessage`, details)
   
-
     }
+
+    
     return (
         <>
             {openActionModal && <div className='actionModal_body'>
@@ -81,13 +103,13 @@ const ActionModal = () => {
                         <p>Enter your password to delete account</p>
                     </div>
                     <div className='delete_account_input_div'>
-                        <input type="password" />
+                        <input type="password" onChange={(e)=>setPassword(e.target.value)} />
                     </div>
                     {errorMessage !== "" && <div className='delete_account_error_message'>
-                        <p>{errorMessage}</p>
+                        <p style={{color:"white", textAlign:"center"}}>{errorMessage}</p>
                     </div>}
                     <div className='delete_account_btn_div'>
-                        <button>Proceed</button>
+                        <button onClick={()=>proceedToDeleteBtn()}>Proceed</button>
                     </div>
               
                 </div>}
