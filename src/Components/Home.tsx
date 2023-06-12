@@ -97,7 +97,9 @@ const Home = () => {
  
     return (
         <>
-            <div className="home_div">
+            <div className="home_parent_div">
+                <div className="home_div1"></div>
+                  <div className="home_div">
                 {newPostAlert && <div className="home_newPost_view_div"   style={{position:"sticky", top:"0"}}>
                     <button className="home_newPost_view_btn" onClick={()=>scrollToTopBtn()}>
                         New Post
@@ -136,6 +138,8 @@ const Home = () => {
 
             </div>
             </div>
+          </div>
+          
             <PostModal/>
             <Group />
             <ChattingSpace/>

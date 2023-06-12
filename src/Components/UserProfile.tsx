@@ -27,6 +27,7 @@ import ProfileEdit from "./ProfileEdit"
 import { POST } from "../Features/HomePost"
 import {getCurrentPost} from "../Features/CurrentPost"
 import { FaHeart } from "react-icons/fa"
+import LoginSpinner from "./LoginSpinner"
 // import { followerUser} from "../Features/Profile"
 
 
@@ -293,11 +294,26 @@ const UserProfile = () => {
     const blockUser = axios.put(`${userEndPoint}/blockUser`, { userLoggedIn: userProfileDetails.registerdUserIdentification, userToBeBlocked: userProfileDetails.username  })
       socket.emit("blockVP", {userToBeUnblocked:userProfileDetails.username, user:userProfileDetails.registerdUserIdentification}) 
   }
-  
+  const [magicT, setMagicT] = useState("magicT1")
+  const magicDivBtn = () => {
+    if(magicT === "magicT1" ){
+ setMagicT("magicT2")
+    }else{
+       setMagicT("magicT1")
+    }
+   
+    
+  }
   return (
     <>
-      {!userProfileLoading ? <div>
-      
+      {!userProfileLoading ? <div className="userProfileLoading_div">
+      {/* <LoginSpinner/> */}
+        <button onClick={()=>magicDivBtn()}>
+          move...
+        </button>
+        <div className={`${magicT}`}>
+
+        </div>
       </div> : <>
         
         {noUserFound ? <>
@@ -306,8 +322,9 @@ const UserProfile = () => {
         </div>
       </> :
         <>
-        
-          <div className="user_profile_div">
+            <div className="user_profile_parent_div" >
+                <div className="user_profile_parent_div1"></div>
+                 <div className="user_profile_div">
    
             <div className="background_pic" style={{backgroundImage:`url(${boxer})`}}>
               <div className="" style={{backgroundColor:"#0000004a"}}>
@@ -441,6 +458,9 @@ const UserProfile = () => {
      
       
           </div>
+        </div>
+        
+         
           {openFollowersFollowing && <Friends setOpenFollowersFollowing={setOpenFollowersFollowing} openFFNumber={openFFNumber} setOpenFFNumber={setOpenFFNumber} />}
           <ChattingSpace/>
           <PostModal />

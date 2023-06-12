@@ -82,13 +82,17 @@ const UserNotification = () => {
   }
   return (
     <>
-      <div className="userNotificationDiv">
+      <div className="parent_userNotificationDiv">
+        <div className="userNotificationDiv1">
+
+        </div>
+        <div className="userNotificationDiv">
       <div className="heading_demacation_div">
          <div className="userNofication_heading">
           <p>Notification</p>
          </div>
          <div className="demacation">
-
+                
           </div>
         
       </div>
@@ -115,6 +119,8 @@ const UserNotification = () => {
           
       </div>
       </div>
+      </div>
+      
       <Navbar/>
       <SideBarModal/>
       <Sidebar/>

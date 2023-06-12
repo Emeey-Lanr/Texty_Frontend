@@ -1,10 +1,18 @@
-.navbar{
-    width: 81.7%;
+.navbar_div{
+    width: 100%;
     height: 70px;
-    background-color: black;
-    position: fixed;
+        position: fixed;
 top: 0;
 right: 0;
+
+display: grid;
+grid-template-columns: 280px 100%;
+}
+.navbar{
+    width: 81.7%;
+    height: 100%;
+    background-color: black;
+
 
 display: flex;
 justify-content: space-between;
@@ -160,6 +168,12 @@ color: #171717;
     }
 }
 @media (max-width:1000px){
+    .navbar_div{
+        grid-template-columns: 100%;
+    }
+    .emptyNavbar{
+        display: none;
+    }
     .navbar{
         width: 100%;
     }

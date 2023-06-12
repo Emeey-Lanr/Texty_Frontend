@@ -1,5 +1,31 @@
-
-
+.userProfileLoading_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background: linear-gradient(to left, #f9f9f9, #dad9d9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.magicT1{
+    width: 300px;
+    height: 300px;
+   background: black;
+   position: absolute;
+   top: -300px;
+   transition: 0.5s ease-in;
+}
+.magicT2{
+       width: 300px;
+    height: 300px;
+   background: black;
+      position: absolute;
+    top: -30px;
+    transition
+    
+     : 0.5s ease-out;
+}
 .friends_space{
     width: 81.5%;
     height: 90%;
@@ -174,11 +200,19 @@ border-radius: 20px;
 
 
 /* USER PROFILE */
+.user_profile_parent_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    display: grid;
+    grid-template-columns: 280px 100%;
+    align-items: flex-end;
+}
 .user_profile_div{
     width: 81.7%;
     height: 84%;
      overflow-y: scroll;
-    position: fixed;
     bottom: 0;
     right: 0;
     background: #f6f6f6; 
@@ -262,6 +296,7 @@ border-radius: 20px;
 }
 .user_profile_div .user_username div .follow_unfollow_block_space{
     position: relative;
+   
 }
 .user_profile_div .user_username div .follow_unfollow_block_space .follow_unfollow_block_space_action_show_btn {
     border: none;
@@ -281,23 +316,41 @@ border-radius: 20px;
     display: none;
 }
 .user_profile_div .user_username div .follow_unfollow_block_space:hover .fub_div{
+    background: #000000a7;
     display: block;
   position: absolute;
 
   width: 200px;
-  top: -20px;
+ /* top: 0; */
+ bottom: 0;
+ /* left: 0; */
+ height: 100px;
+ display: grid;
+ grid-template-rows: 40% 40%;
+ align-items: center;
+ justify-content: center;
+ margin-top: 10px;
+ border-radius: 5px;
+ padding-top: 10px;
+ right: 0;
+
+ /* justify-content: center; */
   /* top: -50px; */
 }
 .user_profile_div .user_username div .follow_unfollow_block_space:hover .fub_div button{
     border: none;
-    background: #dbdbdb;
-    margin-bottom: 10px;
-     padding: 10px 20px;
+    background: #111010;
+    width: 190px;
+    padding: 10px 0;
+    
+    color: #9b9b9b;
+    
+      /* width: 90%; */
 
 }
-.user_profile_div .user_username div .follow_unfollow_block_space:hover .fub_div button{
+/* .user_profile_div .user_username div .follow_unfollow_block_space:hover .fub_div button{
     display: block;
-}
+} */
 .user_profile_div .following_followers{
     display: flex;
     justify-content: center;
@@ -389,6 +442,7 @@ text-align: center;
     margin: 20px 0;
     background: none;
     align-items: center;
+
     
 }
 .post_div .poster{
@@ -440,15 +494,25 @@ padding-bottom: 10px;
 }
 
 /* USER NOTIFICATION DIV*/
-.userNotificationDiv{
-    width: 82%;
-    height: 90%;
-   position: fixed;
-   bottom: 0;
-   right: 0;
-   overflow-y: scroll;
-   background: #e9e9e9;
+.parent_userNotificationDiv{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    display: grid;
+    grid-template-columns: 280px 100%;
+    align-items: flex-end;
 }
+.userNotificationDiv{
+    width: 100%;
+    height: 91%;
+
+
+   overflow-y: scroll;
+   background: #cbcbcb;
+
+}
+
 .userNotificationDiv::-webkit-scrollbar{
     width: 5px;
 }
@@ -456,11 +520,17 @@ padding-bottom: 10px;
     width: 100%;
     position: sticky;
     top: 0;
+    /* background: red; */
+    /* display: flex;
+    justify-content: center; */
+   
+  
 
 }
 .userNotificationDiv .heading_demacation_div .userNofication_heading{
-    width: 200px;
-    margin:  0 auto;
+     width: 200px;
+     /* margin: 0 auto; */
+    /* margin:  0 auto; */ 
     text-align: center;
     background-color: #000000;
   color: #eaeaea;
@@ -469,10 +539,11 @@ padding-bottom: 10px;
    font-size: 0.9rem;
 }
 .userNotificationDiv .heading_demacation_div .demacation{
-    width: 80%;
+    width: 100%;
+   
     margin:  0 auto;
     height: 1px;
-    background: black;
+    /* background: rgb(8, 237, 107); */
     margin-top: 20px;
 }
 .userNotificationDiv .user_notification_div{
@@ -652,7 +723,32 @@ font-weight: lighter;
     
 }
 @media(max-width:1001px){
+    .parent_userNotificationDiv{
+        grid-template-columns: 100%;
+    }
+    .userNotificationDiv1{
+        display: none;
+    }
+    .userNotificationDiv{
+        width: 100%;
+    }
+    .user_profile_parent_div{
+        grid-template-columns: 100%;
+   
+    }
+    .user_profile_parent_div1{
+        display: none;
+    }
     .user_profile_div{
         width:100%;
+    }
+}
+
+@media (max-width:472px) {
+    .post_div{
+        width: 100%;
+    }
+    .post_div .poster{
+        width: 100%;
     }
 }

@@ -54,8 +54,9 @@ import { useLocation } from "react-router-dom"
       setActionModalId(3)
     }
     return (
-    
-    <div className="navbar">
+    <div className="navbar_div">
+      <div className="emptyNavbar"></div>
+      <div className="navbar">
    
       <button className="open_sidebar" onClick={showSideBarBtn}>
           <span></span><span></span><span></span>
@@ -142,6 +143,8 @@ import { useLocation } from "react-router-dom"
         </div>
       </div>
      </div>
+    </div>
+    
   )
 }
 
