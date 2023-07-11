@@ -10,7 +10,9 @@ import { appContext } from "../App"
 import { useContext } from "react"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
-import {getFollowedNotification,  unfollowFollowingR} from "../Features/Profile"
+import { getFollowedNotification, unfollowFollowingR } from "../Features/Profile"
+import noImg from "../images/noImage.png"
+
 const UserNotification = () => {
   const { setRouteIdentification, getUserProfile, followFunction, unfollowFunction } = useContext(appContext)
   const dispatch = useDispatch()
@@ -97,16 +99,17 @@ const UserNotification = () => {
         
       </div>
       <div className="user_notification_div">
-          {userDetail.loggedInUserNotification.map((data:{followed: boolean, checked: boolean, notificationDetails:string, username:string}) => (
+          {userDetail.loggedInUserNotification.map((data:{followed: boolean, checked: boolean, notificationDetails:string, username:string, img_url:string}) => (
             <div className="user_notification_img_text_description">
               <div className="img_text_notification_div">
-                 <div className="user_notification_img_div">
-              <img src={boxer} alt="" />
+              <div className="user_notification_img_div">
+              <img src={data.img_url !==  "" ? data.img_url : noImg } alt="" />
             </div>
             <div className="user_notification_text_div">
                 <p>{data.notificationDetails}</p>
             </div>
               </div>
+            
               {data.followed && <div className="notification_follow_action">
                 <div>
                   {userDetail.following.find((name: { username: string }) => name.username === data.username) ?

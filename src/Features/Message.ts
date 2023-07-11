@@ -51,9 +51,17 @@ export const messageSlice = createSlice({
     reducers: {
         loadMessage:(state, action)=>{
             state.value.allMessage = action.payload
+         
+            let unreadMessage = []
             action.payload.map((name:{owner:string, notowner:string, message:MessageInterface[]}) => {
-                state.value.unCheckedMessageNumber = name.message.filter((details)=>details.checked === false).length
+                name.message.map((details) => {
+                    if (!details.checked) {
+                        unreadMessage.push(1)
+                    }
+                })
+                
             })
+            state.value.unCheckedMessageNumber = unreadMessage.length
         },
         setOrOpenChat: (state, action) => {
             let m = true
@@ -102,14 +110,20 @@ export const messageSlice = createSlice({
              })
             
             state.value.currentDetails = state.value.allMessage[value]
-            let m  = 0
+            let unreadMessage = []
             state.value.allMessage.map((details, id) => {
+                details.message?.map((data) => {
+                    if (!data.checked) {
+                     unreadMessage.push(1)
+                 }
+                })
                
-             state.value.unCheckedMessageNumber = Number(details.message?.filter((mess) => mess.checked === true).length)
+          
                 
-             })
+            })
+               state.value.unCheckedMessageNumber = unreadMessage.length
 
-            console.log(m, "this is m")
+            
             // let value = -1
            
             // state.value.allMessage[value] = action.payload.details

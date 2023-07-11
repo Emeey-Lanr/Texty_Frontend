@@ -50,7 +50,7 @@ webkitRelativePath:string;
             date:`${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
             time:date.getTime(),
             postedBy:userDetails.registerdUserIdentification,
-            img_url: "",
+            img_url: image,
             comment: [],
             likes:[],
         }
@@ -61,6 +61,7 @@ webkitRelativePath:string;
         axios.post(`${userEndPoint}/createPost`, {username:userDetails.registerdUserIdentification, postContent:post}).then((result) => {
             console.log(result.data)
             if (result.data.status) {
+                post.img_url = result.data.img_url
                 socket.emit("emitPost", {username:userDetails.registerdUserIdentification, post:post})
                 setFireAction(false)
             }

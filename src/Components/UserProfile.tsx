@@ -26,7 +26,7 @@ import Chat from "./Chat"
 import ProfileEdit from "./ProfileEdit"
 import { POST } from "../Features/HomePost"
 import {getCurrentPost} from "../Features/CurrentPost"
-import { FaHeart } from "react-icons/fa"
+import { FaComment, FaHeart } from "react-icons/fa"
 import LoginSpinner from "./LoginSpinner"
 // import { followerUser} from "../Features/Profile"
 
@@ -306,178 +306,348 @@ const UserProfile = () => {
   }
   return (
     <>
-      {!userProfileLoading ? <div className="userProfileLoading_div">
-      {/* <LoginSpinner/> */}
-        <button onClick={()=>magicDivBtn()}>
-          move...
-        </button>
-        <div className={`${magicT}`}>
-
+      {!userProfileLoading ? (
+        <div className="userProfileLoading_div">
+          {/* <LoginSpinner/> */}
+          <button onClick={() => magicDivBtn()}>move...</button>
+          <div className={`${magicT}`}></div>
         </div>
-      </div> : <>
-        
-        {noUserFound ? <>
-        <div>
-          <p>No user found</p>
-        </div>
-      </> :
+      ) : (
         <>
-            <div className="user_profile_parent_div" >
-                <div className="user_profile_parent_div1"></div>
-                 <div className="user_profile_div">
-   
-            <div className="background_pic" style={{backgroundImage:`url(${boxer})`}}>
-              <div className="" style={{backgroundColor:"#0000004a"}}>
-                
-               </div>
-
-            </div>
-            <div className="user_pic" >
-              <img src={userProfileDetails.img_url === "" ? noImg : userProfileDetails.img_url} alt="" />
-
-            </div>
-            <div className="user_username">
-              <h2>{userProfileDetails.username}</h2>
-              <div className="state_indication_div">
-                {(userProfileDetails.username !== userProfileDetails.registerdUserIdentification) &&
-                  <>
-
-                  {userProfileDetails.blockedState ? <>
-                    {(userProfileDetails.blockedNumber === 2 || userProfileDetails.blockedNumber === 3) && <button className="bfu" onClick={()=>unblockBtn()} style={{ background: "red", color:"white" }}>Blocked</button>}
-             
-                  </> :
-                    
-                    
-                  <>
-                   { userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification) ?
-                    <button className="bfu" onClick={() =>  unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button className="bfu" onClick={() => follow()}>Follow</button>}
-                  </>}
-                  </>
-                
-               
-                  
-                }
-                
-                    {/* {userProfileDetails.username !== userProfileDetails.registerdUserIdentification && <button>Following</button>} */}
-                    {(userProfileDetails.username !== userProfileDetails.registerdUserIdentification) && <div className="follow_unfollow_block_space">
-                    <button className="follow_unfollow_block_space_action_show_btn">
-                     <span></span><span></span><span></span>
-                  
-                    </button>
-                    <div className="fub_div">
-                          <>
-                   { userProfileDetails.followers.find((name: { username: string }) => name.username === userProfileDetails.registerdUserIdentification) ?
-                    <button className="" onClick={() =>  unfollow()} style={{ background: "black", color: "white" }}>Following</button> : <button className="" onClick={() => follow()}>Follow</button>}
-                        </>
-                        <>
-                        </>
-                        <>
-                          {userProfileDetails.registeredUserBlocked.find((name: { username: string }) => name.username === userProfileDetails.username) ? <button onClick={()=>unblockBtn()} >Unblock</button>
-                            : <button onClick={()=>blockVPBtn()}>Block</button>
-                          }
-                        </>
-                       
-                    </div>
-                    
-                  </div>}
-                  </div>
-                  
-              
-            </div>
-            
-            {userProfileDetails.blockedState ? <>
-              <div className="block_user">
-                    <div>
-                      {userProfileDetails.blockedNumber === 2 && <p>you blocked <br /> @ { userProfileDetails.username}</p>}
-                      {userProfileDetails.blockedNumber === 3 && <p>@{ userProfileDetails.username} <br></br>has blocked you</p>}
-
-                     </div>
-                  </div>
-                 
-            </>:
+          {noUserFound ? (
             <>
-               <div className="following_followers">
-              <button onClick={()=>openFollowing()}>{userProfileDetails.following.length} Following</button>
-              <button onClick={()=>openFollowers()}>{userProfileDetails.followers.length} Folowers</button>
-            </div>
-            <div className="about_Me">
-              <div className="caption_edit_div">
-                <div>
-                  <h3>About Me</h3>
-                </div>
-                 <div>
-                  {userProfileDetails.username === userProfileDetails.registerdUserIdentification ? <button onClick={()=>setOpenEditProfile(true)}>Edit</button> : <button onClick={()=>chatWithBtn()}>{<BiChat/>}</button>}
-                </div>
-             
-            
+              <div>
+                <p>No user found</p>
               </div>
-       
-              <p>{userProfileDetails.about_me}</p>
-        
-            </div>
-            <div className="post_heading">
-              <h2>POST</h2>
-            </div>
-            <div className="post_container">
-  
-              {userProfileDetails.post.length > 0 ? userProfileDetails.post.map((details:POST) => (
-                <button className="post_div" disabled={true}  onClick={() => openPost(details.postedBy, details.time)}>
-                <div className="posted" onClick={()=>openPost(details.postedBy, details.time)}>
-                    <p>{details.text}</p>
-                </div>
-                <div className="poster">
-                  <div className="username_img">
-                    <img onClick={()=>alert(20)} src={userProfileDetails.img_url === "" ? noImg : userProfileDetails.img_url } alt="" />
-                      <span style={{color:"white"}}>{userProfileDetails.username}</span>
+            </>
+          ) : (
+            <>
+              <div className="user_profile_parent_div">
+                <div className="user_profile_parent_div1"></div>
+                <div className="user_profile_div">
+                  <div
+                    className="background_pic"
+                    style={{ backgroundImage: `url(${boxer})` }}
+                  >
+                    <div
+                      className=""
+                      style={{ backgroundColor: "#0000004a" }}
+                    ></div>
                   </div>
-          
-                    <div className="postaction" style={userProfileDetails.username === userProfileDetails.registerdUserIdentification ? {position:"relative", gridTemplateColumns:"30% 30% 30%" }: { position: "relative", gridTemplateColumns:"30% 30%" }}>
-                      <>
-                        {details.likes.find((data) => data === userProfileDetails.registerdUserIdentification) ?
-                          <button onClick={() => likeUnlikeSocketFunction("unlike", details.time, details.postedBy, "unlike")}>
-                            <FaHeart style={{color:"red"}}/> <span>{details.likes.length > 0 && details.likes.length}</span>
-                          </button> :
-                          <button onClick={() => likeUnlikeSocketFunction("like", details.time, details.postedBy, "like")}><BiHeart/> <span>{Number(details.likes.length) > 0 && details.likes.length}</span></button>
+                  <div className="user_pic">
+                    <img
+                      src={
+                        userProfileDetails.img_url === ""
+                          ? noImg
+                          : userProfileDetails.img_url
                       }
-                      </>
-                       <button onClick={()=>openPost(details.postedBy, details.time)}><BiChat /> <span>{details.comment.length > 0 && details.comment.length }</span></button>
-                    {userProfileDetails.username === userProfileDetails.registerdUserIdentification && <button><BiTrash /></button>}
-                    
+                      alt=""
+                    />
                   </div>
-            
-                </div>
-              </button>
-              )) : <div></div>}
+                  <div className="user_username">
+                    <h2>{userProfileDetails.username}</h2>
+                    <div className="state_indication_div">
+                      {userProfileDetails.username !==
+                        userProfileDetails.registerdUserIdentification && (
+                        <>
+                          {userProfileDetails.blockedState ? (
+                            <>
+                              {(userProfileDetails.blockedNumber === 2 ||
+                                userProfileDetails.blockedNumber === 3) && (
+                                <button
+                                  className="bfu"
+                                  onClick={() => unblockBtn()}
+                                  style={{ background: "red", color: "white" }}
+                                >
+                                  Blocked
+                                </button>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {userProfileDetails.followers.find(
+                                (name: { username: string }) =>
+                                  name.username ===
+                                  userProfileDetails.registerdUserIdentification
+                              ) ? (
+                                <button
+                                  className="bfu"
+                                  onClick={() => unfollow()}
+                                  style={{
+                                    background: "black",
+                                    color: "white",
+                                  }}
+                                >
+                                  Following
+                                </button>
+                              ) : (
+                                <button
+                                  className="bfu"
+                                  onClick={() => follow()}
+                                >
+                                  Follow
+                                </button>
+                              )}
+                            </>
+                          )}
+                        </>
+                      )}
 
-        
-            </div>
-            
-            </>}
-            
-          
-     
-      
-          </div>
-        </div>
-        
-         
-          {openFollowersFollowing && <Friends setOpenFollowersFollowing={setOpenFollowersFollowing} openFFNumber={openFFNumber} setOpenFFNumber={setOpenFFNumber} />}
-          <ChattingSpace/>
-          <PostModal />
-          <Create />
-          <Navbar />
-          <Sidebar />
-          <ActionModal />
-          <ProfileEdit/>
-        </>}
-      </>}
-      
-      
-     
+                      {/* {userProfileDetails.username !== userProfileDetails.registerdUserIdentification && <button>Following</button>} */}
+                      {userProfileDetails.username !==
+                        userProfileDetails.registerdUserIdentification && (
+                        <div className="follow_unfollow_block_space">
+                          <button className="follow_unfollow_block_space_action_show_btn">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </button>
+                          <div className="fub_div">
+                            <>
+                              {userProfileDetails.followers.find(
+                                (name: { username: string }) =>
+                                  name.username ===
+                                  userProfileDetails.registerdUserIdentification
+                              ) ? (
+                                <button
+                                  className=""
+                                  onClick={() => unfollow()}
+                                  style={{
+                                    background: "black",
+                                    color: "white",
+                                  }}
+                                >
+                                  Following
+                                </button>
+                              ) : (
+                                <button className="" onClick={() => follow()}>
+                                  Follow
+                                </button>
+                              )}
+                            </>
+                            <></>
+                            <>
+                              {userProfileDetails.registeredUserBlocked.find(
+                                (name: { username: string }) =>
+                                  name.username === userProfileDetails.username
+                              ) ? (
+                                <button onClick={() => unblockBtn()}>
+                                  Unblock
+                                </button>
+                              ) : (
+                                <button onClick={() => blockVPBtn()}>
+                                  Block
+                                </button>
+                              )}
+                            </>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {userProfileDetails.blockedState ? (
+                    <>
+                      <div className="block_user">
+                        <div>
+                          {userProfileDetails.blockedNumber === 2 && (
+                            <p>
+                              you blocked <br /> @ {userProfileDetails.username}
+                            </p>
+                          )}
+                          {userProfileDetails.blockedNumber === 3 && (
+                            <p>
+                              @{userProfileDetails.username} <br></br>has
+                              blocked you
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="following_followers">
+                        <button onClick={() => openFollowing()}>
+                          {userProfileDetails.following.length} Following
+                        </button>
+                        <button onClick={() => openFollowers()}>
+                          {userProfileDetails.followers.length} Folowers
+                        </button>
+                      </div>
+                      <div className="about_Me">
+                        <div className="caption_edit_div">
+                          <div>
+                            <h3>About Me</h3>
+                          </div>
+                          <div>
+                            {userProfileDetails.username ===
+                            userProfileDetails.registerdUserIdentification ? (
+                              <button onClick={() => setOpenEditProfile(true)}>
+                                Edit
+                              </button>
+                            ) : (
+                              <button onClick={() => chatWithBtn()}>
+                                {<BiChat />}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        <p>{userProfileDetails.about_me}</p>
+                      </div>
+                      <div className="post_heading">
+                        <h2>POST</h2>
+                      </div>
+                      <div className="post_container">
+                        {userProfileDetails.post.length > 0 ? (
+                          userProfileDetails.post.map((details: POST) => (
+                            <button
+                              className="post_div"
+                              disabled={true}
+                              onClick={() =>
+                                openPost(details.postedBy, details.time)
+                              }
+                            >
+                              <div
+                                className="posted"
+                                onClick={() =>
+                                  openPost(details.postedBy, details.time)
+                                }
+                              >
+                                <p>{details.text}</p>
+                              </div>
+                              <div className="poster">
+                                <div className="username_img">
+                                  <img
+                                    onClick={() => alert(20)}
+                                    src={
+                                      userProfileDetails.img_url === ""
+                                        ? noImg
+                                        : userProfileDetails.img_url
+                                    }
+                                    alt=""
+                                  />
+                                  <span style={{ color: "white" }}>
+                                    {userProfileDetails.username}
+                                  </span>
+                                </div>
+
+                                <div
+                                  className="postaction"
+                                  style={
+                                    userProfileDetails.username ===
+                                    userProfileDetails.registerdUserIdentification
+                                      ? {
+                                          position: "relative",
+                                          gridTemplateColumns: "30% 30% 30%",
+                                        }
+                                      : {
+                                          position: "relative",
+                                          gridTemplateColumns: "30% 30%",
+                                        }
+                                  }
+                                >
+                                  <>
+                                    {details.likes.find(
+                                      (data) =>
+                                        data ===
+                                        userProfileDetails.registerdUserIdentification
+                                    ) ? (
+                                      <button
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                        }}
+                                        onClick={() =>
+                                          likeUnlikeSocketFunction(
+                                            "unlike",
+                                            details.time,
+                                            details.postedBy,
+                                            "unlike"
+                                          )
+                                        }
+                                      >
+                                        <FaHeart style={{ color: "red" }} />{" "}
+                                        <span style={{fontSize:"0.7rem", padding:"0 3px"}}>
+                                          {details.likes.length > 0 &&
+                                            details.likes.length}
+                                        </span>
+                                      </button>
+                                    ) : (
+                                      <button
+                                        onClick={() =>
+                                          likeUnlikeSocketFunction(
+                                            "like",
+                                            details.time,
+                                            details.postedBy,
+                                            "like"
+                                          )
+                                        }
+                                      >
+                                        <BiHeart style={{fontSize:"1.8rem"}} />{" "}
+                                        <span>
+                                          {Number(details.likes.length) > 0 &&
+                                            details.likes.length}
+                                        </span>
+                                      </button>
+                                    )}
+                                  </>
+                                  <button
+                                   
+                                    onClick={() =>
+                                      openPost(details.postedBy, details.time)
+                                    }
+                                  >
+                                    <FaComment />{" "}
+                                    <span style={{ fontSize: "0.5rem", padding:"0 4px" }}>
+                          
+                                      {details.comment.length > 0 &&
+                                        details.comment.length}
+                                    </span>
+                                  </button>
+                                  {/* {userProfileDetails.username ===
+                                    userProfileDetails.registerdUserIdentification && ( */}
+                                    <button>
+                                      <div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                      </div>
+                                    </button>
+                                  {/* )} */}
+                                </div>
+                              </div>
+                            </button>
+                          ))
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {openFollowersFollowing && (
+                <Friends
+                  setOpenFollowersFollowing={setOpenFollowersFollowing}
+                  openFFNumber={openFFNumber}
+                  setOpenFFNumber={setOpenFFNumber}
+                />
+              )}
+              <ChattingSpace />
+              <PostModal />
+              <Create />
+              <Navbar />
+              <Sidebar />
+              <ActionModal />
+              <ProfileEdit />
+            </>
+          )}
+        </>
+      )}
     </>
- 
-   
-  )
+  );
 }
 
 export default UserProfile

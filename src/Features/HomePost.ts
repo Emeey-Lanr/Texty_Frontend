@@ -35,7 +35,7 @@ export const homePostSlice = createSlice({
          
         },
         userNewHomePost: (state, action) => {
-            state.value = action.payload  
+            state.value = action.payload.reverse()  
            
         },
         getLikesHomePost: (state, action) => {

@@ -1,5 +1,6 @@
 import "../styles/home.css"
-import { FaPlus, FaSearch, FaUserAlt, FaHeart,FaComment } from "react-icons/fa"
+import { FaPlus, FaSearch, FaUserAlt, FaHeart, FaComment } from "react-icons/fa"
+import noImg from "../images/noImage.png";
 import boxer from "../images/boxer.jpg"
 import { Link } from "react-router-dom"
 import PostModal from "./PostModal"
@@ -80,11 +81,13 @@ const Home = () => {
         
     })
     const scrollToTopBtn = () => {
-          window.scrollTo({
-            top: 0,
-           behavior: 'smooth',
+        alert(20)
+        //   window.scrollTo({
+        //     top: 0,
+        //    behavior: 'smooth',
             
-        })
+        //   })
+        setNewPostAlert(false)
     }
     const openPost = (name:string, time:string) => {
         setPostModalStatus(true)
@@ -96,61 +99,136 @@ const Home = () => {
     }
  
     return (
-        <>
-            <div className="home_parent_div">
-                <div className="home_div1"></div>
-                  <div className="home_div">
-                {newPostAlert && <div className="home_newPost_view_div"   style={{position:"sticky", top:"0"}}>
-                    <button className="home_newPost_view_btn" onClick={()=>scrollToTopBtn()}>
-                        New Post
-                    </button>
-                </div>}
-            
-                <div className="home_post_container">
-  
-                    {homePost.map((details: POST) => (
-                        <button className="home_post_div" disabled={true} onClick={() => openPost(details.postedBy, details.time)}>
-                            <div className="home_posted" onClick={() => openPost(details.postedBy, details.time)}>
-                                <p>{details.text}</p>
-                            </div>
-                            <div className="home_poster">
-                                <div className="home_username_img">
-                                    <img onClick={() => alert(20)} src={boxer} alt="" />
-                                    <span style={{color:"white"}}>{details.postedBy}</span>
-                                </div>
-          
-                                <div className="home_postaction" style={userProfileDetails.username === userProfileDetails.registerdUserIdentification ? {position:"relative", gridTemplateColumns:"30% 30% 30%" }: { position: "relative",}}>
-                                    <>
-                                        {details.likes.find((data) => data === userProfileDetails.registerdUserIdentification) ?
-                                            <button onClick={()=>likeUnlikeSocketFunction("unlike", details.time, details.postedBy, "unlike")}>
-                                                <FaHeart style={{ color: "red" }} /> <span>{details.likes.length > 0 && details.likes.length}</span>
-                                            </button> :
-                                            <button onClick={() => likeUnlikeSocketFunction("like", details.time, details.postedBy, "like")}><BiHeart /> <span>{Number(details.likes.length) > 0 && details.likes.length}</span></button>
-                                        }
-                                    </>
-                                    <button onClick={() => openPost(details.postedBy, details.time)}><BiChat /> <span>{details.comment.length > 0 && details.comment.length}</span></button>
-                    
-                                </div>
-            
-                            </div>
-                        </button>
-                    ))}
+      <>
+        <div className="home_parent_div">
+          <div className="home_div1"></div>
+          <div className="home_div">
+            {newPostAlert && (
+              <div
+                className="home_newPost_view_div"
+                style={{ position: "sticky", top: "0" }}
+              >
+                <button
+                  className="home_newPost_view_btn"
+                  onClick={() => scrollToTopBtn()}
+                >
+                  New Post
+                </button>
+              </div>
+            )}
 
-            </div>
+            <div className="home_post_container">
+              {homePost.map((details: POST) => (
+                <button
+                  className="home_post_div"
+                  disabled={true}
+                  onClick={() => openPost(details.postedBy, details.time)}
+                >
+                  <div
+                    className="home_posted"
+                    onClick={() => openPost(details.postedBy, details.time)}
+                  >
+                    <p>{details.text}</p>
+                  </div>
+                  <div className="home_poster">
+                    <div className="home_username_img">
+                      <img
+                        onClick={() => alert(20)}
+                        src={details.img_url === "" ? noImg : details.img_url}
+                        alt=""
+                      />
+                      <span style={{ color: "white" }}>{details.postedBy}</span>
+                    </div>
+
+                    <div
+                      className="home_postaction"
+                      style={
+                        userProfileDetails.username ===
+                        userProfileDetails.registerdUserIdentification
+                          ? {
+                              position: "relative",
+                              gridTemplateColumns: "30% 30% 30%",
+                            }
+                          : { position: "relative" }
+                      }
+                    >
+                      <>
+                        {details.likes.find(
+                          (data) =>
+                            data ===
+                            userProfileDetails.registerdUserIdentification
+                        ) ? (
+                          <button
+                            onClick={() =>
+                              likeUnlikeSocketFunction(
+                                "unlike",
+                                details.time,
+                                details.postedBy,
+                                "unlike"
+                              )
+                            }
+                          >
+                            <FaHeart
+                              style={{ color: "red", fontSize: "1.2rem" }}
+                            />{" "}
+                            <span>
+                              {details.likes.length > 0 && details.likes.length}
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() =>
+                              likeUnlikeSocketFunction(
+                                "like",
+                                details.time,
+                                details.postedBy,
+                                "like"
+                              )
+                            }
+                          >
+                            <BiHeart style={{fontSize:"1.3rem"}} />{" "}
+                            <span
+                              style={{ fontSize: "0.5rem", padding: "0 4px" }}
+                            >
+                              {Number(details.likes.length) > 0 &&
+                                details.likes.length}
+                            </span>
+                          </button>
+                        )}
+                      </>
+                      <button
+                        onClick={() => openPost(details.postedBy, details.time)}
+                      >
+                        <FaComment />{" "}
+                        <span style={{ fontSize: "0.5rem", padding: "0 4px" }}>
+                          {details.comment.length > 0 && details.comment.length}
+                        </span>
+                      </button>
+                      <button onClick={()=>alert(details.img_url)}>
+                        <div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
-          
-            <PostModal/>
-            <Group />
-            <ChattingSpace/>
-            <Create/>
-            {/* <PostModal/> */}
-            <SideBarModal/>
-            <Navbar/>
-        <Sidebar/>
+        </div>
+
+        <PostModal />
+        <Group />
+        <ChattingSpace />
+        <Create />
+        {/* <PostModal/> */}
+        <SideBarModal />
+        <Navbar />
+        <Sidebar />
       </>
-    
-  )
+    );
 }
 
 export default Home
