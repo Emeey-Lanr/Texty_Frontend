@@ -4,7 +4,8 @@
     position: fixed;
     left: 0;
     top: 0;
-    background: #0000006b;
+    /* background: #0000006b; */
+    background:black;
     /* background-color: black; */
     display: block;
 }
@@ -269,9 +270,14 @@ top: 0; */
     width: 90%;
     margin:  0 auto 20px auto;
     border: none;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     padding: 10px;
-    border-radius: 10px;
+    background:none;
+    color: white;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    /* border-radius: 10px; */
     
 }
 .user_Profile_details button .number_Of_Notification{

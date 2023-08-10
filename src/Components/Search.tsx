@@ -12,7 +12,7 @@ import axios from "axios"
 import { useDispatch, useSelector } from "react-redux"
 import {unfollowFollowingR} from "../Features/Profile"
 import { useNavigate } from "react-router-dom"
-
+import noImg from "../images/noImage.png";
 const Search = () => {
   const { userEndPoint, getUserProfile, setRouteIdentification, setGroupChatOrPrivateChatOpening, followFunction, unfollowFunction } = useContext(appContext)  
     const socket = useSelector((state: any) => state.socket.value)
@@ -101,11 +101,11 @@ const Search = () => {
           </div>
           </div>
       {switchPage && <div className="people">
-          {users.length > 0 ? users.map((name: { username: string, about_me:string }) => (
+          {users.length > 0 ? users.map((name: { username: string, about_me:string, img_url:string }) => (
              <div  className="user">
             <div className="img_description_div">
               <div style={{ display: 'flex' }}>
-                <img src={boxer} alt="" />
+                <img src={name.img_url === "" ? noImg : name.img_url} alt="" />
                   <h3>{name.username }</h3>
               </div>
             
@@ -113,8 +113,8 @@ const Search = () => {
             </div>
             <div className="action">
                 <button onClick={()=>navigate(`/${name.username}`)}>View Profile</button>
-                {userDetails.following.find((namee: { username: string }) => namee.username === name.username) ? <button onClick={()=>unfollowFunction("unfollowSocket2",userDetails.registerdUserIdentification,name.username)} style={{background:"black", color:"white"}}>Following</button> : <button onClick={()=>follow(name.username)}>Follow</button>}
-                <button>Block</button>
+                {name.username !== userDetails.registerdUserIdentification && <>{ userDetails.following.find((namee: { username: string }) => namee.username === name.username) ? <button onClick={() => unfollowFunction("unfollowSocket2", userDetails.registerdUserIdentification, name.username)} style={{ background: "black", color: "white" }}>Following</button> : <button onClick={() => follow(name.username)}>Follow</button> }</> }
+              {name.username !== userDetails.registerdUserIdentification &&   <button>Block</button>}
             </div>
           </div>
           )): <div><p></p></div>}

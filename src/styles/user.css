@@ -798,6 +798,41 @@ font-weight: lighter;
 .spin {
     animation: spin infinite 1s  running  normal;
 }
+
+/* POST DECISION */
+.post_descision_p_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background: #000000a7;
+}
+.post_descison_content_div{
+    width:300px;
+    position: fixed;
+    left:50%;
+    right: 50%;
+    bottom: 0;
+}
+.post_descison_content_div {
+    width: 300px;
+    background: #111111;
+}
+.post_descison_content_div div{
+    width: 98%;
+    display: flex;
+    justify-content:center ;
+}
+.post_descison_content_div div button{
+    width:100%;
+    height:30px;
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid #515151;
+    background: none;
+    align-items: center;
+}
+
 @keyframes spin {
     0%{
         transition: 1s ease all;
@@ -815,6 +850,9 @@ font-weight: lighter;
     .userNotificationDiv{
         width: 100%;
     }
+    .friends_space{
+        width:100%;
+    }
     .userNotificationDiv .user_notification_div .user_notification_img_text_description{
         width: 98%;
     }
@@ -828,6 +866,15 @@ font-weight: lighter;
     .user_profile_div{
         width:100%;
     }
+    .following_user_details{
+        width: 98%;
+        margin:  0 auto;
+    }
+    .profile_edit_div_background .edit_imgPreview{
+        left: unset;
+        right: unset;
+       /* width: 400px; */
+    }
 }
 
 @media (max-width:472px) {
@@ -837,4 +884,8 @@ font-weight: lighter;
     .post_div .poster{
         width: 100%;
     }
+
+       .profile_edit_div_background .edit_imgPreview{
+        width: 100%;
+       }
 }

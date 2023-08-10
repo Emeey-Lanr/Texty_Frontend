@@ -1,0 +1,65 @@
+.post_descision_p_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background: #000000b3;
+}
+.post_descision_content_div{
+    width: 300px;
+     position: fixed;
+     top: 0;
+     left: 50%;
+     right: 50%;
+     background: black;
+     border-radius: 0 0 10px 10px;
+     overflow-y: scroll;
+}
+.post_descision_content_div::-webkit-scrollbar{
+    width: 5px;
+}
+.post_descision_content_div div{
+    width: 88%;
+    margin: 0 auto 10px auto;
+     color:  white;
+     
+
+}
+.post_descision_content_div div button{
+   color: white;
+   border: none;
+   border-bottom: 1px solid #5c5c5c;
+   width: 100%;
+ height: 40px;
+ background: none;
+ display: flex;
+ justify-content: flex-start;
+ align-items: center;
+ font-weight: lighter;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+}
+.post_descision_content_div div button .icon{
+    padding-right: 5px;
+}
+
+
+@media (max-width:1000px){
+ .post_descision_content_div{
+    bottom: 0;
+    top: unset;
+    left: 20%;
+    right: 20%;
+    border-radius: unset;
+    border-radius: 10px 10px 0 0;
+ }
+}
+
+@media (max-width:469px){
+    .post_descision_content_div{
+        width: 100%;
+        left: unset;
+        right: unset;
+    }
+}

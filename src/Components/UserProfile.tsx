@@ -28,6 +28,8 @@ import { POST } from "../Features/HomePost"
 import {getCurrentPost} from "../Features/CurrentPost"
 import { FaComment, FaHeart } from "react-icons/fa"
 import LoginSpinner from "./LoginSpinner"
+import { openPostActionModal } from "../Features/Postdecision"
+import Postaction from "./Postaction"
 // import { followerUser} from "../Features/Profile"
 
 
@@ -35,7 +37,7 @@ const UserProfile = () => {
   const { userEndPoint, setPostModalStatus,
     setUsername, getUserProfile,
     noUserFound,userProfileLoading,  followFunction, unfollowFunction,
-    setGroupChatOrPrivateChatOpening, incomingMessageDetails,
+    setGroupChatOrPrivateChatOpening, incomingMessageDetails, hideSideBarBtn,
     setOpenEditProfile, likeUnlikeSocketFunction, blocked, blockedNumber,incomingBlockedSocket} = useContext(appContext)
   let naviagte = useNavigate()
   let dispatch = useDispatch()
@@ -54,6 +56,8 @@ const UserProfile = () => {
   
   useEffect(() => {
     getUserProfile(`${id.id}`, "")
+   hideSideBarBtn()
+      setGroupChatOrPrivateChatOpening(0);
  
   }, [])
   // this meant for the user looking for another user
@@ -304,6 +308,23 @@ const UserProfile = () => {
    
     
   }
+  const postActionBtn = (postedBy: string, time:number) => {
+    console.log(userProfileDetails.followers);
+    // if (postedBy === userProfileDetails.registerdUserIdentification) {
+      
+    // } else {
+      
+    // }
+      dispatch(
+        openPostActionModal({
+          area:"Profile",
+          postBy: postedBy,
+          time,
+          loggedInUser: `${userProfileDetails.registerdUserIdentification}`,
+          followers_following: userProfileDetails.ifUserFollowing,
+        })
+      );
+  }
   return (
     <>
       {!userProfileLoading ? (
@@ -325,17 +346,25 @@ const UserProfile = () => {
               <div className="user_profile_parent_div">
                 <div className="user_profile_parent_div1"></div>
                 <div className="user_profile_div">
-                  <div
-                    className="background_pic"
-                    style={{ backgroundImage: `url(${boxer})` }}
-                  >
-                    <div
-                      className=""
-                      style={{ backgroundColor: "#0000004a" }}
-                    ></div>
-                  </div>
+                  {
+                    <>
+                      {userProfileDetails.background_img_url !== "" ? (
+                        <div
+                          className="background_pic"
+                          style={{
+                            backgroundImage: `url(${userProfileDetails.background_img_url})`,
+                          }}
+                        ></div>
+                      ) : (
+                        <div
+                          className="background_pic"
+                          style={{ backgroundColor: "#0000004a" }}
+                        ></div>
+                      )}
+                    </>
+                  }
                   <div className="user_pic">
-                    <img
+                    <img style={{objectFit:"cover"}}
                       src={
                         userProfileDetails.img_url === ""
                           ? noImg
@@ -527,7 +556,7 @@ const UserProfile = () => {
                                     }
                                     alt=""
                                   />
-                                  <span style={{ color: "white" }}>
+                                  <span style={{ width:"120px", color: "white", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", }}>
                                     {userProfileDetails.username}
                                   </span>
                                 </div>
@@ -568,7 +597,12 @@ const UserProfile = () => {
                                         }
                                       >
                                         <FaHeart style={{ color: "red" }} />{" "}
-                                        <span style={{fontSize:"0.7rem", padding:"0 3px"}}>
+                                        <span
+                                          style={{
+                                            fontSize: "0.7rem",
+                                            padding: "0 3px",
+                                          }}
+                                        >
                                           {details.likes.length > 0 &&
                                             details.likes.length}
                                         </span>
@@ -584,7 +618,9 @@ const UserProfile = () => {
                                           )
                                         }
                                       >
-                                        <BiHeart style={{fontSize:"1.8rem"}} />{" "}
+                                        <BiHeart
+                                          style={{ fontSize: "1.8rem" }}
+                                        />{" "}
                                         <span>
                                           {Number(details.likes.length) > 0 &&
                                             details.likes.length}
@@ -593,27 +629,37 @@ const UserProfile = () => {
                                     )}
                                   </>
                                   <button
-                                   
                                     onClick={() =>
                                       openPost(details.postedBy, details.time)
                                     }
                                   >
                                     <FaComment />{" "}
-                                    <span style={{ fontSize: "0.5rem", padding:"0 4px" }}>
-                          
+                                    <span
+                                      style={{
+                                        fontSize: "0.5rem",
+                                        padding: "0 4px",
+                                      }}
+                                    >
                                       {details.comment.length > 0 &&
                                         details.comment.length}
                                     </span>
                                   </button>
                                   {/* {userProfileDetails.username ===
                                     userProfileDetails.registerdUserIdentification && ( */}
-                                    <button>
-                                      <div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                      </div>
-                                    </button>
+                                  <button
+                                    onClick={() =>
+                                      postActionBtn(
+                                        `${details.postedBy}`,
+                                        Number(details.time)
+                                      )
+                                    }
+                                  >
+                                    <div>
+                                      <div></div>
+                                      <div></div>
+                                      <div></div>
+                                    </div>
+                                  </button>
                                   {/* )} */}
                                 </div>
                               </div>
@@ -642,6 +688,7 @@ const UserProfile = () => {
               <Sidebar />
               <ActionModal />
               <ProfileEdit />
+              <Postaction />
             </>
           )}
         </>
@@ -651,3 +698,5 @@ const UserProfile = () => {
 }
 
 export default UserProfile
+
+

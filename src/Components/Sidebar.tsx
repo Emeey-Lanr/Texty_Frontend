@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux"
 import { getFollowedNotification } from "../Features/Profile"
 import {getCurrentMessageId} from "../Features/Message"
 import axios from "axios"
+import noImg from "../images/noImage.png";
 
 
 const Sidebar = () => {
@@ -144,7 +145,7 @@ const Sidebar = () => {
       </div>
       <div className="group_identification">
         <div className="group_ff_chat_indication" style={{paddingBottom:"5px"}}>
-          <button onClick={() => openFFChat()} style={ privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" } }>FF Chats
+          <button onClick={() => openFFChat()} style={ privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" } }>TEXTY
            {messageStore.unCheckedMessageNumber > 0 && <span> {messageStore.unCheckedMessageNumber}</span>}
           </button>
          {/*  <button style={!privateChatOrGroupChat ? { borderBottom: "3px solid white" } : { borderBottom: "none" }} onClick={() => openGroupChat()}>Group Chats
@@ -159,7 +160,7 @@ const Sidebar = () => {
  <div>
                 <button className="link"  onClick={()=>privateChatBtn(name.notowner)}>
           <span className="group_img_div">
-                      <img src={boxer} alt="" />   <div>
+                      <img src={name.notowner_imgurl !== '' ? name.notowner_imgurl : noImg} alt="" />   <div>
                         <h3>{name.notowner}</h3>
                         <p>{name.message[name.message.length - 1].text}</p>
                       </div>
@@ -217,7 +218,7 @@ const Sidebar = () => {
 
       </div>
       <div className="user_Profile_details" style={{marginBottom:"100px"}}>
-        <button onClick={() => checkNotification()} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <button onClick={() => checkNotification()} style={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
           
           <FaBell />
           <>

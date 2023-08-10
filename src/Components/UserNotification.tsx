@@ -14,13 +14,15 @@ import { getFollowedNotification, unfollowFollowingR } from "../Features/Profile
 import noImg from "../images/noImage.png"
 
 const UserNotification = () => {
-  const { setRouteIdentification, getUserProfile, followFunction, unfollowFunction } = useContext(appContext)
+  const { setRouteIdentification,setGroupChatOrPrivateChatOpening ,getUserProfile, hideSideBarBtn, followFunction, unfollowFunction } = useContext(appContext)
   const dispatch = useDispatch()
   const userDetail = useSelector((state: any) => state.userprofile.value)
    const socket = useSelector((state: any) => state.socket.value)
   useEffect(() => {
     getUserProfile("notification", "notification")
     setRouteIdentification("notification")
+    hideSideBarBtn()
+    setGroupChatOrPrivateChatOpening(0)
   }, [])
 
   // if user is online he recieves the notifiaction\

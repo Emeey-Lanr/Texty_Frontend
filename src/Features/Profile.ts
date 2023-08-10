@@ -4,6 +4,9 @@ import { UserProfile } from "../Interface/UserProfile"
 
 
 
+// NOTE the registeredUserIdentification is always
+// the use logged in and associated with account
+// The username name can change if your route paramenter bears another name if profile is checked by route
 
 const userProfileIntialState: UserProfile = {
      blockedState:false,
@@ -131,6 +134,15 @@ export const userProfileSlice = createSlice({
             }
             
             
+        },
+        deletePost: (state, action) => {
+            console.log(action.payload, "Lkjhgfd")
+            if (state.value.registerdUserIdentification === action.payload.username) {
+                state.value.homePost = state.value.post.filter((data)=>data.time !== action.payload.time && data.postedBy === action.payload.username)
+                state.value.post = state.value.post.filter((data)=>data.time !== action.payload.time && data.postedBy === action.payload.username)
+            }
+          
+            
         }
         
        
@@ -151,6 +163,7 @@ export const {
     likesUserPost,
     commentProfileR,
     blockAndUnBlockUserR,
-    unBlockedVPR
+    unBlockedVPR,
+    deletePost
 } = userProfileSlice.actions
 export default userProfileSlice.reducer

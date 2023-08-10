@@ -109,7 +109,7 @@ const Friends = ({ setOpenFollowersFollowing, openFFNumber, setOpenFFNumber }: F
   return (
       <div className="friends_space">
           <div>
-              <button onClick={()=>setOpenFollowersFollowing(false)} style={{border:"none", background:"none"}}>
+              <button  onClick={()=>setOpenFollowersFollowing(false)} style={{border:"none", background:"none", marginTop:"10px"}}>
                   <FaArrowLeft style={{color:"black"}}/>
               </button>
           </div>

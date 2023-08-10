@@ -13,7 +13,7 @@ import Socketio from './Features/Socketio';
 import Message from './Features/Message';
 import HomePost from './Features/HomePost';
 import CurrentPost from './Features/CurrentPost';
-// 
+import Postdecision from './Features/Postdecision';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -26,7 +26,8 @@ const store = configureStore({
     userprofile: userProfileReducer,
     privatemessagechat: Message,
     home_post: HomePost,
-    current_post:CurrentPost,
+    current_post: CurrentPost,
+    postdecision:Postdecision,
   }
 
 })

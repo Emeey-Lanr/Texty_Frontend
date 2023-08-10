@@ -108,9 +108,7 @@ import { useLocation } from "react-router-dom"
             </button> }
             <>
               {groupChatOrPrivateChatOpening === 1 && <div className="navbar_group_action">
-                <button>
-                  <FaBell style={{ paddingRight: "10px" }} />
-                </button>
+               
                 <button onClick={()=>viewProfile()}>
                   <FaPeopleCarry style={{ paddingRight: "10px" }} /> View Profile
                 </button>

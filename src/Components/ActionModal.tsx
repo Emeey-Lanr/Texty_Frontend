@@ -74,8 +74,9 @@ const ActionModal = () => {
     const deleteMessageBtn = async () => {
               setDeleteIndication("Deleting...")
          const details = { owner: messageRedux.currentDetails.owner, notOwner: messageRedux.currentDetails.notowner }
-      socket.emit("deleteUserMessageBox", details)
-    //   const deleteM = await axios.post(`${messageEndPoint}/deleteMessage`, details)
+        socket.emit("deleteUserMessageBox", details)
+        
+      const deleteM = await axios.post(`${messageEndPoint}/deleteMessage`, details)
   
     }
 

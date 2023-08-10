@@ -8,7 +8,7 @@ import SideBarModal from "./SideBarModal"
 import Sidebar from "./Sidebar"
 import Navbar from "./Navbar"
 import Create from "./Create"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { appContext } from "../App"
 import Group from "./Group"
 import ChattingSpace from "./ChattingSpace"
@@ -18,20 +18,34 @@ import { socketHomePost,getLikesHomePost,commentHomePostR } from "../Features/Ho
 import { useDispatch } from "react-redux"
 import { getCurrentPost } from "../Features/CurrentPost"
 import { BiHeart, BiChat } from "react-icons/bi"
+import Postaction from "./Postaction";
+import { openPostActionModal } from "../Features/Postdecision";
 
 
 const Home = () => {
-    const { setRouteIdentification, getUserProfile, incomingMessageDetails,
-        setGroupChatOrPrivateChatOpening, setPostModalStatus, newPostAlert, setNewPostAlert, newPostForFollowersFunction, userNewPostFunction, likeUnlikeSocketFunction } = useContext(appContext)
+    const {
+      setRouteIdentification,
+      getUserProfile,
+      incomingMessageDetails,
+      setGroupChatOrPrivateChatOpening,
+      hideSideBarBtn,
+      setPostModalStatus,
+      newPostAlert,
+      setNewPostAlert,
+      newPostForFollowersFunction,
+      userNewPostFunction,
+      likeUnlikeSocketFunction,
+    } = useContext(appContext);
       const socket = useSelector((state: any) => state.socket.value)
     const homePost = useSelector((state: any) => state.home_post.value)
     const userProfileDetails = useSelector((state: any) => state.userprofile.value)
+    const newPost = useRef<HTMLButtonElement>(null)
     let dispatch = useDispatch()
     useEffect(() => {
         getUserProfile("-;;'kjg", "home")
         setRouteIdentification("home")
-        setGroupChatOrPrivateChatOpening(0)
-        
+      hideSideBarBtn()
+       setGroupChatOrPrivateChatOpening(0);
     }, [])
     const socketHomePostFunction = () => {
         socket.on("homePost", (data: any) => {
@@ -97,6 +111,22 @@ const Home = () => {
     interface HOMEPOST {
 
     }
+  const scrollToNewPost = () => {
+      newPost.current?.scrollIntoView()
+  }
+  const openPostAction = (postBy: string, time: string) => {
+    console.log(userProfileDetails);
+    dispatch(
+      openPostActionModal({
+        area:"Home",
+        postBy,
+        time,
+        loggedInUser: userProfileDetails.registerdUserIdentification,
+        followers_following: userProfileDetails.ifUserFollowing,
+      })
+    );
+   
+  }
  
     return (
       <>
@@ -109,8 +139,9 @@ const Home = () => {
                 style={{ position: "sticky", top: "0" }}
               >
                 <button
+                  ref={newPost}
                   className="home_newPost_view_btn"
-                  onClick={() => scrollToTopBtn()}
+                  onClick={() => scrollToNewPost()}
                 >
                   New Post
                 </button>
@@ -186,7 +217,7 @@ const Home = () => {
                               )
                             }
                           >
-                            <BiHeart style={{fontSize:"1.3rem"}} />{" "}
+                            <BiHeart style={{ fontSize: "1.3rem" }} />{" "}
                             <span
                               style={{ fontSize: "0.5rem", padding: "0 4px" }}
                             >
@@ -204,7 +235,11 @@ const Home = () => {
                           {details.comment.length > 0 && details.comment.length}
                         </span>
                       </button>
-                      <button onClick={()=>alert(details.img_url)}>
+                      <button
+                        onClick={() =>
+                          openPostAction(details.postedBy, details.time)
+                        }
+                      >
                         <div>
                           <div></div>
                           <div></div>
@@ -223,10 +258,12 @@ const Home = () => {
         <Group />
         <ChattingSpace />
         <Create />
+
         {/* <PostModal/> */}
         <SideBarModal />
         <Navbar />
         <Sidebar />
+        <Postaction />
       </>
     );
 }

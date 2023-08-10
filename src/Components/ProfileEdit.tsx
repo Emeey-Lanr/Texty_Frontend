@@ -75,11 +75,14 @@ const ProfileEdit = () => {
         
     }
     const uploadImageBtn = () => {
-        axios.put(`${userEndPoint}/updateImg`, { username: "", imgPreviewedUrl, profileBackground }).then((result) => {
-            
-        }).catch((error) => {
-            
-        })
+        axios
+          .put(`${userEndPoint}/updateImg`, {
+            username: userProfileDetails.registerdUserIdentification,
+            imgPreviewedUrl,
+            profileBackground,
+          })
+          .then((result) => {})
+          .catch((error) => {});
         
     }
     return (
@@ -103,28 +106,58 @@ const ProfileEdit = () => {
                   </div>
                 </div>
               )}
-              <div
-                className="profile_edit_background_img"
-                style={{
-                  backgroundImage: `url(${boxer})`,
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                }}
-              >
-                <div>
-                  <label id="background">
-                    <BiCamera />
-                    <input
-                      type="file"
-                      hidden
-                      id="background"
-                      onChange={(e) => uploadBackgroundImg(e)}
-                    />
-                  </label>
+              {<>
+                
+                {userProfileDetails.background_img_url !== "" ? <div
+                  className="profile_edit_background_img"
+                  style={{
+                    backgroundImage: `url(${boxer})`,
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                  }}
+                >
+                  <div>
+                    <label id="background">
+                      <BiCamera />
+                      <input
+                        type="file"
+                        hidden
+                        id="background"
+                        onChange={(e) => uploadBackgroundImg(e)}
+                      />
+                    </label>
+                  </div>
+                </div>: 
+                <div
+                  className="profile_edit_background_img"
+                  style={{
+                    backgroundColor: "#0000004a" 
+                  }}
+                >
+                  <div>
+                    <label id="background">
+                      <BiCamera />
+                      <input
+                        type="file"
+                        hidden
+                        id="background"
+                        onChange={(e) => uploadBackgroundImg(e)}
+                      />
+                    </label>
+                  </div>
                 </div>
-              </div>
+                }
+              </>}
+
               <div className="profile_edit_profile_img">
-                <img src={noImg} alt="" />
+                <img
+                  src={
+                    userProfileDetails.registeredUserImgUrl === ""
+                      ? noImg
+                      : userProfileDetails.registeredUserImgUrl
+                  }
+                  alt=""
+                />
                 <label id="profile_img">
                   <BiCamera />
                   <input
@@ -174,21 +207,23 @@ const ProfileEdit = () => {
                 </div>
               </div>
             </div>
-                    {imgPreview && <div className="edit_imgPreview">
-                        <div className="exitPhase">
-                            <button onClick={()=>setImgPreview(false)}>
-                                <FaArrowLeft />
-                            </button>
-                            <p className="phase">{profileBackground}</p>
-                        </div>
+            {imgPreview && (
+              <div className="edit_imgPreview">
+                <div className="exitPhase">
+                  <button onClick={() => setImgPreview(false)}>
+                    <FaArrowLeft />
+                  </button>
+                  <p className="phase">{profileBackground}</p>
+                </div>
 
-                        <div className="img_preview_div">
-                            <img src={imgPreviewedUrl} alt="" />
-                        </div>
-                        <div className="edit_preview_upload_action">
-                            <button onClick={() => uploadImageBtn()}>Upload</button>
-                        </div>
-                    </div>}
+                <div className="img_preview_div">
+                  <img src={imgPreviewedUrl} alt="" />
+                </div>
+                <div className="edit_preview_upload_action">
+                  <button onClick={() => uploadImageBtn()}>Upload</button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </>
