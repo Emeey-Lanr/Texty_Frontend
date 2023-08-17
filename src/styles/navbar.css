@@ -6,11 +6,13 @@ top: 0;
 right: 0;
 
 display: grid;
-grid-template-columns: 280px 100%;
+grid-template-columns: 280px 7fr;
+/* grid-template-columns: 280px 20%; */
+background: black;
 }
 .navbar{
-    width: 81.7%;
     height: 100%;
+    /* background: red; */
     background-color: black;
 
 
@@ -20,11 +22,22 @@ align-items: center;
 padding: 0 10px;
 box-sizing: border-box;
 }
+.navbar .nav_open_sidebar {
+    background: none;
+    border: none;
+}
+.navbar .nav_open_sidebar span{
+    display: block;
+    width: 27px;
+    background: white;
+    margin-bottom: 5px;
+    height: 2px;
+    border-radius: 5px;
+}
 .reconmend_search{
     width:40%;
     margin:  0 auto;
     display: grid;
-
     padding: 10px 0;
  grid-template-columns: 80% 20%;
      justify-content: center;
@@ -161,9 +174,11 @@ color: #171717;
 .navbar_group_action_div:hover .navbar_group_action{
     display: block;
 }
+
+
 @media (min-width:1001px){
    
-    .open_sidebar{
+    .nav_open_sidebar{
         display: none;
     }
 }

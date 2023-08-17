@@ -1,0 +1,96 @@
+.follow_a_user_parent{
+    width: 400px;
+    background: black;
+    height: 60%;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    border-radius: 10px 10px 0 0;
+    overflow-y: scroll;
+
+}
+.follow_a_user_parent::-webkit-scrollbar{
+    width: 5px;
+}
+.show{
+    bottom: 0;
+      transition: all ease-in 0.8s;
+}
+.hide{
+    transition: all ease-in 0.9s;
+    bottom: -55%;
+}
+.showIcon{
+ transform: unset;
+}
+.hideIcon{
+    transform: rotate(180deg);
+}
+.top_heading{
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background: black;
+
+}
+.top_heading button{
+border: none;
+background: none;
+color: #8c8c8c;
+}
+.heading_follow_a_user{
+    width: 90%;
+    margin: 0 auto 0% auto;
+    font-weight: 500;
+    
+
+}
+.heading_follow_a_user h2{
+    color: white;
+    font-size: 1rem;
+    
+}
+
+.follow_a_user{
+    width: 90%;
+    margin: 0 auto 10px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(20, 20, 20);
+    padding-bottom: 10px;
+}
+.follow_a_user_parent .follow_a_user div img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50px; 
+}
+.follow_a_user .description {
+    display: flex;
+    align-items: center;
+}
+.follow_a_user .description div{
+    margin-left: 5px;
+}
+.follow_a_user .description h3{
+    font-weight: 400;
+    color: white;
+    font-size: 1rem;
+    line-height: 5px;
+}
+
+.follow_a_user .description p{
+    font-size: 0.7rem;
+    color: white;
+    line-height: 0px;
+}
+.follow_a_user  .action button{
+    border: none;
+    background: none;
+    border: 1px solid white;
+    width: 100px;
+    height: 35px;
+    border-radius: 30px;
+    color: white;
+
+}

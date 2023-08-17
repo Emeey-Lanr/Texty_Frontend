@@ -1,47 +1,42 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from "react-router-dom"
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
 
-import chatRedux from "./Features/Chat"
-import userProfileReducer from "./Features/Profile"
-import Socketio from './Features/Socketio';
-import Message from './Features/Message';
-import HomePost from './Features/HomePost';
-import CurrentPost from './Features/CurrentPost';
-import Postdecision from './Features/Postdecision';
+import chatRedux from "./Redux/Chat";
+import userProfileReducer from "./Redux/Profile";
+import Socketio from "./Redux/Socketio";
+import Message from "./Redux/Message";
+import HomePost from "./Redux/HomePost";
+import CurrentPost from "./Redux/CurrentPost";
+import Postdecision from "./Redux/Postdecision";
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 
 const store = configureStore({
-
   reducer: {
-   socket:  Socketio, 
+    socket: Socketio,
     chat: chatRedux,
     userprofile: userProfileReducer,
     privatemessagechat: Message,
     home_post: HomePost,
     current_post: CurrentPost,
-    postdecision:Postdecision,
-  }
-
-})
+    postdecision: Postdecision,
+  },
+});
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-   <BrowserRouter>
-   <App />
-  
-    </BrowserRouter>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
- 
-  
   </React.StrictMode>
 );
 

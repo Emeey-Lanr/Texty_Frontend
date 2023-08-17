@@ -1,9 +1,13 @@
 .search_home_div{
-    width: 85%;
+    width: 100%;
     height: 90%;
     position: fixed;
+    /* bottom: 0;
+    right: 0; */
     bottom: 0;
-    right: 0;
+    display: grid;
+     grid-template-columns: 280px 7fr;
+    /* padding-top: 20px; */
 }
 .search_home_head{
     width: 90%;
@@ -16,7 +20,7 @@
     margin: 0 auto;
     display: grid;
     grid-template-columns: 80% 20%;
-    padding-top: 10px;
+    padding-top: 20px;
 }
 .search_home_input_div input{
     height: 45px;
@@ -50,16 +54,21 @@
 
 }
 
-.search_home_div .people{
-    height: 82%;
-    overflow-y: scroll;
+.search_home_div .search_home_head .people{
+    width: 100%;
+    
+    /* display: grid; */
+    /* background: red; */
+
 }
 .search_home_input_div .people::-webkit-scrollbar{
-    width: 5px;
+    width: 0px;
 }
 .search_home_div .people .user{
-    width: 90%;
-    margin:  0 auto 10px auto;
+    width: 95%;
+    /* width: 100%; */
+    margin:  6px auto 10px auto;
+    
     
 }
 .search_home_div .people .user .img_description_div img{
@@ -129,8 +138,25 @@
     border-radius: 20px;
 
 }
+.spin{
+    animation: spin 1s infinite ease-in  running normal;
+}
+@keyframes spin {
+    0%{
+            transform: rotate(0deg);
+    }
+    100%{
+        transition:all 1s ease-in;
+        transform: rotate(360deg);
+    }
+}
 @media (max-width:1001px){
     .search_home_div{
+        width: 100%;
+   display: unset;
+    
+    }
+    .search_home_head{
         width: 100%;
     }
 }

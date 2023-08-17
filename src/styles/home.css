@@ -4,12 +4,11 @@
     position: fixed;
     top: 0;
     display: grid;
-
-    grid-template-columns: 280px 100%;
+grid-template-columns: 280px 7fr;
     align-items: flex-end;
 }
 .home_div{
-    width: 81%;
+    /* width: 100%; */
     height: 90%;
     right: 0;
     bottom: 0;
@@ -76,14 +75,20 @@
 }
 
 .home_post_div .home_postaction{
-    width: 90%;
+      width: 90%;
+    margin: 0 auto;
     display: flex;
-    justify-content: flex-end; 
-    margin:  0 auto;
+    justify-content: flex-end;
     /* display: grid;
     grid-template-columns: 50% 50%;*/
     
-    
+}
+.home_post_div .home_poster span{
+     width: 80%;
+     text-align: start;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .home_post_div .home_postaction button {
     /* border: 1px solid #d9d8d8; */
@@ -141,8 +146,8 @@ padding-bottom: 10px;
     background: #0000009e;
 }
 .post_modal_p_div {
-    width: 30%;
-    height: 89%;
+    width: 420px;
+    height: 75%;
     position: fixed;
     bottom: 0;
     left: 40%;
@@ -179,6 +184,7 @@ padding-bottom: 10px;
 .post_modal_home_post .post_modal_caption_div p{
     font-size: 0.8rem;
     color: #c9c9c9;
+    padding: 20px 0;
 }
 .post_modal_post_img img{
     width: 100%;
@@ -223,7 +229,7 @@ padding-bottom: 10px;
 }
 .post_modal_comment{
     width: 90%;
-    height: 33%;
+    height: 54%;
     margin:  0 auto;
     /* background: red; */
     overflow-y: scroll;
@@ -533,13 +539,25 @@ align-items:center;
         width: 80%;
         margin: 10px auto 5px auto;
     }
+    .post_modal_p_div{
+        left: unset;
+        right: unset;
+         left: 20%;
+         /* left: 10%; */
+       
+    }
 }
 
 @media (max-width:600px){
     .create_group_post_div .create_post_div{
         width: 95%;
-       
-        
+
+    }
+     .post_modal_p_div{
+        width: 76%;
+         left: unset;
+        right: unset;
+          left: 10%;
     }
 }
 @media (max-width:500px){
@@ -548,4 +566,21 @@ align-items:center;
         width: 100%;
         margin: 10px auto 5px auto;
     }
+     .post_modal_p_div{
+         left: unset;
+        right: unset;
+        width: 100%;
+    }
 }
+
+@media (max-width:460px) {
+   
+    .home_post_div{
+        width: 100%;
+    }
+ .home_post_container .home_post_div .home_poster{
+    width: 100%;
+  }
+    
+}
+

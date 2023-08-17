@@ -1,0 +1,26 @@
+.texy_spinner{
+    display: flex;
+    justify-content: center;
+}
+ .texy_spinner span{
+     display: block;
+    width: 10px;
+    height: 10px;
+    /* border-radius: 5px 5px 10px; */
+    background-color: black;
+    animation: span infinite 0.9s running normal;
+}
+@keyframes span {
+    0%{
+        transition: 0.9s ease-in;
+        margin: 0 2px;
+        border-radius: 10px;
+        
+    }
+    100%{
+        transition: 0.9s ease-in;
+        margin: 0px 0px;
+        transform: rotate(360deg);
+      
+    }
+}

@@ -1,116 +1,184 @@
-import "../styles/chat.css"
-import boxer from "../images/boxer.jpg"
-import { AiOutlineCamera } from "react-icons/ai"
-import { appContext } from "../App"
-import {useContext, useState, useEffect, useRef} from "react"
-import GroupNotification from "./GroupNotification"
-import GroupDetails from "./GroupDetails"
-import { FaArrowLeft } from "react-icons/fa"
-import { useDispatch, useSelector } from "react-redux"
-import {incomingMesageR}from "../Features/Message"
-import axios from "axios"
-import ActionModal from "./ActionModal"
+import "../styles/chat.css";
+import boxer from "../images/boxer.jpg";
+import { AiOutlineCamera } from "react-icons/ai";
+import { appContext } from "../App";
+import { useContext, useState, useEffect, useRef } from "react";
+import GroupNotification from "./GroupNotification";
+import GroupDetails from "./GroupDetails";
+import { FaArrowLeft } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { incomingMesageR } from "../Redux/Message";
+import axios from "axios";
+import ActionModal from "./ActionModal";
 import noImg from "../images/noImage.png";
 
 const ChattingSpace = () => {
-      const {hideSideBar, setHideSideBar,  showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening, incomingMessageDetails,messageEndPoint} = useContext (appContext)
-    const socket = useSelector((state: any) => state.socket.value)
-    const userDetails = useSelector((state: any) => state.userprofile.value)
-    const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
-    const dispatch = useDispatch()
+  const {
+    hideSideBar,
+    setHideSideBar,
+    showSideBarBtn,
+    groupChatOrPrivateChatOpening,
+    setGroupChatOrPrivateChatOpening,
+    incomingMessageDetails,
+    messageEndPoint,
+  } = useContext(appContext);
+  const socket = useSelector((state: any) => state.socket.value);
+  const userDetails = useSelector((state: any) => state.userprofile.value);
+  const messageRedux = useSelector(
+    (state: any) => state.privatemessagechat.value
+  );
+  const dispatch = useDispatch();
   const text = useRef<HTMLTextAreaElement>(null);
   const lastMessage = useRef<HTMLDivElement>(null);
-    const [message, setMessage] = useState<string>("")
+  const [message, setMessage] = useState<string>("");
 
-    useEffect(() => {
-      if (socket) {
-           incomingMessageDetails() 
-            lastMessage.current?.scrollIntoView()
-      }
-     
-    
-     
-    })
- useEffect(()=>{
- 
- },[])
-    const messageEndpointt = `${messageEndPoint}/sendMessageOrCreate`
-    const messageTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setMessage(e.target.value);
-    };
-    const sendMessageBtn = async () => {
-        if (message !== "") {
-          const date = new Date();
-           const hours = date.getHours()
-           const minutes = date.getMinutes()
-          const info = {
-            owner: userDetails.registerdUserIdentification,
-            owner_imgurl: userDetails.registeredUserImgUrl,
-            notowner: messageRedux.currentDetails.notowner,
-            notowner_imgurl: messageRedux.currentDetails.notowner_imgurl,
-            sender: userDetails.registerdUserIdentification,
-            text: message,
-            time: `${hours}:${minutes}${hours >= 12 ? "PM" : "AM"}`,
+  useEffect(() => {
+    if (socket) {
+      incomingMessageDetails();
+      lastMessage.current?.scrollIntoView();
+    }
+  });
+  useEffect(() => {}, []);
+  const messageEndpointt = `${messageEndPoint}/sendMessageOrCreate`;
+  const messageTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+  const sendMessageBtn = async () => {
+    if (message !== "") {
+      const date = new Date();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const info = {
+        owner: userDetails.registerdUserIdentification,
+        owner_imgurl: userDetails.registeredUserImgUrl,
+        notowner: messageRedux.currentDetails.notowner,
+        notowner_imgurl: messageRedux.currentDetails.notowner_imgurl,
+        sender: userDetails.registerdUserIdentification,
+        text: message,
+        time: `${hours}:${minutes}${hours >= 12 ? "PM" : "AM"}`,
 
-            // time:`${date.}`
-          };
-          // console.log(`${info.year}`.split(" "))
-          // // console.log(message)
-          socket.emit("privateMessage", info);
-          const sendMessage = await axios.post(messageEndpointt, info);
-         let m = ""
-         
-          
-      
-          // dispatch(incomingMesageR(
-          //     {
-          //         chattingWithName: "ronald",
-          //         incomingMessage: { owner: "emeey", notOwner:"ronald",message:[{sender:"emeey", time:"2:30pm", text:"Fuck you", messageImg:"", img:""}] }
-          //     }))
+        // time:`${date.}`
+      };
+      // console.log(`${info.year}`.split(" "))
+      // // console.log(message)
+      socket.emit("privateMessage", info);
+      const sendMessage = await axios.post(messageEndpointt, info);
+      let m = "";
 
-          // console.log(messageRedux)
-        }
-      
+      // dispatch(incomingMesageR(
+      //     {
+      //         chattingWithName: "ronald",
+      //         incomingMessage: { owner: "emeey", notOwner:"ronald",message:[{sender:"emeey", time:"2:30pm", text:"Fuck you", messageImg:"", img:""}] }
+      //     }))
 
-          
-      }
+      // console.log(messageRedux)
+    }
+  };
   return (
-      <>
-          {groupChatOrPrivateChatOpening === 1 && 
-              
-         <div className="chatting_space">
-                  <div className="goBack_chatting_space">
-                      <button onClick={()=>setGroupChatOrPrivateChatOpening(0)}>
-                          <FaArrowLeft/>
-                      </button>
-         </div>
+    <>
+      {groupChatOrPrivateChatOpening === 1 && (
+        <div className="chatting_space">
+          <div className="goBack_chatting_space">
+            <button onClick={() => setGroupChatOrPrivateChatOpening(0)}>
+              <FaArrowLeft />
+            </button>
+          </div>
           <div className="chat_group">
-                      {messageRedux.currentDetails.message.map((data:{text:string, sender:string, time:string, owner_imgurl:string, notowner_imgurl:string })=>(
-                          <div className={data.sender === userDetails.registerdUserIdentification ? "chat-message_div_1" : "chat-message_div_2" }>
-                              <div className={data.sender === userDetails.registerdUserIdentification ? "chat-message_imgdiv_1" : "chat-message_imgdiv_2"}>
-                                  {data.sender === userDetails.registerdUserIdentification ? <>
-                                      <img style={{objectFit:"cover"}} src={userDetails.registeredUserImgUrl === "" ? noImg : userDetails.registeredUserImgUrl} alt="" />
-                              <div>
-                                      <span>{data.sender === userDetails.registerdUserIdentification ? "you" : data.sender }</span><span style={{ borderLeft: "2px solid white", textAlign: "center" }}>{data.time }</span>
-                              </div>
-                                  </>:
-                                  <>
-                                       <div>
-                                      <span>{data.sender === userDetails.registerdUserIdentification ? "you" : data.sender }</span><span style={{ borderLeft: "2px solid white", textAlign: "center" }}>{data.time }</span>
-                                      </div>
-                                      <img src={messageRedux.currentDetails.notowner_imgurl === "" ? noImg :  messageRedux.currentDetails.notowner_imgurl} alt="" />
-                            
-                                  </>}
+            {messageRedux.currentDetails.message.map(
+              (data: {
+                text: string;
+                sender: string;
+                time: string;
+                owner_imgurl: string;
+                notowner_imgurl: string;
+              }) => (
+                <div
+                  className={
+                    data.sender === userDetails.registerdUserIdentification
+                      ? "chat-message_div_1"
+                      : "chat-message_div_2"
+                  }
+                >
+                  <div
+                    className={
+                      data.sender === userDetails.registerdUserIdentification
+                        ? "chat-message_imgdiv_1"
+                        : "chat-message_imgdiv_2"
+                    }
+                  >
+                    {data.sender === userDetails.registerdUserIdentification ? (
+                      <>
+                        <img
+                          style={{ objectFit: "cover" }}
+                          src={
+                            userDetails.registeredUserImgUrl === ""
+                              ? noImg
+                              : userDetails.registeredUserImgUrl
+                          }
+                          alt=""
+                        />
+                        <div>
+                          <span>
+                            {data.sender ===
+                            userDetails.registerdUserIdentification
+                              ? "you"
+                              : data.sender}
+                          </span>
+                          <span
+                            style={{
+                              borderLeft: "2px solid white",
+                              textAlign: "center",
                               
-                          </div>
-                              <div className={data.sender === userDetails.registerdUserIdentification ? "chat_message_1" : "chat_message_2"}>
-    
-                                  <p onClick={()=>alert(data.notowner_imgurl)}>{data.text }</p>
-            
-                          </div>
-                      </div>
-                      )) }
-              {/* <div className="chat-message_div_2">
+                            }}
+                          >
+                            {data.time}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <span>
+                            {data.sender ===
+                            userDetails.registerdUserIdentification
+                              ? "you"
+                              : data.sender}
+                          </span>
+                          <span
+                            style={{
+                              borderLeft: "2px solid white",
+                              textAlign: "center",
+                            }}
+                          >
+                            {data.time}
+                          </span>
+                        </div>
+                        <img
+                          src={
+                            messageRedux.currentDetails.notowner_imgurl === ""
+                              ? noImg
+                              : messageRedux.currentDetails.notowner_imgurl
+                          }
+                          alt=""
+                        />
+                      </>
+                    )}
+                  </div>
+                  <div
+                    className={
+                      data.sender === userDetails.registerdUserIdentification
+                        ? "chat_message_1"
+                        : "chat_message_2"
+                    }
+                  >
+                    <p onClick={() => alert(data.notowner_imgurl)}>
+                      {data.text}
+                    </p>
+                  </div>
+                </div>
+              )
+            )}
+            {/* <div className="chat-message_div_2">
                   <div className="chat-message_imgdiv_2">
                      
                      
@@ -121,38 +189,37 @@ const ChattingSpace = () => {
             
                   </div>
               </div> */}
-             
-             
-              <div ref={lastMessage}/>
+
+            <div ref={lastMessage} />
           </div>
           <div className="chat_input_div">
-              <div className="chat_input">
-                  {/* <label id="pic">
+            <div className="chat_input">
+              {/* <label id="pic">
                       <AiOutlineCamera className="camera_icon" />
                       <input type="file" id="pic" hidden/>
                     </label> */}
-                  
-                  <div>
-                              <textarea ref={text} onChange={(e)=>messageTextArea(e)}></textarea>
-                  </div>
-                 
-              </div>
-              <div className="chat_btn">
-                          {message !== "" && <button onClick={() => sendMessageBtn()}>
-                              <span>{">>"}</span>
-                          </button>}
-             </div>
-           
-                 
-              
-              </div>
-          </div>
-          }
-          
-<ActionModal/>
-    </>
-     
-  )
-}
 
-export default ChattingSpace
+              <div>
+                <textarea
+                  ref={text}
+                  onChange={(e) => messageTextArea(e)}
+                ></textarea>
+              </div>
+            </div>
+            <div className="chat_btn">
+              {message !== "" && (
+                <button onClick={() => sendMessageBtn()}>
+                  <span>{">>"}</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ActionModal />
+    </>
+  );
+};
+
+export default ChattingSpace;

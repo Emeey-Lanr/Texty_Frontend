@@ -4,13 +4,17 @@
     position: fixed;
     left: 0;
     top: 0;
+    /* overflow: auto; */
     /* background: #0000006b; */
     background:black;
     /* background-color: black; */
     display: block;
 }
 .app_logo{
-    height: 20%;
+    position: sticky;
+    top: 0;
+    /* height: 20%;
+    overflow: auto; */
     /* display: flex;
     justify-content: center; */
   
@@ -30,6 +34,7 @@
     height: 50%;
     border: 1px solid #000000;
     border-radius: 20px 50px 20px;
+    
 }
 
 .app_logo .group_identification_add_chat{
@@ -101,6 +106,7 @@ top: 0; */
     justify-content: center;
     align-items: flex-end;
     padding-bottom: 4px;
+    padding: 10px 0;
 
 }
 .group_identification .group_ff_chat_indication button span{
@@ -256,9 +262,11 @@ top: 0; */
 
 /* back modal */
 .user_Profile_details{
+    height: 36%;
     border-top: 1px solid #dbdbdb;
-    padding-top: 10px;
-    overflow-y: scroll;
+    /* padding-top: 10px; */
+    overflow-y: auto;
+    /* height: 500px; */
 }
 .user_Profile_details::-webkit-scrollbar{
     width: 10px;
@@ -277,8 +285,13 @@ top: 0; */
     text-align: left;
     display: flex;
     align-items: center;
+  
     /* border-radius: 10px; */
     
+}
+.user_Profile_details button span{
+      font-weight: lighter;
+      color: #e4e4e4;
 }
 .user_Profile_details button .number_Of_Notification{
     display: block;
@@ -288,11 +301,50 @@ top: 0; */
     margin-top: -14px;
     margin-left: -9px;
     border-radius: 20px;
-    color: white;
+    color: #bfbfbf;
     font-size: 0.6rem;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.user_profile_sidebar_identification{
+/* height: 10%; */
+/* background: red; */
+bottom: 0;
+width: 100%;
+display: flex;
+justify-content: center;
+
+
+}
+.user_profile_sidebar_identification button{
+    width: 90%;
+    background: none;
+    display: flex;
+    justify-content: space-between;
+    border: none;
+    border: 1px solid #414141;
+    background: none;
+    /* background: #e3e3e3; */
+    align-items: center;
+    border-radius: 40px;
+    height: 45px;
+
+
+}
+.user_profile_sidebar_identification button div{
+    display: flex;
+    align-items: center;
+}
+.user_profile_sidebar_identification button div p{
+ font-weight: lighter;
+ color: #bbbbbb;
+}
+.user_profile_sidebar_identification img{
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+    
 }
 @media (min-width:1001px){
     .hidesidebar{

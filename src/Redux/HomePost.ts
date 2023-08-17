@@ -2,12 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 export interface POST {
-    text: string;
-    time: string;
-    img_url: string;
-    postedBy: string;
-    comment: [];
-    likes:string [];
+  text: string;
+  time: string;
+  img_url: string;
+  postedBy: string;
+  comment: [];
+  likes: string[];
+    poster_imgUrl?: string;
 }
 
 const post:POST[] = []

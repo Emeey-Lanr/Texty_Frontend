@@ -58,7 +58,7 @@ import { useLocation } from "react-router-dom"
       <div className="emptyNavbar"></div>
       <div className="navbar">
    
-      <button className="open_sidebar" onClick={showSideBarBtn}>
+      <button className="nav_open_sidebar" onClick={showSideBarBtn}>
           <span></span><span></span><span></span>
       </button>
        <div className="navbar_new_post">

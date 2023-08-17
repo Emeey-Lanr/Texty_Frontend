@@ -1,45 +1,52 @@
 import { FaArrowLeft, FaCheck, FaPenAlt, FaSpinner, FaTimes } from "react-icons/fa"
 import "../styles/user.css"
 import { BiCamera } from "react-icons/bi"
-import boxer from "../images/boxer.jpg"
+
 import noImg from "../images/noImage.png"
-import { useState, useContext, useEffect } from "react"
+import { useState, useContext } from "react"
 import { appContext } from "../App"
 import { useSelector } from "react-redux"
 import axios from "axios"
+import { useDispatch } from "react-redux"
 const ProfileEdit = () => {
-    const { getUserProfile,userEndPoint,about_meText, setAbout_MeText, openEditProfile, setOpenEditProfile} = useContext(appContext)
-    const [about_meState, setAbout_Me_State] = useState<boolean>(false)
+  const { getUserProfile, userEndPoint, about_meText, setAbout_MeText, openEditProfile, setOpenEditProfile } = useContext(appContext)
+  const [about_meState, setAbout_Me_State] = useState<boolean>(false)
    
-    const userProfileDetails = useSelector((state: any) => state.userprofile.value)
+  const userProfileDetails = useSelector((state: any) => state.userprofile.value)
 
    
-    const editAbout_MeBtn = () => {
-        setAbout_Me_State(true)
-        setAbout_MeText(userProfileDetails.about_me)
-    }
-    const [errorStatus, setErrorStatus] = useState<boolean>(false)
-    const [switchAction, setSwitchAction] = useState<boolean>(false)
-    const [imgPreview, setImgPreview] = useState<boolean>(false)
-    const [imgPreviewedUrl, setImgPreviewedUrl] = useState<string>("")
-    const [profileBackground, setProfileBackground] = useState<string>("")
-    const updateStateFunction = () => {
+  const editAbout_MeBtn = () => {
+    setAbout_Me_State(true)
+    setAbout_MeText(userProfileDetails.about_me)
+  }
+  const dispatch = useDispatch()
+  const [errorStatus, setErrorStatus] = useState<boolean>(false)
+  const [switchAction, setSwitchAction] = useState<boolean>(false)
+  const [imgPreview, setImgPreview] = useState<boolean>(false)
+  const [imgPreviewedUrl, setImgPreviewedUrl] = useState<string>("")
+  const [profileBackground, setProfileBackground] = useState<string>("")
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<string>("") 
+  const updateStateFunction = (messagE:string) => {
+      setMessage(messagE)
           setErrorStatus(true)
                    setAbout_Me_State(false)
-            setSwitchAction(false)  
+    setSwitchAction(false)  
+     setLoading(false)
+             setImgPreview(false)
     }
     const updateAboutMeBtn = async () => {
         try {
             setSwitchAction(true)
             const updateUser = await axios.put(`${userEndPoint}/updateAboutMe`, { username: userProfileDetails.registerdUserIdentification, aboutme: about_meText })
-          
+           updateStateFunction(`${updateUser.data.message}`);  
                getUserProfile(`${userProfileDetails.registerdUserIdentification}`, "")
-               updateStateFunction()  
+              setSwitchAction(false)
            
           
-        } catch (error) {
-              updateStateFunction()
-            console.log(error)
+        } catch (error:any) {
+              updateStateFunction(`${error.response.data.message}`)
+          
         }
         setSwitchAction(true)
         
@@ -75,14 +82,24 @@ const ProfileEdit = () => {
         
     }
     const uploadImageBtn = () => {
+ setLoading(true)
         axios
           .put(`${userEndPoint}/updateImg`, {
             username: userProfileDetails.registerdUserIdentification,
             imgPreviewedUrl,
             profileBackground,
           })
-          .then((result) => {})
-          .catch((error) => {});
+          .then((result) => {
+          
+                    updateStateFunction(`uploaded successfully, please wait or reload page`)  
+            getUserProfile(`${userProfileDetails.registerdUserIdentification}`, "")
+       
+
+          })
+          .catch((error) => {
+            updateStateFunction("An error occured")
+            // console.log(err)
+          });
         
     }
     return (
@@ -102,52 +119,55 @@ const ProfileEdit = () => {
                   </button>
 
                   <div>
-                    <p>An error occured</p>
+                    <p>{message}</p>
                   </div>
                 </div>
               )}
-              {<>
-                
-                {userProfileDetails.background_img_url !== "" ? <div
-                  className="profile_edit_background_img"
-                  style={{
-                    backgroundImage: `url(${boxer})`,
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                  }}
-                >
-                  <div>
-                    <label id="background">
-                      <BiCamera />
-                      <input
-                        type="file"
-                        hidden
-                        id="background"
-                        onChange={(e) => uploadBackgroundImg(e)}
-                      />
-                    </label>
-                  </div>
-                </div>: 
-                <div
-                  className="profile_edit_background_img"
-                  style={{
-                    backgroundColor: "#0000004a" 
-                  }}
-                >
-                  <div>
-                    <label id="background">
-                      <BiCamera />
-                      <input
-                        type="file"
-                        hidden
-                        id="background"
-                        onChange={(e) => uploadBackgroundImg(e)}
-                      />
-                    </label>
-                  </div>
-                </div>
-                }
-              </>}
+              {
+                <>
+                  {userProfileDetails.background_img_url !== "" ? (
+                    <div
+                      className="profile_edit_background_img"
+                      style={{
+                        backgroundImage: `url(${userProfileDetails.background_img_url})`,
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                      }}
+                    >
+                      <div>
+                        <label id="background">
+                          <BiCamera />
+                          <input
+                            type="file"
+                            hidden
+                            id="background"
+                            onChange={(e) => uploadBackgroundImg(e)}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className="profile_edit_background_img"
+                      style={{
+                        backgroundColor: "#0000004a",
+                      }}
+                    >
+                      <div>
+                        <label id="background">
+                          <BiCamera />
+                          <input
+                            type="file"
+                            hidden
+                            id="background"
+                            onChange={(e) => uploadBackgroundImg(e)}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </>
+              }
 
               <div className="profile_edit_profile_img">
                 <img
@@ -220,7 +240,18 @@ const ProfileEdit = () => {
                   <img src={imgPreviewedUrl} alt="" />
                 </div>
                 <div className="edit_preview_upload_action">
-                  <button onClick={() => uploadImageBtn()}>Upload</button>
+                  <button onClick={() => uploadImageBtn()}>
+                    {!loading ? (
+                      "Upload"
+                    ) : (
+                      <>
+                        <span className="spin1"></span>
+                        <span className="spin2"></span>
+                        <span className="spin3"></span>
+                        <span className="spin4"></span>
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             )}

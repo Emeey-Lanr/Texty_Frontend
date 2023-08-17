@@ -46,22 +46,22 @@ webkitRelativePath:string;
         const date = new Date()
         console.log(`${date.getUTCMonth()}/${date.getDate()}/${date.getFullYear()}`)
         const post = {
-            text: text,
-            date:`${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
-            time:date.getTime(),
-            postedBy:userDetails.registerdUserIdentification,
-            img_url: image,
-            comment: [],
-            likes:[],
-        }
+          text: text,
+          date: `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
+          time: date.getTime(),
+          postedBy: userDetails.registerdUserIdentification,
+          poster_imgUrl:userDetails.registeredUserImgUrl,
+          comment: [],
+          likes: [],
+        };
     
         setFireAction(true)
 
         console.log(post)
         axios.post(`${userEndPoint}/createPost`, {username:userDetails.registerdUserIdentification, postContent:post}).then((result) => {
-            console.log(result.data)
+          
             if (result.data.status) {
-                post.img_url = result.data.img_url
+                post.poster_imgUrl = result.data.img_url
                 socket.emit("emitPost", {username:userDetails.registerdUserIdentification, post:post})
                 setFireAction(false)
             }
@@ -95,10 +95,10 @@ webkitRelativePath:string;
                         {image !== "" && <img src={image} alt="" />}
                     </div>
                     <div className="action_post">
-                        <label id="upload">
+                        {/* <label id="upload">
                             <BiImageAdd className="icon" />
                             <input type="file" hidden id="upload" onChange={(e) => pickImg(e)} />
-                        </label>
+                        </label> */}
                         <button className="btnAction_spin" onClick={()=>uploadPostBtn()}>
                             {!fireAction ? <>
                                 post

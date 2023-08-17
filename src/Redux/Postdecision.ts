@@ -55,28 +55,16 @@ export const postDecisionSlice = createSlice({
         const check = () => {
           console.log(action.payload.followers_following)
           let followUnfollow = -1
-          // We check that user followers on profile, we check the our following on home post
+//   we check the searched for person on our profile folllowers to check if we are there on the profile page
+          
            console.log(action.payload.followers_following);
-          const userFollowingOrNot = action.payload.followers_following.find((users: { username: string }, id: Number) => users.username === `${action.payload.postBy}`)    
+          const userFollowingOrNot = action.payload.followers_following.find((users: { username: string }, id: Number) => users.username === `${action.payload.userToCheck}`)    
           if (userFollowingOrNot) {
             // means you're following the person
-             followUnfollow = 0
+              postDecisionFunction(`${action.payload.postBy}`, action.payload.time, true, false, true, false, false)
           } else {
             // means you're not following the person
-            followUnfollow = 1
-          }
-
-          return followUnfollow 
-        }
-        const followUnfollowNumber = check() 
-
-        console.log(followUnfollowNumber)
-        if (followUnfollowNumber === 0) {
-          // if following, you can unfollow
-          postDecisionFunction(`${action.payload.postBy}`, action.payload.time, true, false, true, false, false)
-        } else {
-          // if not following, you can follow
-          postDecisionFunction(
+              postDecisionFunction(
             `${action.payload.postBy}`,
             action.payload.time,
             true,
@@ -85,7 +73,13 @@ export const postDecisionSlice = createSlice({
             false,
             false
           );
+            followUnfollow = 1
+          }
+
+ 
         }
+        check()
+       
       }
 
            
@@ -93,17 +87,16 @@ export const postDecisionSlice = createSlice({
     openSpinner: (state, action) => {
       state.value.spinnerStatus = action.payload
     },
-    actionDone: (state, action) => {
+    postActionDone: (state, action) => {
+           state.value.postedBy = "";
+               state.value.time = "";
+               state.value.postStatus = false;
+               state.value.follow = false;
+               state.value.unfollow = false;
+               state.value.delete = false;
+               state.value.sameUser = false;
 
-      const actionDoneFunction = (postedBy:string, time:string, postStatus:boolean, follow:boolean, unfollow:boolean, deletePost:boolean, sameUser:boolean) => {
-               state.value.postedBy = postedBy;
-               state.value.time = time;
-               state.value.postStatus = postStatus;
-               state.value.follow = follow;
-               state.value.unfollow = unfollow;
-               state.value.delete = deletePost;
-               state.value.sameUser = sameUser;
-            }
+     
            
     }
 
@@ -115,7 +108,7 @@ export const postDecisionSlice = createSlice({
 
 
 
-export const { closePostActionModal,openPostActionModal, openSpinner} = postDecisionSlice.actions
+export const { closePostActionModal,openPostActionModal, openSpinner, postActionDone} = postDecisionSlice.actions
 
 export default postDecisionSlice.reducer
 

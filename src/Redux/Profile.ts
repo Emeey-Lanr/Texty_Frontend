@@ -54,6 +54,13 @@ export const userProfileSlice = createSlice({
         collectUserProfile: (state, action) => {
             state.value = action.payload
         },
+        updatePost:(state, action)=>{
+            if ((state.value.username === state.value.registerdUserIdentification) === (action.payload.user.username === state.value.username)) {
+                state.value.post = action.payload.user.post
+            } else if ((state.value.username !== state.value.registerdUserIdentification) === (action.payload.lookedForUser.username === state.value.username)) {
+                state.value.post = action.payload.lookedForUser.psot
+            }
+        },
         followUser: (state, action) => {
             state.value.followers = action.payload
         },
@@ -108,12 +115,12 @@ export const userProfileSlice = createSlice({
             state.value.registeredUserBlocked = action.payload.userBlocked
             // we check if the profile is still the same with the user theywnat to unblock
             if (state.value.username === action.payload.userToBeUnBlocked) {
-                console.log(1)
+              
                 // we check if the user still has you in his blocked list i.e the user searched for
                 const searchIfUserIsBlocked = action.payload.userToBeUnBlockedBlocked.find((details:{username:string})=>details.username === state.value.registerdUserIdentification)
                 // if that user does 
                 if (searchIfUserIsBlocked) {
-                    console.log(2)
+                
                     // that using incoming blcoked will be replaced by the current on
                     state.value.blocked = action.payload.userToBeUnBlockedBlocked
                     // we set our blocked number identification to 3 and blocked state to true which means you are blocked
@@ -123,9 +130,9 @@ export const userProfileSlice = createSlice({
                 } else if (state.value.registeredUserBlocked.find((details:{username:string})=>details.username === action.payload.userToBeUnBlocked)) {
                     state.value.blockedNumber = 2
                     state.value.blockedState = true
-                    console.log(4)
+                 
                 } else {
-                    console.log(3)
+               
                     // this the opposite of what is above which means
                     // you are not blocked by the person you've un blocked
                     state.value.blockedNumber = 1
@@ -136,13 +143,25 @@ export const userProfileSlice = createSlice({
             
         },
         deletePost: (state, action) => {
-            console.log(action.payload, "Lkjhgfd")
+
             if (state.value.registerdUserIdentification === action.payload.username) {
                 state.value.homePost = state.value.post.filter((data)=>data.time !== action.payload.time && data.postedBy === action.payload.username)
                 state.value.post = state.value.post.filter((data)=>data.time !== action.payload.time && data.postedBy === action.payload.username)
             }
           
             
+        },
+        updateProfileImg:(state, action)=>{
+       
+            if (action.payload.where === "img_url") {
+                console.log("hello")
+                 state.value.registeredUserImgUrl = action.payload.img_url
+                 state.value.img_url = action.payload.img_url
+            }else if(action.payload.where === "background_img_url"){
+                console.log("bello")
+                state.value.background_img_url = action.payload.img_url
+            }
+           
         }
         
        
@@ -154,6 +173,7 @@ export const userProfileSlice = createSlice({
 
 export const {
     collectUserProfile,
+    updatePost,
     followUser,
     getFollowedNotification,
     unfollowViaProfile,
@@ -164,6 +184,7 @@ export const {
     commentProfileR,
     blockAndUnBlockUserR,
     unBlockedVPR,
-    deletePost
+    deletePost,
+    updateProfileImg
 } = userProfileSlice.actions
 export default userProfileSlice.reducer
