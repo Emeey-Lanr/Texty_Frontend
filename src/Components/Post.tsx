@@ -44,7 +44,8 @@ webkitRelativePath:string;
     }
     const uploadPostBtn = () => {
         const date = new Date()
-        console.log(`${date.getUTCMonth()}/${date.getDate()}/${date.getFullYear()}`)
+
+        console.log(`${date.getUTCMonth()}/${date.getDate()}/${date.getFullYear()}`, date.getHours(), date.getMinutes(), date.getSeconds())
         const post = {
           text: text,
           date: `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,

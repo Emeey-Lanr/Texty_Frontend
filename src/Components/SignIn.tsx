@@ -68,7 +68,7 @@ const SignIn = () => {
   
   return (
     <>
-      <div className="signup_div">
+      <form className="signup_div">
           <div style={{width:"100%"}}>
               <div className="signup_logo_div">
                   <Logo/>
@@ -101,7 +101,7 @@ const SignIn = () => {
                    </div>
               </div>
           </div>
-      </div>
+      </form>
     
       <LoginMessageModal /> 
   <LoginSpinner/>    

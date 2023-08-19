@@ -400,7 +400,7 @@ const App = () => {
 
   const likeUnlikeSocketFunction = (
     socketName: string,
-    time: string,
+    time: number,
     name: string,
     state: string
   ) => {
@@ -423,6 +423,25 @@ const App = () => {
       dispatch(blockAndUnBlockUserR(data.details));
     });
   };
+     
+    const [icon, setIcon] = useState("showIcon");
+  const [hide, setHide] = useState<string>("show");
+  const [alwaysOpenSuggested, setAlwaysOpenSuggested] = useState<string>("hideSuggest")
+  const slide = () => {
+    setAlwaysOpenSuggested("hideSuggest");
+     switch (hide) {
+       case "hide":
+         return setHide("show"), setIcon("showIcon");
+       case "show":
+         return setHide("hide"), setIcon("hideIcon");  
+     }  
+
+  }
+  const openSuggest = () => {
+    setAlwaysOpenSuggested("showSuggest")
+    setIcon("hideIcon");  
+  }
+ 
 
   return (
     <appContext.Provider
@@ -504,6 +523,11 @@ const App = () => {
         blockedNumber,
         setBlockedNumber,
         incomingBlockedSocket,
+        slide,
+        icon,
+        hide,
+        openSuggest,
+        alwaysOpenSuggested
       }}
     >
       <Routes>

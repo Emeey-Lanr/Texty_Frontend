@@ -94,3 +94,31 @@ color: #8c8c8c;
     color: white;
 
 }
+
+
+@media (max-width:1000px) {
+    .show{
+      transition: all ease-in 0.9s;
+    bottom: -55%;   
+    }
+    .hideSuggest{
+           transition: all ease-in 0.9s;
+    bottom: -55%; 
+    }
+    .showSuggest{
+            transition: all ease-in 0.9s;
+    bottom: 0; 
+    }
+  
+    /* .follow_a_user_parent {
+        display: none;
+    } */
+    
+}
+@media (max-width:450px){
+    .follow_a_user_parent{
+        width: 98%;
+        margin: 0 auto;
+    }
+
+}

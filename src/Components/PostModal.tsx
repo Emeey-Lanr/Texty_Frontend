@@ -1,15 +1,16 @@
 import "../styles/home.css";
 import Home from "./Home";
-import boxer from "../images/boxer.jpg";
 import { FaComment, FaHeart } from "react-icons/fa";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { appContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
 import { getCurrentLikes, commentR } from "../Redux/CurrentPost";
 import noImg from "../images/noImage.png";
+import ReactTimeAgo from "react-time-ago";
 const PostModal: React.FC = () => {
   const { postModalStatus, setPostModalStatus, likeUnlikeSocketFunction } =
     useContext(appContext);
+    let commentRef = useRef<HTMLTextAreaElement>(null);
   const currentPost = useSelector((state: any) => state.current_post.value);
   const socket = useSelector((state: any) => state.socket.value);
   const userProfileDetails = useSelector(
@@ -71,10 +72,14 @@ const PostModal: React.FC = () => {
         time: currentPost.time,
         postedBy: currentPost.postedBy,
         imgUrl: userProfileDetails.registeredUserImgUrl,
-        commentTime: `${date.getHours()}/${date.getMonth()}/${date.getSeconds()}`,
+        commentTime: date.getTime(),
         state: "comment",
       });
     }
+    if (commentRef.current?.value) {
+      commentRef.current.value = ""
+    } 
+    
   };
 
   return (
@@ -90,7 +95,9 @@ const PostModal: React.FC = () => {
           <div className="post_modal_home_div">
             <div className="post_modal_home_post">
               <div className="date">
-                <span>17hours ago</span>
+                <span>
+                  {<ReactTimeAgo date={currentPost.time} locale="en-US" />}
+                </span>
               </div>
               <div className="post_modal_caption_div">
                 <p>{currentPost.text}</p>
@@ -100,7 +107,14 @@ const PostModal: React.FC = () => {
               </div> */}
               <div className="post_modal_action_div">
                 <div className="post_modal_name_img">
-                  <img src={currentPost.poster_imgUrl === "" ? noImg : currentPost.poster_imgUrl} alt="" />
+                  <img
+                    src={
+                      currentPost.poster_imgUrl === ""
+                        ? noImg
+                        : currentPost.poster_imgUrl
+                    }
+                    alt=""
+                  />
                   <span>{currentPost.postedBy}</span>
                 </div>
                 <div className="post_modal_action_btn_div">
@@ -161,16 +175,27 @@ const PostModal: React.FC = () => {
               (details: {
                 username: string;
                 comment: string;
-                time: string;
-               img_url: string;
+                time: number;
+                img_url: string;
               }) => (
                 <div className="post_modal_comment_body">
                   <div className="post_modal_user_img">
-                    <img src={details.img_url === "" ? noImg : details.img_url} alt="" />
+                    <img
+                      src={details.img_url === "" ? noImg : details.img_url}
+                      alt=""
+                    />
                   </div>
                   <div className="post_modal_comment_details_div">
                     <div className="post_modal_comment_username_time">
-                      <p>{details.username}</p> <span>12hrs</span>
+                      <p>{details.username}</p>{" "}
+                      <span>
+                        {
+                          <ReactTimeAgo
+                            date={details.time}
+                            locale="en-US"
+                          />
+                        }
+                      </span>
                     </div>
                     <div className="comment">
                       <p>{details.comment}</p>
@@ -181,7 +206,7 @@ const PostModal: React.FC = () => {
             )}
           </div>
           <div className="post_modal_input">
-            <textarea onChange={(e) => setComment(e.target.value)}></textarea>
+            <textarea ref={commentRef} onChange={(e) => setComment(e.target.value)}></textarea>
             <button onClick={() => addCommentBtn()}>
               <span>{`>>`}</span>
             </button>

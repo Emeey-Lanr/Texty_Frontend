@@ -27,7 +27,8 @@ import { BiHeart, BiChat } from "react-icons/bi";
 import Postaction from "./Postaction";
 import { openPostActionModal } from "../Redux/Postdecision";
 import FollowUser from "./FollowUser";
-
+import ReactTimeAgo from "react-time-ago";
+import { Link, useNavigate } from "react-router-dom";
 const Home = () => {
   const {
     setRouteIdentification,
@@ -42,6 +43,7 @@ const Home = () => {
     userNewPostFunction,
     likeUnlikeSocketFunction,
   } = useContext(appContext);
+  let navigate  = useNavigate()
   const socket = useSelector((state: any) => state.socket.value);
   const homePost = useSelector((state: any) => state.home_post.value);
   const userProfileDetails = useSelector(
@@ -65,7 +67,7 @@ const Home = () => {
   const incomingLikesSocketFunction = () => {
     const dispatchFunction = (
       postedBy: string,
-      time: string,
+      time: number,
       likesBox: string
     ) => {
       dispatch(
@@ -86,7 +88,7 @@ const Home = () => {
   const incomingCommentSocketFunction = () => {
     const dispatchFunction = (
       postedBy: string,
-      time: string,
+      time: number,
       commentBox: string
     ) => {
       dispatch(
@@ -123,12 +125,12 @@ const Home = () => {
     //   })
     setNewPostAlert(false);
   };
-  const openPost = (name: string, time: string) => {
+  const openPost = (name: string, time: number) => {
     setPostModalStatus(true);
     dispatch(
       getCurrentPost(
         homePost.find(
-          (details: { postedBy: string; time: string }) =>
+          (details: { postedBy: string; time: number }) =>
             details.postedBy === name && details.time === time
         )
       )
@@ -138,7 +140,7 @@ const Home = () => {
   const scrollToNewPost = () => {
     newPost.current?.scrollIntoView();
   };
-  const openPostAction = (postBy: string, time: string) => {
+  const openPostAction = (postBy: string, time: number) => {
     console.log(userProfileDetails, homePost);
     dispatch(
       openPostActionModal({
@@ -151,7 +153,9 @@ const Home = () => {
       })
     );
   };
-
+  const navigateToProfile = (postedBy:string) => {
+    navigate(`/${postedBy}`)
+   }
   return (
     <>
       <div className="home_parent_div">
@@ -171,14 +175,19 @@ const Home = () => {
               </button>
             </div>
           )}
-           {/* <div /> */}
+          {/* <div /> */}
           <div className="home_post_container">
             {homePost.map((details: POST) => (
               <button
                 className="home_post_div"
-                disabled={true}
-                onClick={() => openPost(details.postedBy, details.time)}
+                // disabled={true}
+                // onClick={() => openPost(details.postedBy, details.time)}
               >
+                <div className="date">
+                  <span>
+                    {<ReactTimeAgo date={details.time} locale="en-US" />}
+                  </span>
+                </div>
                 <div
                   className="home_posted"
                   onClick={() => openPost(details.postedBy, details.time)}
@@ -188,15 +197,16 @@ const Home = () => {
                 <div className="home_poster">
                   <div className="home_username_img">
                     <img
-                      onClick={() => alert(20)}
+                       onClick={()=>navigateToProfile(details.postedBy)}
                       src={
                         details.poster_imgUrl === ""
                           ? noImg
                           : details.poster_imgUrl
                       }
-                      alt=""
+                      alt="profile_pic"
                     />
                     <span
+                      onClick={() => openPost(details.postedBy, details.time)}
                       style={{
                         width: "120px",
                         color: "white",
@@ -258,7 +268,7 @@ const Home = () => {
                           onClick={() =>
                             likeUnlikeSocketFunction(
                               "like",
-                              details.time,
+                              Number(details.time),
                               details.postedBy,
                               "like"
                             )
@@ -300,7 +310,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-       <FollowUser/>
+      <FollowUser />
       <PostModal />
       <Group />
       <ChattingSpace />

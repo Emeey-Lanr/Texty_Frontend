@@ -37,6 +37,10 @@ import { openPostActionModal, postActionDone } from "../Redux/Postdecision";
 import Postaction from "./Postaction";
 import FollowUser from "./FollowUser";
 import SideBarModal from "./SideBarModal";
+import ReactTimeAgo from "react-time-ago";
+import Loading from "./Loading";
+import IndexPage from "./IndexPage";
+import Texty from "./Texty";
 // import { followerUser} from "../Features/Profile"
 
 const UserProfile = () => {
@@ -266,12 +270,12 @@ const UserProfile = () => {
   //   // socket.emit("name", {name:"oyelowo"})
   //   // console.log(id.id)
   // }, [])
-  const openPost = (name: string, time: string) => {
+  const openPost = (name: string, time: number) => {
     setPostModalStatus(true);
     dispatch(
       getCurrentPost(
         userProfileDetails.post.find(
-          (details: { postedBy: string; time: string }) =>
+          (details: { postedBy: string; time: number }) =>
             details.postedBy === name && details.time === time
         )
       )
@@ -400,9 +404,7 @@ const UserProfile = () => {
     <>
       {!userProfileLoading ? (
         <div className="userProfileLoading_div">
-          {/* <LoginSpinner/> */}
-          <button onClick={() => magicDivBtn()}>move...</button>
-          <div className={`${magicT}`}></div>
+         <Texty/>      
         </div>
       ) : (
         <>
@@ -572,7 +574,7 @@ const UserProfile = () => {
                           {userProfileDetails.following.length} Following
                         </button>
                         <button onClick={() => openFollowers()}>
-                          {userProfileDetails.followers.length} Folowers
+                          {userProfileDetails.followers.length} Followers
                         </button>
                       </div>
                       <div className="about_Me">
@@ -604,11 +606,16 @@ const UserProfile = () => {
                           userProfileDetails.post.map((details: POST) => (
                             <button
                               className="post_div"
-                              disabled={true}
-                              onClick={() =>
-                                openPost(details.postedBy, details.time)
-                              }
+                              // disabled={true}
+                              // onClick={() =>
+                              //   openPost(details.postedBy, details.time)
+                              // }
                             >
+                               <div className="date">
+                <span> 
+                  {<ReactTimeAgo  date={details.time} locale="en-US"/> }
+                  </span>
+              </div>
                               <div
                                 className="posted"
                                 onClick={() =>
@@ -618,9 +625,11 @@ const UserProfile = () => {
                                 <p>{details.text}</p>
                               </div>
                               <div className="poster">
-                                <div className="username_img">
+                                <div className="username_img"
+                                  onClick={() =>
+                                  openPost(details.postedBy, details.time)
+                                }>
                                   <img
-                                    onClick={() => alert(20)}
                                     src={
                                       userProfileDetails.img_url === ""
                                         ? noImg

@@ -14,6 +14,11 @@ import Message from "./Redux/Message";
 import HomePost from "./Redux/HomePost";
 import CurrentPost from "./Redux/CurrentPost";
 import Postdecision from "./Redux/Postdecision";
+import TimeAgo from "javascript-time-ago"
+import en from "javascript-time-ago/locale/en.json"
+import ru from "javascript-time-ago/locale/ru.json"
+TimeAgo.addDefaultLocale(en)
+TimeAgo.addLocale(ru)
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

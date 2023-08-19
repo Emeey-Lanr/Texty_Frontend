@@ -3,13 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface POST {
   text: string;
-  time: string;
   img_url: string;
   postedBy: string;
   comment: [];
   likes: string[];
     poster_imgUrl?: string;
-}
+      time: number 
+    }
 
 const post:POST[] = []
 
@@ -36,7 +36,7 @@ export const homePostSlice = createSlice({
          
         },
         userNewHomePost: (state, action) => {
-            state.value = action.payload.reverse()  
+            state.value = action.payload  
            
         },
         getLikesHomePost: (state, action) => {

@@ -58,9 +58,9 @@ import { useLocation } from "react-router-dom"
       <div className="emptyNavbar"></div>
       <div className="navbar">
    
-      <button className="nav_open_sidebar" onClick={showSideBarBtn}>
+      {/* <button className="nav_open_sidebar" onClick={showSideBarBtn}>
           <span></span><span></span><span></span>
-      </button>
+      </button> */}
        <div className="navbar_new_post">
           <button onClick={()=>scrollOrNavigateToNewPostBtn()} className="new_post_link">
             {newPostAlert && <span></span>}

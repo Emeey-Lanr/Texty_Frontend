@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { POST } from "./HomePost";
 const currentPost: POST = {
   text: "",
-  time: "",
+  time: 0,
   img_url: "",
   postedBy: "",
   comment: [],

@@ -38,15 +38,16 @@
 }
 
 .app_logo .group_identification_add_chat{
- width: 98%;
+ width: 95%;
  margin:  20px auto 0 auto;
- border-bottom: 1px solid white;
- background-color: #ffffff;
- border-radius: 10px;
+
+ /* background-color: #ffffff; */
+
 display: grid;
 grid-template-columns: 100%;
 justify-content: center;
 align-items: center;
+
 /* position: sticky;
 top: 0; */
 
@@ -66,17 +67,27 @@ top: 0; */
 
 .app_logo .group_identification_add_chat button{
     height: 40px;
-    width: 90%;
+    width: 100%;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
     background: none;
     margin: 0 auto;
+    color: white;
+     border: 1px solid #909090;
+      border-radius: 50px;
   
 
 }
-
+.app_logo .group_identification_add_chat button .create{
+    width: 12px;
+    height: 12px;
+    background: white;
+    color: #000000;
+    border-radius: 10px;
+    margin: 0 10px;
+}
 
 .group_identification{
     height: 50%;
@@ -89,7 +100,7 @@ top: 0; */
 }
 .group_identification .group_ff_chat_indication{
   
-    width: 96%;
+    width: 95%;
     margin:  0 auto;
     display: grid;
     /* grid-template-columns: 50% 50%; */
@@ -103,11 +114,23 @@ top: 0; */
     background: none;
     color: #ffffff;
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    justify-content:space-between;
     padding-bottom: 4px;
     padding: 10px 0;
+    height: 20px;
+    margin-top: 10px;
+    border: 1px solid #909090;
+    align-items: center;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
 
+
+}
+.group_identification .group_ff_chat_indication button p{
+    background: white;
+    width: 80px;
+    border-radius: 0 10px 10px 0;
+    color: #222222;
 }
 .group_identification .group_ff_chat_indication button span{
     display: block;
@@ -120,6 +143,7 @@ top: 0; */
     align-items: center;
     background: #ff1111;
     border-radius: 20px;
+  
 
 }
 .group_identification .group_chat{
@@ -230,6 +254,7 @@ top: 0; */
 /* */
 .user_Profile_details{
     height: 30%;
+    border: none;
 }
 .exit{
     width: 40px;
@@ -262,12 +287,22 @@ top: 0; */
 
 /* back modal */
 .user_Profile_details{
-    height: 36%;
-    border-top: 1px solid #dbdbdb;
+    width: 98%;
+    margin: 0 auto;
+    height: 31%;
+    padding-top: 10px;
     /* padding-top: 10px; */
     overflow-y: auto;
+    background: #212121;
+    border-radius: 10px;
+     margin-bottom: 20px;
     /* height: 500px; */
 }
+.user_Profile_details2{
+    height: 320px;
+    width: 100%;
+}
+
 .user_Profile_details::-webkit-scrollbar{
     width: 10px;
 }
@@ -286,8 +321,14 @@ top: 0; */
     display: flex;
     align-items: center;
   
+  
     /* border-radius: 10px; */
     
+}
+.user_Profile_details button:hover{
+  border: 1px solid white;
+  border-radius: 5px;
+
 }
 .user_Profile_details button span{
       font-weight: lighter;
@@ -339,6 +380,10 @@ justify-content: center;
 .user_profile_sidebar_identification button div p{
  font-weight: lighter;
  color: #bbbbbb;
+  width:100px;
+     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .user_profile_sidebar_identification img{
     width: 40px;
@@ -346,11 +391,18 @@ justify-content: center;
     border-radius: 30px;
     
 }
+.user_profile_sidebar_identification .link{
+    text-decoration: none;
+    color: #ededed;
+}
 @media (min-width:1001px){
     .hidesidebar{
         display: block;
     }
     .sidebar_back_modal{
+        display: none;
+    }
+    .bottom_notification_indication{
         display: none;
     }
    
@@ -363,6 +415,91 @@ justify-content: center;
 .sidebar_animation{
     animation: sidebar 1 1s ease-out running normal;
 }
+.bottom_notification_indication{
+    display: block;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    height: 40px;
+    background: black;
+    display: grid;
+    grid-template-columns: 2.4fr 2.4fr 2.4fr 2.4fr 2.4fr ;
+    justify-content: center ;
+    align-items: center;
+}
+.bottom_notification_indication div{
+    display:flex;
+    justify-content:center;
+}
+.bottom_notification_indication button{
+    background: none;
+    border: none;
+    color: #dad9d9;
+} 
+.bottom_notification_indication .identification_btn{
+    display: flex;
+    align-items: center;
+
+}
+.bottom_notification_indication button .icon{
+    font-size: 1.2rem;
+}
+
+ .bottom_notification_indication button span{
+    width: 10px;
+    height: 10px;
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.5rem;
+    border-radius: 10px;
+    margin-top:-20px ;
+    
+ }
+.bottom_notification_indication .add_new_post{
+    background: red;
+    margin-top: -20px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    background: #000000;
+    border-radius: 50px;
+}
+.bottom_notification_indication .suggested {
+    border: 1px solid #909090;
+    font-size: 0.8rem;
+    font-weight: lighter;
+    padding: 2px 6px;
+    border-radius: 2px;
+}
+
+.bottom_notification_indication div .bottom_openHideSidebar div{
+     display: block;
+     width: 22px;
+     height: 1.8px;
+     background: #bbbbbb;
+     margin-bottom: 4px;
+         transition:0.1s ease-in all;
+}
+.bottom_notification_indication div .bottom_openHideSidebar_animate .div1{
+    transition:0.1s ease-in all;
+    transform: rotate(35deg);
+    margin-bottom: -2px;
+
+}
+.bottom_notification_indication div .bottom_openHideSidebar_animate .div2{
+    display: none;
+        transition:0.1ms ease-in all;
+}
+.bottom_notification_indication div .bottom_openHideSidebar_animate .div3{
+        transition:0.1s ease-in all;
+    transform: rotate(-35deg);
+        margin-left: -5px;
+}
+
 @keyframes  sidebar{
     
     0%{
@@ -390,6 +527,15 @@ justify-content: center;
 
 
 
+}
+
+@media (max-width:544px){
+  .bottom_notification_indication  .suggested{
+        font-size: 0.7rem;
+          overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    }
 }
 
 @media (max-width:344px){

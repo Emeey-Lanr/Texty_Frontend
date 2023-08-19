@@ -1,22 +1,12 @@
 import { FaArrowDown, FaArrowUp, FaTimes } from "react-icons/fa"
 import boxer from "../images/boxer.jpg"
 import "../styles/followUser.css"
-import {useState} from "react"
+import { useState, useContext } from "react"
+import { appContext } from "../App"
 const FollowUser = () => {
-    const [hide, setHide] = useState<string>("show")
-    const [icon, setIcon] = useState("showIcon")
-    const slide = () => {
-        if (hide === "hide") {
-            setHide("show")
-            setIcon("showIcon")
-        } else if (hide === "show") {
-            setHide("hide")
-            setIcon("hideIcon")
-        }
-    }
-
+const {icon, hide, slide, alwaysOpenSuggested} = useContext(appContext)
   return (
-      <div className={`follow_a_user_parent ${hide}`}>
+      <div className={`follow_a_user_parent ${hide} ${alwaysOpenSuggested}`}>
       <div className="top_heading">
         <div>
           <button onClick={()=>slide()}>
