@@ -37,15 +37,7 @@ const follwerUserData = {
     ownerUsername: "",
     userTheyTryingToFollow:""
 }
-// const check = (userEndPoint:string, refresh:()=>void,ownerUsername:string, userTheyTryingToFollow:string) => {
-//     axios.post(`${userEndPoint}/followUser`, {ownerUsername:ownerUsername, userTheyTryingToFollow}).then((result) => {
-//         if (result.data.status) {
-//             refresh()
-//         } else {
-            
-//         }
-//     })
-// }
+
 
 export const userProfileSlice = createSlice({
     name: "userprofileslice",
@@ -154,11 +146,11 @@ export const userProfileSlice = createSlice({
         updateProfileImg:(state, action)=>{
        
             if (action.payload.where === "img_url") {
-                console.log("hello")
+              
                  state.value.registeredUserImgUrl = action.payload.img_url
                  state.value.img_url = action.payload.img_url
             }else if(action.payload.where === "background_img_url"){
-                console.log("bello")
+                
                 state.value.background_img_url = action.payload.img_url
             }
            

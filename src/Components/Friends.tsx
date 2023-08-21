@@ -10,6 +10,7 @@ import { useContext } from "react";
 import { unfollowFollowingR } from "../Redux/Profile";
 import { setOrOpenChat } from "../Redux/Message";
 import axios from "axios";
+import { useSocket } from "../Socket";
 interface FriendsInterface {
   setOpenFollowersFollowing: React.Dispatch<React.SetStateAction<boolean>>;
   openFFNumber: number;
@@ -36,7 +37,8 @@ const Friends = ({
     setGroupChatOrPrivateChatOpening,
   } = useContext(appContext);
   const userDetails = useSelector((state: any) => state.userprofile.value);
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
+    const { socket } = useSocket();
   //      const followed = () => {
   //          socket.on("followedUserLookedFor", (data: any) => {
   //           console.log(data)
@@ -99,7 +101,7 @@ const Friends = ({
         userLoggedIn: userDetails.registerdUserIdentification,
         userToBeBlocked: name,
       });
-      socket.emit("blockUser", {
+      socket?.emit("blockUser", {
         userLoggedIn: userDetails.registerdUserIdentification,
         userToBeBlocked: name,
       });
@@ -111,7 +113,7 @@ const Friends = ({
         userLoggedIn: userDetails.registerdUserIdentification,
         userToBeBlocked: name,
       });
-      socket.emit("unblockUser", {
+      socket?.emit("unblockUser", {
         userLoggedIn: userDetails.registerdUserIdentification,
         userToBeBlocked: name,
       });
@@ -155,8 +157,8 @@ const Friends = ({
       {/* Friends */}
       {openFFNumber === 0 ? (
         <div className="following_user_div">
-          {userDetails.followers.map((name: FollowersFollowingDetails) => (
-            <div className="following_user_details">
+          {userDetails.followers.map((id:number, name: FollowersFollowingDetails) => (
+            <div key={id} className="following_user_details">
               <div className="following_user_head">
                 <div className="img_div">
                   <img src={boxer} alt="" />
@@ -380,8 +382,8 @@ const Friends = ({
 
         //       </div>:
         <div className="following_user_div">
-          {userDetails.following.map((name: FollowersFollowingDetails) => (
-            <div className="following_user_details">
+          {userDetails.following.map((id:number, name: FollowersFollowingDetails) => (
+            <div key={id} className="following_user_details">
               <div className="following_user_head">
                 <div className="img_div">
                   <img src={boxer} alt="" />

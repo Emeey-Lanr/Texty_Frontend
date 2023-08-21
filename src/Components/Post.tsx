@@ -8,10 +8,13 @@ import { upload } from "@testing-library/user-event/dist/upload"
 import axios from "axios"
 import {useSelector, useDispatch} from "react-redux"
 
+import { io } from "socket.io-client";
+import { useSocket } from "../Socket";
 const Post = () => {
     const {userEndPoint, createPostModal, setCreatePostModal } = useContext(appContext)
-    const socket = useSelector((state: any) => state.socket.value)
+    // const socket = useSelector((state: any) => state.socket.value)
     const userDetails = useSelector((state: any) => state.userprofile.value)
+      const { socket } = useSocket();
     const [fireAction, setFireAction] = useState<boolean>(false)
     const [text, setText] = useState<string>("")
     const [image, setImage] = useState<any>("")
@@ -35,7 +38,7 @@ webkitRelativePath:string;
         let imgUpload = new FileReader()
             imgUpload.readAsDataURL(name)
             imgUpload.onload = () => {
-                console.log(imgUpload.result)
+        
                 setImage(imgUpload.result)
             }
       
@@ -45,7 +48,6 @@ webkitRelativePath:string;
     const uploadPostBtn = () => {
         const date = new Date()
 
-        console.log(`${date.getUTCMonth()}/${date.getDate()}/${date.getFullYear()}`, date.getHours(), date.getMinutes(), date.getSeconds())
         const post = {
           text: text,
           date: `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
@@ -58,16 +60,16 @@ webkitRelativePath:string;
     
         setFireAction(true)
 
-        console.log(post)
+
         axios.post(`${userEndPoint}/createPost`, {username:userDetails.registerdUserIdentification, postContent:post}).then((result) => {
           
             if (result.data.status) {
                 post.poster_imgUrl = result.data.img_url
-                socket.emit("emitPost", {username:userDetails.registerdUserIdentification, post:post})
+                socket?.emit("emitPost", {username:userDetails.registerdUserIdentification, post:post})
                 setFireAction(false)
             }
         }).catch((error) => {
-            console.log(error)
+           
                 setCreatePostModal(2)
         })
    

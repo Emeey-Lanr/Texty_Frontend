@@ -46,7 +46,7 @@ const SignIn = () => {
         loadFunction(true)
         axios.post(signinEndpoint, userInfo).then((result) => {
           if (result.data.status) {
-            console.log(result.data)
+          
               const details:DetailModel = {
               id:result.data.message
             }

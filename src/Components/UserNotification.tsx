@@ -12,8 +12,11 @@ import { useDispatch } from "react-redux";
 import { getFollowedNotification, unfollowFollowingR } from "../Redux/Profile";
 import noImg from "../images/noImage.png";
 import ActionModal from "./ActionModal";
-
+import { io } from "socket.io-client"
+import { useSocket } from "../Socket";
 const UserNotification = () => {
+  // const socket? = io("http://localhost:2001");
+  const { socket } = useSocket();
   const {
     setRouteIdentification,
     setGroupChatOrPrivateChatOpening,
@@ -24,7 +27,7 @@ const UserNotification = () => {
   } = useContext(appContext);
   const dispatch = useDispatch();
   const userDetail = useSelector((state: any) => state.userprofile.value);
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
   useEffect(() => {
     
     getUserProfile("notification", "notification");
@@ -35,15 +38,15 @@ const UserNotification = () => {
 
   // if user is online he recieves the notifiaction\
   const followedNotification = () => {
-    socket.on("followedNotification", (data: any) => {
+    socket?.on("followedNotification", (data: any) => {
       if (!data.error) {
         dispatch(getFollowedNotification(data.notification));
       }
     });
   };
   const followed = () => {
-    socket.on("userFollowingWhenFollowing", (data: any) => {
-      console.log(data.loggedInUser);
+    socket?.on("userFollowingWhenFollowing", (data: any) => {
+  
       if (!data.error) {
         dispatch(unfollowFollowingR(data.followingDetails));
       } else {
@@ -62,7 +65,7 @@ const UserNotification = () => {
   //   })
   // }
   const unFollowed = () => {
-    socket.on("userFollowingWhenUnFollowing", (data: any) => {
+    socket?.on("userFollowingWhenUnFollowing", (data: any) => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.userLoggedInFollowing));
       } else {
@@ -79,8 +82,7 @@ const UserNotification = () => {
   });
 
   const followViaNotificationBtn = (userYouWantToFollow: string) => {
-    
-    // console.log(userYouWantToFollow,userDetail.registerdUserIdentification )
+
     followFunction(
       "followSocket2",
       userDetail.registerdUserIdentification,

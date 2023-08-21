@@ -1,24 +1,14 @@
 import ChattingSpace from "./ChattingSpace"
-import CreateGroup from "./CreateGroup"
-import Friends from "./Friends"
-import Navbar from "./Navbar"
-import RecomendedGroups from "./Home"
 
-import Sidebar from "./Sidebar"
-import SideBarModal from "./SideBarModal"
-import UserNotification from "./UserNotification"
-import UserProfile from "./UserProfile"
-import Home from "./Home"
+
 // import Search from "./Search"
-import Create from "./Create"
+
 import { useParams } from "react-router-dom"
-import {useEffect} from "react"
+
 
 const Chat = () => {
   const name = useParams()
-  useEffect(() => {
-    console.log(name.id)
-  },[])
+
   return (
     <div className="chat-div">
 

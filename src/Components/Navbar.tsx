@@ -10,6 +10,7 @@ import noImage from "../images/noImage.png"
 import axios from "axios"
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
+import { useSocket } from "../Socket";
 // import Message from "../Features/Message"
   const Navbar = () => {
     const { showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening,
@@ -17,7 +18,8 @@ import { useLocation } from "react-router-dom"
       setNewPostAlert } = useContext(appContext)
     const groupStatus = useSelector((state: any) => state.chat.value) 
     const messageRedux = useSelector((state: any) => state.privatemessagechat.value)
-    const socket = useSelector((state: any) => state.socket.value)
+    // const socket = useSelector((state: any) => state.socket.value)
+     const { socket } = useSocket();
     const location = useLocation()
     let navigate = useNavigate()
     useEffect(() => {
@@ -28,7 +30,6 @@ import { useLocation } from "react-router-dom"
     })
 
     const scrollOrNavigateToNewPostBtn = () => {
-      console.log(location.pathname)
       if (location.pathname === "/home") {
         window.scrollTo({
           top: 0,

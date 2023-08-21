@@ -1,7 +1,8 @@
 import "../styles/indexpage.css";
 import Loading from "./Loading";
 import Logo from "./Logo";
-const Texty = () => {
+import React from "react"
+const Texty:React.FC = () => {
   return (
     <div className="index_body">
       <div style={{ width: "100%" }}>
@@ -15,6 +16,7 @@ const Texty = () => {
           <Loading />
         </div>
       </div>
+     
     </div>
   );
 };

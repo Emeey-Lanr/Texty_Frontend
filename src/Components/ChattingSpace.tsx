@@ -11,8 +11,11 @@ import { incomingMesageR } from "../Redux/Message";
 import axios from "axios";
 import ActionModal from "./ActionModal";
 import noImg from "../images/noImage.png";
+import { io } from "socket.io-client";
+import { useSocket } from "../Socket";
 
 const ChattingSpace = () => {
+  // const socketTesting = io("http://localhost:2001");
   const {
     hideSideBar,
     setHideSideBar,
@@ -22,7 +25,8 @@ const ChattingSpace = () => {
     incomingMessageDetails,
     messageEndPoint,
   } = useContext(appContext);
-  const socket = useSelector((state: any) => state.socket.value);
+   const { socket } = useSocket();
+  // const socket = useSelector((state: any) => state.socket.value);
   const userDetails = useSelector((state: any) => state.userprofile.value);
   const messageRedux = useSelector(
     (state: any) => state.privatemessagechat.value
@@ -62,11 +66,11 @@ try {
      text: m,
      time: `${hours}:${minutes}${hours >= 12 ? "PM" : "AM"}`,
 
-     // time:`${date.}`
+   
    };
-   // console.log(`${info.year}`.split(" "))
-   // // console.log(message)
-   socket.emit("privateMessage", info);
+ 
+  socket?.emit("bv",{message:"no working"})
+   socket?.emit("privateMessage", info);
    if (emptyInput.current) {
      emptyInput.current.value = "";
    }
@@ -78,18 +82,7 @@ try {
       
    
     
-      
-      
-      // dispatch(incomingMesageR(
-      //     {
-      //         chattingWithName: "ronald",
-      //         incomingMessage: { owner: "emeey", notOwner:"ronald",message:[{sender:"emeey", time:"2:30pm", text:"Fuck you", messageImg:"", img:""}] }
-      //     }))
-
-      // console.log(messageRedux)
-    
-    
-    
+        
      
   };
   return (
@@ -106,14 +99,14 @@ try {
             </div>
             <div className="chat_group">
               {messageRedux.currentDetails.message.map(
-                (data: {
+                (id:number, data: {
                   text: string;
                   sender: string;
                   time: string;
                   owner_imgurl: string;
                   notowner_imgurl: string;
                 }) => (
-                  <div
+                  <div key={id}
                     className={
                       data.sender === userDetails.registerdUserIdentification
                         ? "chat-message_div_1"

@@ -41,9 +41,13 @@ import ReactTimeAgo from "react-time-ago";
 import Loading from "./Loading";
 import IndexPage from "./IndexPage";
 import Texty from "./Texty";
+import { io } from "socket.io-client"
+import { useSocket } from "../Socket";
 // import { followerUser} from "../Features/Profile"
 
 const UserProfile = () => {
+   const socketTesting = io("http://localhost:2001");
+    const { socket } = useSocket();
   const {
     userEndPoint,
     setPostModalStatus,
@@ -64,7 +68,7 @@ const UserProfile = () => {
   } = useContext(appContext);
   let naviagte = useNavigate();
   let dispatch = useDispatch();
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
   );
@@ -90,23 +94,18 @@ const UserProfile = () => {
   const profilePost = () => {
     // this socket is used cause the likes and coment are only 
     // the server and they're not saved in the db, we change the server 
-    socket.on("profilePost", (data: any) => {
+    socket?.on("profilePost", (data: any) => {
        dispatch(updatePost({user:data.user, lookedForUser:data.lookedForUser}))
     })
   }
   const followSocket = () => {
-    socket.on("followedUserLookedFor", (data: any) => {
-      console.log(data.loggedInUser, data);
+    socket?.on("followedUserLookedFor", (data: any) => {
       // This errors happens based on the user yo want to follow is not found as the backend
       if (!data.error) {
-        // if (data.loggedInUser === userProfileDetails.username) {
-
-        //    console.log("You are the one on your profile", data)
-        // } else {
+       
          dispatch(postActionDone(true));
         dispatch(followUser(data.lookedForUserFollowers));
-        //  console.log("you are not the one on your profile")
-        //  }
+
       } else {
          dispatch(postActionDone(true));
         alert("an error occured");
@@ -114,7 +113,7 @@ const UserProfile = () => {
     });
   };
   const followSocket2Function = () => {
-    socket.on("userFollowingWhenFollowing", (data: any) => {
+    socket?.on("userFollowingWhenFollowing", (data: any) => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.followingDetails));
       } else {
@@ -123,7 +122,7 @@ const UserProfile = () => {
     });
   };
   const followSocket3Function = () => {
-    socket.on("followingViaAnotherPersonFFlist", (data: any) => {
+    socket?.on("followingViaAnotherPersonFFlist", (data: any) => {
       if (!data.error) {
         dispatch(unfollowFollowingViaAnotherUserFFlistR(data.followingDetails));
       } else {
@@ -135,8 +134,8 @@ const UserProfile = () => {
   // This is meant for the user looked for if he or she
   // is online and he's in user profile he recieve the increasement in his followers
   const ifFollowed = () => {
-    socket.on("followedNotification", (data: any) => {
-      console.log(data.loggedInUser);
+    socket?.on("followedNotification", (data: any) => {
+      
       if (!data.error) {
         if (data.loggedInUser === userProfileDetails.username) {
           dispatch(followUser(data.addedFollowers));
@@ -146,8 +145,8 @@ const UserProfile = () => {
   };
 
   const unFollowedSocket = () => {
-    socket.on("unFollowed", (data: any) => {
-      console.log(data);
+    socket?.on("unFollowed", (data: any) => {
+    
       if (!data.error) {
         dispatch(unfollowViaProfile(data.userTheyWantToUnFollowFollowers));
          dispatch(postActionDone(true))
@@ -159,7 +158,7 @@ const UserProfile = () => {
   };
 
   const unfollowSocket2Function = () => {
-    socket.on("userFollowingWhenUnFollowing", (data: any) => {
+    socket?.on("userFollowingWhenUnFollowing", (data: any) => {
       if (!data.error) {
         dispatch(postActionDone(true));
         dispatch(unfollowFollowingR(data.userLoggedInFollowing));
@@ -169,7 +168,7 @@ const UserProfile = () => {
     });
   };
   const unfollowSocket3Function = () => {
-    socket.on("unfollowingViaAnotherPersonFFlist", (data: any) => {
+    socket?.on("unfollowingViaAnotherPersonFFlist", (data: any) => {
       if (!data.error) {
         dispatch(
           unfollowFollowingViaAnotherUserFFlistR(data.userLoggedInFollowing)
@@ -191,12 +190,12 @@ const UserProfile = () => {
       );
     };
 
-    socket.on("likeOrUnlike1", (data: any) => {
-      console.log(data);
+    socket?.on("likeOrUnlike1", (data: any) => {
+   
 
       dispatchFunction(data.postedBy, data.time, data.likes);
     });
-    socket.on("likeOrUnlike2", (data: any) => {
+    socket?.on("likeOrUnlike2", (data: any) => {
       dispatchFunction(data.postedBy, data.time, data.likes);
     });
   };
@@ -209,18 +208,18 @@ const UserProfile = () => {
       dispatch(commentProfileR({ postedBy: postedBy, time: time, commentBox }));
     };
 
-    socket.on("comment1", (data: any) => {
-      console.log(data);
+    socket?.on("comment1", (data: any) => {
+     
 
       dispatchFunction(data.postedBy, data.time, data.comment);
     });
-    socket.on("Comment2", (data: any) => {
+    socket?.on("Comment2", (data: any) => {
       dispatchFunction(data.postedBy, data.time, data.comment);
     });
   };
   const blockedVPFunction = () => {
-    socket.on("blockedVP", (data: any) => {
-      console.log(data);
+    socket?.on("blockedVP", (data: any) => {
+    
       dispatch(
         unBlockedVPR({
           userBlocked: data.userDetails,
@@ -231,8 +230,7 @@ const UserProfile = () => {
     });
   };
   const unblockedVPFunction = () => {
-    socket.on("unblockedVP", (data: any) => {
-      console.log(data, "you've unblocked this nigga");
+    socket?.on("unblockedVP", (data: any) => {
       dispatch(
         unBlockedVPR({
           userBlocked: data.userDetails,
@@ -261,15 +259,7 @@ const UserProfile = () => {
     }
   });
 
-  // const socket = Socket(appEndPoint)
-
-  // useEffect(() => {
-  //   socket.current.on("hello", (data: object) => {
-  //     console.log(data)
-  //   })
-  //   // socket.emit("name", {name:"oyelowo"})
-  //   // console.log(id.id)
-  // }, [])
+  
   const openPost = (name: string, time: number) => {
     setPostModalStatus(true);
     dispatch(
@@ -324,10 +314,7 @@ const UserProfile = () => {
   };
 
   const unfollow = () => {
-    console.log(
-      userProfileDetails.registerdUserIdentification,
-      userProfileDetails.username
-    );
+    
     unfollowFunction(
       "unfollowSocket1",
       userProfileDetails.registerdUserIdentification,
@@ -355,7 +342,7 @@ const UserProfile = () => {
         userLoggedIn: userProfileDetails.registerdUserIdentification,
         userToBeBlocked: userProfileDetails.username,
       });
-      socket.emit("unblockVP", {
+      socket?.emit("unblockVP", {
         userToBeUnblocked: userProfileDetails.username,
         user: userProfileDetails.registerdUserIdentification,
       });
@@ -366,26 +353,14 @@ const UserProfile = () => {
       userLoggedIn: userProfileDetails.registerdUserIdentification,
       userToBeBlocked: userProfileDetails.username,
     });
-    socket.emit("blockVP", {
+    socket?.emit("blockVP", {
       userToBeUnblocked: userProfileDetails.username,
       user: userProfileDetails.registerdUserIdentification,
     });
   };
-  const [magicT, setMagicT] = useState("magicT1");
-  const magicDivBtn = () => {
-    if (magicT === "magicT1") {
-      setMagicT("magicT2");
-    } else {
-      setMagicT("magicT1");
-    }
-  };
+
   const postActionBtn = (postedBy: string, time: number) => {
-    console.log(userProfileDetails.followers);
-    // if (postedBy === userProfileDetails.registerdUserIdentification) {
-
-    // } else {
-
-    // }
+   
     dispatch(
       openPostActionModal({
        userToCheck:userProfileDetails.registerdUserIdentification,
@@ -603,8 +578,8 @@ const UserProfile = () => {
                       </div>
                       <div className="post_container">
                         {userProfileDetails.post.length > 0 ? (
-                          userProfileDetails.post.map((details: POST) => (
-                            <button
+                          userProfileDetails.post.map((id:number, details: POST) => (
+                            <button key={id}
                               className="post_div"
                               // disabled={true}
                               // onClick={() =>

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { unfollowFollowingR } from "../Redux/Profile";
 import { useNavigate } from "react-router-dom";
 import noImg from "../images/noImage.png";
+import { useSocket } from "../Socket";
 const Search = () => {
   const {
     userEndPoint,
@@ -23,7 +24,8 @@ const Search = () => {
       unfollowFunction,
     hideSideBarBtn
   } = useContext(appContext);
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
+    const { socket } = useSocket();
   const userDetails = useSelector((state: any) => state.userprofile.value);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,7 +43,7 @@ const Search = () => {
       hideSideBarBtn();
   }, []);
   const followed = () => {
-    socket.on("userFollowingWhenFollowing", (data: any) => {
+    socket?.on("userFollowingWhenFollowing", (data: any) => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.followingDetails));
       } else {
@@ -50,7 +52,7 @@ const Search = () => {
     });
   };
   const unFollowed = () => {
-    socket.on("userFollowingWhenUnFollowing", (data: any) => {
+    socket?.on("userFollowingWhenUnFollowing", (data: any) => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.userLoggedInFollowing));
       } else {

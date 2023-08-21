@@ -7,12 +7,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentLikes, commentR } from "../Redux/CurrentPost";
 import noImg from "../images/noImage.png";
 import ReactTimeAgo from "react-time-ago";
+import { io } from "socket.io-client"
+import { useSocket } from "../Socket";
 const PostModal: React.FC = () => {
+   const { socket } = useSocket();
+  // const socketTesting = io("http://localhost:2001");
   const { postModalStatus, setPostModalStatus, likeUnlikeSocketFunction } =
     useContext(appContext);
     let commentRef = useRef<HTMLTextAreaElement>(null);
   const currentPost = useSelector((state: any) => state.current_post.value);
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
   );
@@ -29,12 +33,11 @@ const PostModal: React.FC = () => {
       );
     };
 
-    socket.on("likeOrUnlike1", (data: any) => {
-      console.log(data);
-
+    socket?.on("likeOrUnlike1", (data: any) => {
+     
       dispatchFunction(data.postedBy, data.time, data.likes);
     });
-    socket.on("likeOrUnlike2", (data: any) => {
+    socket?.on("likeOrUnlike2", (data: any) => {
       dispatchFunction(data.postedBy, data.time, data.likes);
     });
   };
@@ -48,10 +51,10 @@ const PostModal: React.FC = () => {
       dispatch(commentR({ postedBy: postedBy, time: time, commentBox }));
     };
 
-    socket.on("comment1", (data: any) => {
+    socket?.on("comment1", (data: any) => {
       dispatchFunction(data.postedBy, data.time, data.comment);
     });
-    socket.on("Comment2", (data: any) => {
+    socket?.on("Comment2", (data: any) => {
       dispatchFunction(data.postedBy, data.time, data.comment);
     });
   };
@@ -63,10 +66,9 @@ const PostModal: React.FC = () => {
   }, []);
 
   const addCommentBtn = () => {
-    console.log(currentPost, "lkjhgfd")
     const date = new Date();
     if (comment !== "") {
-      socket.emit("comment", {
+      socket?.emit("comment", {
         user: userProfileDetails.registerdUserIdentification,
         comment,
         time: currentPost.time,

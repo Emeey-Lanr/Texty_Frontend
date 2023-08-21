@@ -73,8 +73,7 @@ interface DetailModel  {
          loadFunction(true)
          axios.post(userSignupEndpoint, userDetails).then((result) => {
           if(result.data.status){
-            console.log(result.data)
-            
+          
             const details:DetailModel = {
               id:result.data.client_Token
             }

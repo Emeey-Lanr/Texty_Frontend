@@ -53,11 +53,11 @@ export const postDecisionSlice = createSlice({
       
       } else {
         const check = () => {
-          console.log(action.payload.followers_following)
+         
           let followUnfollow = -1
 //   we check the searched for person on our profile folllowers to check if we are there on the profile page
           
-           console.log(action.payload.followers_following);
+         
           const userFollowingOrNot = action.payload.followers_following.find((users: { username: string }, id: Number) => users.username === `${action.payload.userToCheck}`)    
           if (userFollowingOrNot) {
             // means you're following the person

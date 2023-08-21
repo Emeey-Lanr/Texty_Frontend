@@ -17,6 +17,7 @@ import Postdecision from "./Redux/Postdecision";
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en.json"
 import ru from "javascript-time-ago/locale/ru.json"
+import {SocketProvider} from "./Socket"
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
 const root = ReactDOM.createRoot(
@@ -37,11 +38,13 @@ const store = configureStore({
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <SocketProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </SocketProvider>
   </React.StrictMode>
 );
 

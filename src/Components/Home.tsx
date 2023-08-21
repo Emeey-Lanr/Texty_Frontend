@@ -29,7 +29,11 @@ import { openPostActionModal } from "../Redux/Postdecision";
 import FollowUser from "./FollowUser";
 import ReactTimeAgo from "react-time-ago";
 import { Link, useNavigate } from "react-router-dom";
+import { io } from "socket.io-client"
+import { useSocket } from "../Socket";
 const Home = () => {
+  // const socket = io("http://localhost:2001");
+   const { socket } = useSocket();
   const {
     setRouteIdentification,
     getUserProfile,
@@ -44,7 +48,7 @@ const Home = () => {
     likeUnlikeSocketFunction,
   } = useContext(appContext);
   let navigate  = useNavigate()
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
   const homePost = useSelector((state: any) => state.home_post.value);
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
@@ -58,8 +62,8 @@ const Home = () => {
     setGroupChatOrPrivateChatOpening(0);
   }, []);
   const socketHomePostFunction = () => {
-    socket.on("homePost", (data: any) => {
-      console.log(data.post);
+    socket?.on("homePost", (data: any) => {
+     
       dispatch(socketHomePost(data.post));
     });
   };
@@ -75,13 +79,12 @@ const Home = () => {
       );
     };
 
-    socket.on("likeOrUnlike1", (data: any) => {
-      console.log(data);
-
+    socket?.on("likeOrUnlike1", (data: any) => {
+      
       dispatchFunction(data.postedBy, data.time, data.likes);
     });
-    socket.on("likeOrUnlike2", (data: any) => {
-      console.log(data.likes);
+    socket?.on("likeOrUnlike2", (data: any) => {
+    
       dispatchFunction(data.postedBy, data.time, data.likes);
     });
   };
@@ -96,12 +99,11 @@ const Home = () => {
       );
     };
 
-    socket.on("comment1", (data: any) => {
-      console.log(data, "LKJHGFDS" )
+    socket?.on("comment1", (data: any) => {
+
       dispatchFunction(data.postedBy, data.time, data.comment);
     });
-    socket.on("Comment2", (data: any) => {
-      console.log(data, "KJHGFd")
+    socket?.on("Comment2", (data: any) => {
       dispatchFunction(data.postedBy, data.time, data.comment);
     });
   };
@@ -141,7 +143,7 @@ const Home = () => {
     newPost.current?.scrollIntoView();
   };
   const openPostAction = (postBy: string, time: number) => {
-    console.log(userProfileDetails, homePost);
+  
     dispatch(
       openPostActionModal({
         userToCheck:postBy,
@@ -177,8 +179,8 @@ const Home = () => {
           )}
           {/* <div /> */}
           <div className="home_post_container">
-            {homePost.map((details: POST) => (
-              <button
+            {homePost.map((id:number, details: POST) => (
+              <button key={id}
                 className="home_post_div"
                 // disabled={true}
                 // onClick={() => openPost(details.postedBy, details.time)}

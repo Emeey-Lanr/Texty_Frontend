@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteMessage } from "../Redux/Message";
 import axios from "axios";
 import Spinner from "./Spinner";
+import { useSocket } from "../Socket";
 const ActionModal = () => {
   const {
     userEndPoint,
@@ -22,7 +23,8 @@ const ActionModal = () => {
   const messageRedux = useSelector(
     (state: any) => state.privatemessagechat.value
   );
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
+    const { socket } = useSocket();
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
   );
@@ -44,8 +46,7 @@ const ActionModal = () => {
     // }, 500);
   };
   const deletedMessageFunction = () => {
-    socket.on("messageDeleted", (data: any) => {
-      console.log(data, "deleted", messageRedux);
+    socket?.on("messageDeleted", (data: any) => {
       setDeleteIndication("Deleted");
       exitFunction();
       dispatch(
@@ -97,7 +98,7 @@ const ActionModal = () => {
       owner: messageRedux.currentDetails.owner,
       notOwner: messageRedux.currentDetails.notowner,
     };
-    socket.emit("deleteUserMessageBox", details);
+    socket?.emit("deleteUserMessageBox", details);
 
     const deleteM = await axios.post(
       `${messageEndPoint}/deleteMessage`,

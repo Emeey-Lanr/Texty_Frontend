@@ -13,7 +13,7 @@ import { appModelContext } from "./Model/AppModelContext";
 
 
 
-import { io, Socket } from "socket.io-client";
+import  {io}  from "socket.io-client";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -29,17 +29,18 @@ import { get } from "http";
 import UserNotification from "./Components/UserNotification";
 import Group from "./Components/Group";
 import { followerNewHomePost, userNewHomePost } from "./Redux/HomePost";
-
+import { useSocket } from "./Socket";
 export const appContext = createContext(appModelContext);
 
 const App = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const socketTesting = io("http://localhost:2001");
+  const {socket} = useSocket()
 
-  // const socket = useRef(Socket("http"))
 
   // Socket
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
   // userprofile details
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
@@ -177,7 +178,6 @@ const App = () => {
       })
       .then((result) => {
         if (result.data.status) {
-          console.log(result.data, "this is your data");
           setNoUserFound(false);
           setAbout_MeText(result.data.userData.about_me);
           setUserProfileLoading(true);
@@ -209,7 +209,8 @@ const App = () => {
             setBlocked(false);
           }
           //  switch(result.data.)
-          socket.emit("userInfoOrSearchedForInfo", {
+         
+          socket?.emit("userInfoOrSearchedForInfo", {
             userinfo: result.data.userData,
             userLookedFor: result.data.lookedForUser,
             usermessage: result.data.userMessage,
@@ -332,17 +333,17 @@ const App = () => {
   };
 
   const newPostForFollowersFunction = () => {
-    socket.on("newPostForFollowers", (data: any) => {
+    socket?.on("newPostForFollowers", (data: any) => {
       setNewPostAlert(true);
-      console.log(data);
+
       const postComing = [data.newPost];
       dispatch(followerNewHomePost(data.newPost));
-      // dispatch()
+   
     });
   };
   const userNewPostFunction = () => {
-    socket.on("userNewPost", (data: any) => {
-      console.log(data);
+    socket?.on("userNewPost", (data: any) => {
+
       setOpenPrePost(false);
       setCreatePostModal(0);
       dispatch(userNewHomePost(data.homePost.post));
@@ -350,10 +351,10 @@ const App = () => {
     });
   };
   const incomingMessageDetails = () => {
-    socket.on(
+ 
+    socket?.on(
       "incomingMessage",
       (data: { owner: string; notowner: string; notowner_imgurl: string }) => {
-        console.log(data);
         dispatch(
           incomingMesageR({
             chattingWithName: data.notowner,
@@ -371,7 +372,7 @@ const App = () => {
     userTheyWantToFollow: string,
     notificationWords: string
   ) => {
-    socket.emit(`${socketName}`, {
+    socket?.emit(`${socketName}`, {
       ownerUsername: loggedInUsername,
       userTheyTryingToFollow: userTheyWantToFollow,
       notificationWords: notificationWords,
@@ -388,7 +389,7 @@ const App = () => {
     userLoggedInUserName: string,
     userTheyWantToUnfollow: string
   ) => {
-    socket.emit(`${socketName}`, {
+    socket?.emit(`${socketName}`, {
       userLoggedInUserName,
       userTheyWantToUnfollow,
     });
@@ -404,22 +405,22 @@ const App = () => {
     name: string,
     state: string
   ) => {
-    socket.emit(socketName, {
+    socket?.emit(socketName, {
       user: userProfileDetails.registerdUserIdentification,
       postedBy: name,
       time: time,
       state: state,
     });
   };
-  const unlikeBtnFunction = () => {};
+ 
 
   const incomingBlockedSocket = () => {
-    socket.on("blocked", (data: any) => {
-      console.log(data, "this is the data");
+    socket?.on("blocked", (data: any) => {
+
       dispatch(blockAndUnBlockUserR(data.details));
     });
-    socket.on("unblocked", (data: any) => {
-      console.log(data, "this is the data");
+    socket?.on("unblocked", (data: any) => {
+    
       dispatch(blockAndUnBlockUserR(data.details));
     });
   };
@@ -444,6 +445,7 @@ const App = () => {
  
 
   return (
+
     <appContext.Provider
       value={{
         routeIdentification,

@@ -26,14 +26,11 @@ export const homePostSlice = createSlice({
             // the seconds inthe time and psted by make a difference and that's checked to prevent
             // multi pushing
             const check = state.value.filter((details) => details.postedBy === action.payload.postedBy && details.time === action.payload.time)
-             console.log(action.payload.postedBy, action.payload.time)
+             
             if (check.length < 1) {
-                console.log("user doesn't exist1")
+                // user doesn't exist
                 state.value.push(action.payload) 
-            } else {
-                  console.log("user exist")
-        }
-         
+            } 
         },
         userNewHomePost: (state, action) => {
             state.value = action.payload  

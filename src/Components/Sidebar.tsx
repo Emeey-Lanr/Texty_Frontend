@@ -1,30 +1,24 @@
 import "../styles/sidebar.css";
 import { appContext } from "../App";
-import { useContext, useRef, useEffect, useState } from "react";
-import { FaBell, FaFacebookMessenger, FaPlus, FaTimes, FaTrash, FaUserFriends } from "react-icons/fa";
-import Logo from "./Logo";
+import { useContext,  useEffect, useState } from "react";
+import { FaBell, FaPlus } from "react-icons/fa";
 import boxer from "../images/boxer.jpg";
 import {
   BiPlus,
-  BiSearch,
+
   BiLogOut,
   BiTrash,
-  BiUserCircle,
-  BiBell,
-  BiMessage,
+
 } from "react-icons/bi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { io, Socket } from "socket.io-client";
 import { useSelector } from "react-redux";
-import { link } from "fs";
 import { useDispatch } from "react-redux";
 import { getFollowedNotification } from "../Redux/Profile";
 import { getCurrentMessageId } from "../Redux/Message";
 import axios from "axios";
 import noImg from "../images/noImage.png";
 import { AiFillMessage } from "react-icons/ai";
-
-
+import { useSocket } from "../Socket";
 const Sidebar = () => {
   // let socket = useRef<Socket>()
   let location = useLocation();
@@ -32,7 +26,8 @@ const Sidebar = () => {
   let dispatch = useDispatch();
 
   const userDetail = useSelector((state: any) => state.userprofile.value);
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
+  const { socket } = useSocket();
   const [
     hideOpenSideBarAnimationIndicator,
     sethideOpenSideBarAnimationIndicator,
@@ -44,12 +39,10 @@ const Sidebar = () => {
   // PrivateChat or Group Chat
   const [privateChatOrGroupChat, setPrivateChatOrGroupChat] =
     useState<boolean>(true);
-  useEffect(() => {
-    console.log(userDetail);
-  }, []);
+
   useEffect(() => {
     if (socket) {
-      socket.on(
+      socket?.on(
         "followedNotification",
         (data: { notification: {}[] | []; error: boolean }) => {
           if (!data.error) {
@@ -104,12 +97,14 @@ const Sidebar = () => {
 
   // chat opening btn
   const privateChatBtn = async (name: string) => {
+     hideSideBarBtn();
     setGroupChatOrPrivateChatOpening(1);
     dispatch(getCurrentMessageId(name));
-    socket.emit("updatechecked", {
+    socket?.emit("updatechecked", {
       owner: userDetail.registerdUserIdentification,
       notowner: name,
     });
+
     const updatcheck = await axios.post(`${messageEndPoint}/updatechecked`, {
       owner: userDetail.registerdUserIdentification,
       notowner: name,
@@ -132,7 +127,6 @@ const Sidebar = () => {
     hideSideBarBtn();
   };
   const profileCheck = () => {
-    console.log(userDetail.registerdUserIdentification);
     navigate(`/${userDetail.registerdUserIdentification}`);
   };
   const openSidebar = () => {
@@ -205,13 +199,13 @@ const Sidebar = () => {
               //PRIVATE CHAT  //////////////////////////////////////////////////////////////////////////////
               <div className="group_chat">
                 {messageStore.allMessage.map(
-                  (name: {
+                  (id:number, name: {
                     owner: string;
                     notowner: string;
                     notowner_imgurl: string;
                     message: { checked: boolean; text: string }[];
                   }) => (
-                    <div>
+                    <div key={id}>
                       <button
                         className="link"
                         onClick={() => privateChatBtn(name.notowner)}

@@ -97,7 +97,7 @@ export const messageSlice = createSlice({
             
         },
         incomingMesageR: (state, action) => {
-            console.log(state.value.allMessage)
+          
             state.value.allMessage = state.value.allMessage.filter((name: { owner: string, notowner: string }) => name.notowner !== action.payload.chattingWithName)
             state.value.allMessage.unshift(action.payload.incomingMessage)
 
@@ -129,7 +129,7 @@ export const messageSlice = createSlice({
             // state.value.allMessage[value] = action.payload.details
             
         }, deleteMessage: (state, action) => {
-            console.log(state.value.allMessage, state.value.currentDetails, action.payload)
+
             if(state.value.allMessage.length > 0){
                 state.value.allMessage = state.value.allMessage.filter((details)=> details.notowner !== action.payload.notowner)
             }

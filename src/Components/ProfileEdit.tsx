@@ -98,7 +98,7 @@ const ProfileEdit = () => {
           })
           .catch((error) => {
             updateStateFunction("An error occured")
-            // console.log(err)
+         
           });
         
     }

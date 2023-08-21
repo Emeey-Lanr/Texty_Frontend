@@ -7,7 +7,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { appContext } from "../App";
 import { deletePost, unfollowFollowingR } from "../Redux/Profile";
-
+import { useSocket } from "../Socket";
 const Postaction = () => {
   const { userEndPoint, unfollowFunction, followFunction } =
     useContext(appContext);
@@ -16,7 +16,8 @@ const Postaction = () => {
   const postDecisionState = useSelector(
     (state: any) => state.postdecision.value
   );
-  const socket = useSelector((state: any) => state.socket.value);
+  // const socket = useSelector((state: any) => state.socket.value);
+    const { socket } = useSocket();
   const [disabled, setDisabled] = useState<boolean>(false)
   useEffect(() => {
     if (socket) {
@@ -45,12 +46,12 @@ const Postaction = () => {
   const deletePostBtn = async () => {
     try {
       dispatch(openSpinner(1));
-      console.log(postDecisionState.time, profile.registerdUserIdentification);
+  
       const deletePost = await axios.put(`${userEndPoint}/deletePost`, {
         time: postDecisionState.time,
         username: profile.registerdUserIdentification,
       });
-      const deleteThroughSocket = await socket.emit("deletePost", {
+      const deleteThroughSocket =  socket?.emit("deletePost", {
         time: postDecisionState.time,
         username: profile.registerdUserIdentification,
       });

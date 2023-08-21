@@ -1,10 +1,8 @@
 import { useRef } from "react"
 import { Socket } from "socket.io-client"
 
-export const appModelContext = {
-  // socket:{current:""},
-  // socket:,
 
+export const appModelContext = {
   routeIdentification: "",
   setRouteIdentification: (routeIdentification: string) => {},
   userEndPoint: "",

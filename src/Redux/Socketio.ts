@@ -12,7 +12,7 @@ const initialState:InitialState = {
     errorMessage:null,
 }
 const appEndPoint: string = "http://localhost:2001"
-const socket = io(appEndPoint)
+const socket = "http://localhost:2001";
 
 export const socketSlice = createSlice(
     {
