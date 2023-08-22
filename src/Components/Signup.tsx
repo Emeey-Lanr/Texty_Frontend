@@ -3,7 +3,7 @@ import Logo from "./Logo"
 import {Link} from "react-router-dom"
 import LoginMessageModal from "./LoginMessageModal"
 import { appContext } from "../App"
-import { useContext, useReducer, useState } from "react"
+import React, { useContext, useReducer, useState } from "react"
 import axios from "axios"
 import{UserDetailsModel} from "../Model/AppModelContext"
 import LoginSpinner from "./LoginSpinner"
@@ -63,7 +63,10 @@ let navigate = useNavigate()
   }
 interface DetailModel  {
               id:string
-            }
+  }
+  const preventSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  }
   const signupBtn = () => {
     if (username !== "" && password !== "") {
     
@@ -78,6 +81,7 @@ interface DetailModel  {
               id:result.data.client_Token
             }
             localStorage.xxxxxxxxxxxxxxx = JSON.stringify(details)
+            loadFunction(false)
             navigate(`/${result.data.username}`)
           }else{
             loadFunction(false)
@@ -98,7 +102,7 @@ interface DetailModel  {
   
   return (
     <>
-     <form className="signup_div">
+     <form className="signup_div" onSubmit={preventSubmit}>
           <div style={{width:"100%"}}>
               <div className="signup_logo_div">
                   <Logo/>

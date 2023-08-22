@@ -11,6 +11,7 @@ import { unfollowFollowingR } from "../Redux/Profile";
 import { setOrOpenChat } from "../Redux/Message";
 import axios from "axios";
 import { useSocket } from "../Socket";
+import noImg from "../images/noImage.png";
 interface FriendsInterface {
   setOpenFollowersFollowing: React.Dispatch<React.SetStateAction<boolean>>;
   openFFNumber: number;
@@ -157,121 +158,43 @@ const Friends = ({
       {/* Friends */}
       {openFFNumber === 0 ? (
         <div className="following_user_div">
-          {userDetails.followers.map((id:number, name: FollowersFollowingDetails) => (
-            <div key={id} className="following_user_details">
-              <div className="following_user_head">
-                <div className="img_div">
-                  <img src={boxer} alt="" />
-                </div>
-                <div className="name_div">
-                  <div>
-                    <h2>{name.username}</h2>{" "}
-                    <>
-                      {userDetails.ifUserFollowers.length > 0 ? (
-                        name.username ===
-                        userDetails.registerdUserIdentification ? (
-                          <></>
+          {userDetails.followers.map(
+            (name: FollowersFollowingDetails, id: number) => (
+              <div key={id} className="following_user_details">
+                <div className="following_user_head">
+                  <div className="img_div">
+                    <img src={name.img_url === "" ? noImg : name.img_url  } alt="following" />
+                  </div>
+                  <div className="name_div">
+                    <div>
+                      <h2>{name.username}</h2>{" "}
+                      <>
+                        {userDetails.ifUserFollowers.length > 0 ? (
+                          name.username ===
+                          userDetails.registerdUserIdentification ? (
+                            <></>
+                          ) : (
+                            userDetails.ifUserFollowers.find(
+                              (namee: { username: string }) =>
+                                namee.username === name.username
+                            ) && (
+                              <div>
+                                <p>Follows you</p>
+                              </div>
+                            )
+                          )
                         ) : (
-                          userDetails.ifUserFollowers.find(
-                            (namee: { username: string }) =>
-                              namee.username === name.username
-                          ) && (
-                            <div>
-                              <p>Follows you</p>
-                            </div>
-                          )
-                        )
-                      ) : (
-                        <></>
-                      )}
-                    </>
+                          <></>
+                        )}
+                      </>
+                    </div>
+                    <p>{name.about_me}</p>
                   </div>
-                  <p>{name.about_me}</p>
                 </div>
-              </div>
-              {/* For logged in user */}
-              {userDetails.registerdUserIdentification ===
-              userDetails.username ? (
-                <>
-                  <div className="following_user_action">
-                    <button
-                      onClick={() => chatWithBtn(name.username, name.img_url)}
-                      style={{
-                        fontSize: "1.2rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <CiChat1 />
-                    </button>
-
-                    {userDetails.following.find(
-                      (namee: FollowersFollowingDetails) =>
-                        namee.username === name.username
-                    ) ? (
-                      <button
-                        onClick={() =>
-                          unfollowFunction(
-                            "unfollowSocket2",
-                            userDetails.registerdUserIdentification,
-                            name.username
-                          )
-                        }
-                        style={{
-                          marginLeft: "10px",
-                          background: "black",
-                          color: "white",
-                        }}
-                      >
-                        Following
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() =>
-                          followFunction(
-                            "followSocket2",
-                            userDetails.registerdUserIdentification,
-                            name.username,
-                            "followed you back"
-                          )
-                        }
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Follow
-                      </button>
-                    )}
-
-                    {userDetails.registeredUserBlocked.find(
-                      (namee: { username: string }) =>
-                        namee.username === name.username
-                    ) ? (
-                      <button
-                        onClick={() => unBlockUserBtn(name.username)}
-                        style={{
-                          marginLeft: "10px",
-                          background: "red",
-                          color: "white",
-                        }}
-                      >
-                        Blocked
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => blockUserBtn(name.username)}
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Block
-                      </button>
-                    )}
-                  </div>
-                </>
-              ) : (
-                //   For looked for user
-                <>
-                  {name.username === userDetails.registerdUserIdentification ? (
-                    <></>
-                  ) : (
+                {/* For logged in user */}
+                {userDetails.registerdUserIdentification ===
+                userDetails.username ? (
+                  <>
                     <div className="following_user_action">
                       <button
                         onClick={() => chatWithBtn(name.username, name.img_url)}
@@ -284,14 +207,15 @@ const Friends = ({
                       >
                         <CiChat1 />
                       </button>
-                      {userDetails.ifUserFollowing.find(
+
+                      {userDetails.following.find(
                         (namee: FollowersFollowingDetails) =>
                           namee.username === name.username
                       ) ? (
                         <button
                           onClick={() =>
                             unfollowFunction(
-                              "unfollowSocket3",
+                              "unfollowSocket2",
                               userDetails.registerdUserIdentification,
                               name.username
                             )
@@ -306,12 +230,20 @@ const Friends = ({
                         </button>
                       ) : (
                         <button
-                          onClick={() => followViaSocket3Btn(name.username)}
+                          onClick={() =>
+                            followFunction(
+                              "followSocket2",
+                              userDetails.registerdUserIdentification,
+                              name.username,
+                              "followed you back"
+                            )
+                          }
                           style={{ marginLeft: "10px" }}
                         >
                           Follow
                         </button>
                       )}
+
                       {userDetails.registeredUserBlocked.find(
                         (namee: { username: string }) =>
                           namee.username === name.username
@@ -319,9 +251,9 @@ const Friends = ({
                         <button
                           onClick={() => unBlockUserBtn(name.username)}
                           style={{
-                            color: "white",
                             marginLeft: "10px",
                             background: "red",
+                            color: "white",
                           }}
                         >
                           Blocked
@@ -335,11 +267,85 @@ const Friends = ({
                         </button>
                       )}
                     </div>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+                  </>
+                ) : (
+                  //   For looked for user
+                  <>
+                    {name.username ===
+                    userDetails.registerdUserIdentification ? (
+                      <></>
+                    ) : (
+                      <div className="following_user_action">
+                        <button
+                          onClick={() =>
+                            chatWithBtn(name.username, name.img_url)
+                          }
+                          style={{
+                            fontSize: "1.2rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <CiChat1 />
+                        </button>
+                        {userDetails.ifUserFollowing.find(
+                          (namee: FollowersFollowingDetails) =>
+                            namee.username === name.username
+                        ) ? (
+                          <button
+                            onClick={() =>
+                              unfollowFunction(
+                                "unfollowSocket3",
+                                userDetails.registerdUserIdentification,
+                                name.username
+                              )
+                            }
+                            style={{
+                              marginLeft: "10px",
+                              background: "black",
+                              color: "white",
+                            }}
+                          >
+                            Following
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => followViaSocket3Btn(name.username)}
+                            style={{ marginLeft: "10px" }}
+                          >
+                            Follow
+                          </button>
+                        )}
+                        {userDetails.registeredUserBlocked.find(
+                          (namee: { username: string }) =>
+                            namee.username === name.username
+                        ) ? (
+                          <button
+                            onClick={() => unBlockUserBtn(name.username)}
+                            style={{
+                              color: "white",
+                              marginLeft: "10px",
+                              background: "red",
+                            }}
+                          >
+                            Blocked
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => blockUserBtn(name.username)}
+                            style={{ marginLeft: "10px" }}
+                          >
+                            Block
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )
+          )}
         </div>
       ) : (
         //   <div className="friends_details_div">
@@ -382,103 +388,62 @@ const Friends = ({
 
         //       </div>:
         <div className="following_user_div">
-          {userDetails.following.map((id:number, name: FollowersFollowingDetails) => (
-            <div key={id} className="following_user_details">
-              <div className="following_user_head">
-                <div className="img_div">
-                  <img src={boxer} alt="" />
-                </div>
-                <div className="name_div">
-                  <div>
-                    <h2>{name.username}</h2>
-                    {userDetails.registerdUserIdentification ===
-                    userDetails.username ? (
-                      <>
-                        {userDetails.followers.find(
-                          (namee: { username: string }) =>
-                            namee.username === name.username
-                        ) ? (
-                          <div>
-                            <p>Follows you</p>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-                      </>
-                    ) : (
-                      <>
+          {userDetails.following.map(
+            (name: FollowersFollowingDetails, id: number) => (
+              <div key={id} className="following_user_details">
+                <div className="following_user_head">
+                  <div className="img_div">
+                    <img src={name.img_url === "" ? noImg : name.img_url} alt="" />
+                  </div>
+                  <div className="name_div">
+                    <div>
+                      <h2>{name.username}</h2>
+                      {userDetails.registerdUserIdentification ===
+                      userDetails.username ? (
                         <>
-                          {userDetails.ifUserFollowers.length > 0 ? (
-                            name.username ===
-                            userDetails.registerdUserIdentification ? (
-                              <></>
-                            ) : (
-                              userDetails.ifUserFollowers.find(
-                                (namee: { username: string }) =>
-                                  namee.username === name.username
-                              ) && (
-                                <div>
-                                  <p>Follows you</p>
-                                </div>
-                              )
-                            )
+                          {userDetails.followers.find(
+                            (namee: { username: string }) =>
+                              namee.username === name.username
+                          ) ? (
+                            <div>
+                              <p>Follows you</p>
+                            </div>
                           ) : (
                             <></>
                           )}
                         </>
-                      </>
-                    )}
-                  </div>
+                      ) : (
+                        <>
+                          <>
+                            {userDetails.ifUserFollowers.length > 0 ? (
+                              name.username ===
+                              userDetails.registerdUserIdentification ? (
+                                <></>
+                              ) : (
+                                userDetails.ifUserFollowers.find(
+                                  (namee: { username: string }) =>
+                                    namee.username === name.username
+                                ) && (
+                                  <div>
+                                    <p>Follows you</p>
+                                  </div>
+                                )
+                              )
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        </>
+                      )}
+                    </div>
 
-                  <p>{name.about_me}</p>
-                </div>
-              </div>
-              {/* For user logged in*/}
-              {userDetails.registerdUserIdentification ===
-              userDetails.username ? (
-                <>
-                  <div className="following_user_action">
-                    <button
-                      onClick={() => chatWithBtn(name.username, name.img_url)}
-                      style={{
-                        fontSize: "1.2rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <CiChat1 />
-                    </button>
-                    <button
-                      onClick={() =>
-                        unfollowFunction(
-                          "unfollowSocket2",
-                          userDetails.registerdUserIdentification,
-                          name.username
-                        )
-                      }
-                      style={{ marginLeft: "10px" }}
-                    >
-                      Unfollow
-                    </button>
-                    {userDetails.registeredUserBlocked.find(
-                      (namee: { username: string }) =>
-                        namee.username === name.username
-                    ) ? (
-                      <button style={{ marginLeft: "10px", background: "red" }}>
-                        Blocked
-                      </button>
-                    ) : (
-                      <button style={{ marginLeft: "10px" }}>Block</button>
-                    )}
+                    <p>{name.about_me}</p>
                   </div>
-                </>
-              ) : (
-                //   For searched user
-                <>
-                  {name.username === userDetails.registerdUserIdentification ? (
-                    <></>
-                  ) : (
+                </div>
+                {/* For user logged in*/}
+                {userDetails.registerdUserIdentification ===
+                userDetails.username ? (
+                  <>
                     <div className="following_user_action">
                       <button
                         onClick={() => chatWithBtn(name.username, name.img_url)}
@@ -491,60 +456,108 @@ const Friends = ({
                       >
                         <CiChat1 />
                       </button>
-                      <>
-                        {userDetails.ifUserFollowing.find(
-                          (namee: { username: string }) =>
-                            namee.username === name.username
-                        ) ? (
-                          <button
-                            onClick={() =>
-                              unfollowFunction(
-                                "unfollowSocket3",
-                                userDetails.registerdUserIdentification,
-                                name.username
-                              )
-                            }
-                            style={{
-                              marginLeft: "10px",
-                              background: "black",
-                              color: "white",
-                            }}
-                          >
-                            Following
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => followViaSocket3Btn(name.username)}
-                            style={{ marginLeft: "10px" }}
-                          >
-                            Follow
-                          </button>
-                        )}
-                      </>
+                      <button
+                        onClick={() =>
+                          unfollowFunction(
+                            "unfollowSocket2",
+                            userDetails.registerdUserIdentification,
+                            name.username
+                          )
+                        }
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Unfollow
+                      </button>
                       {userDetails.registeredUserBlocked.find(
                         (namee: { username: string }) =>
                           namee.username === name.username
                       ) ? (
                         <button
-                          onClick={() => unBlockUserBtn(name.username)}
                           style={{ marginLeft: "10px", background: "red" }}
                         >
                           Blocked
                         </button>
                       ) : (
-                        <button
-                          onClick={() => blockUserBtn(name.username)}
-                          style={{ marginLeft: "10px" }}
-                        >
-                          Block
-                        </button>
+                        <button style={{ marginLeft: "10px" }}>Block</button>
                       )}
                     </div>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+                  </>
+                ) : (
+                  //   For searched user
+                  <>
+                    {name.username ===
+                    userDetails.registerdUserIdentification ? (
+                      <></>
+                    ) : (
+                      <div className="following_user_action">
+                        <button
+                          onClick={() =>
+                            chatWithBtn(name.username, name.img_url)
+                          }
+                          style={{
+                            fontSize: "1.2rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <CiChat1 />
+                        </button>
+                        <>
+                          {userDetails.ifUserFollowing.find(
+                            (namee: { username: string }) =>
+                              namee.username === name.username
+                          ) ? (
+                            <button
+                              onClick={() =>
+                                unfollowFunction(
+                                  "unfollowSocket3",
+                                  userDetails.registerdUserIdentification,
+                                  name.username
+                                )
+                              }
+                              style={{
+                                marginLeft: "10px",
+                                background: "black",
+                                color: "white",
+                              }}
+                            >
+                              Following
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => followViaSocket3Btn(name.username)}
+                              style={{ marginLeft: "10px" }}
+                            >
+                              Follow
+                            </button>
+                          )}
+                        </>
+                        {userDetails.registeredUserBlocked.find(
+                          (namee: { username: string }) =>
+                            namee.username === name.username
+                        ) ? (
+                          <button
+                            onClick={() => unBlockUserBtn(name.username)}
+                            style={{ marginLeft: "10px", background: "red" }}
+                          >
+                            Blocked
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => blockUserBtn(name.username)}
+                            style={{ marginLeft: "10px" }}
+                          >
+                            Block
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )
+          )}
         </div>
       )}
     </div>

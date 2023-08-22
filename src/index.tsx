@@ -14,10 +14,12 @@ import Message from "./Redux/Message";
 import HomePost from "./Redux/HomePost";
 import CurrentPost from "./Redux/CurrentPost";
 import Postdecision from "./Redux/Postdecision";
+import SuggestedUser from "./Redux/SuggestedUser";
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en.json"
 import ru from "javascript-time-ago/locale/ru.json"
-import {SocketProvider} from "./Socket"
+import { SocketProvider } from "./Socket"
+
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
 const root = ReactDOM.createRoot(
@@ -33,6 +35,7 @@ const store = configureStore({
     home_post: HomePost,
     current_post: CurrentPost,
     postdecision: Postdecision,
+    suggested_user:SuggestedUser,
   },
 });
 

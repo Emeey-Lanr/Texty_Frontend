@@ -25,11 +25,12 @@ import {
 import { loadMessage, incomingMesageR } from "./Redux/Message";
 
 import { useNavigate } from "react-router-dom";
-import { get } from "http";
+
 import UserNotification from "./Components/UserNotification";
 import Group from "./Components/Group";
 import { followerNewHomePost, userNewHomePost } from "./Redux/HomePost";
 import { useSocket } from "./Socket";
+import { getSuggestedUsersDetails } from "./Redux/SuggestedUser";
 export const appContext = createContext(appModelContext);
 
 const App = () => {
@@ -232,8 +233,8 @@ const App = () => {
                 result.data.userData.background_img_url,
                 result.data.followingFollowersUser.followers,
                 result.data.followingFollowersUser.following,
-                [],
-                [],
+                result.data.followingFollowersUser.following,
+                result.data.followingFollowersUser.followers,
                 result.data.userData.post,
                 result.data.userData.blocked,
                 result.data.loggedIn,
@@ -331,7 +332,13 @@ const App = () => {
         }
       });
   };
-
+  const suggestedUserF = () => {
+    socket?.on("suggestedUser", (data)=>{
+      console.log(data)
+      dispatch(getSuggestedUsersDetails(data.suggestedUser));
+      
+    })
+  }
   const newPostForFollowersFunction = () => {
     socket?.on("newPostForFollowers", (data: any) => {
       setNewPostAlert(true);
@@ -351,10 +358,11 @@ const App = () => {
     });
   };
   const incomingMessageDetails = () => {
- 
+    
     socket?.on(
       "incomingMessage",
       (data: { owner: string; notowner: string; notowner_imgurl: string }) => {
+        console.log(data)
         dispatch(
           incomingMesageR({
             chattingWithName: data.notowner,
@@ -448,6 +456,7 @@ const App = () => {
 
     <appContext.Provider
       value={{
+        suggestedUserF,
         routeIdentification,
         setRouteIdentification,
         userEndPoint,

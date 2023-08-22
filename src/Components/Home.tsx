@@ -1,6 +1,6 @@
 import "../styles/home.css";
 import {
- 
+
   FaHeart,
   FaComment,
 } from "react-icons/fa";
@@ -16,6 +16,7 @@ import Group from "./Group";
 import ChattingSpace from "./ChattingSpace";
 import { useSelector } from "react-redux";
 import { POST } from "../Redux/HomePost";
+import { unfollowFollowingR } from "../Redux/Profile";
 import {
   socketHomePost,
   getLikesHomePost,
@@ -61,6 +62,17 @@ const Home = () => {
     hideSideBarBtn();
     setGroupChatOrPrivateChatOpening(0);
   }, []);
+  
+  const unfollowSocket2Function = () => {
+    socket?.on("userFollowingWhenUnFollowing", (data: any) => {
+      if (!data.error) {
+        // dispatch(postActionDone(true));
+        dispatch(unfollowFollowingR(data.userLoggedInFollowing));
+      } else {
+        alert("an error occur couldn't unfollow");
+      }
+    });
+  };
   const socketHomePostFunction = () => {
     socket?.on("homePost", (data: any) => {
      
@@ -109,6 +121,7 @@ const Home = () => {
   };
   useEffect(() => {
     if (socket) {
+      unfollowSocket2Function()
       socketHomePostFunction();
       incomingMessageDetails();
       newPostForFollowersFunction();

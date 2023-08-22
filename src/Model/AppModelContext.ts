@@ -3,6 +3,7 @@ import { Socket } from "socket.io-client"
 
 
 export const appModelContext = {
+   suggestedUserF:()=>{},
   routeIdentification: "",
   setRouteIdentification: (routeIdentification: string) => {},
   userEndPoint: "",

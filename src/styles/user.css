@@ -443,6 +443,7 @@ text-align: center;
     margin: 20px 0;
     background: none;
     align-items: center;
+     display: block;
 
     
 }

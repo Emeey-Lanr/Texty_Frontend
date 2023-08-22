@@ -92,7 +92,10 @@ color: #8c8c8c;
     height: 35px;
     border-radius: 30px;
     color: white;
-
+}
+.follow_a_user  .action .unfollow{
+    background: white;
+    color: black;
 }
 
 

@@ -13,7 +13,9 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   collectUserProfile,
   followUser,
+  followUserViaSuggested,
   unfollowViaProfile,
+  unfollowViaProfile2Suggested,
   unfollowFollowingR,
   unfollowFollowingViaAnotherUserFFlistR,
   likesUserPost,
@@ -78,7 +80,7 @@ const UserProfile = () => {
   // the number used to open either follwers or following
   const [openFFNumber, setOpenFFNumber] = useState<number>(0);
 
-  const [m, setM] = useState(0);
+ 
   let id = useParams();
 
   useEffect(() => {
@@ -100,11 +102,13 @@ const UserProfile = () => {
   }
   const followSocket = () => {
     socket?.on("followedUserLookedFor", (data: any) => {
+     
       // This errors happens based on the user yo want to follow is not found as the backend
       if (!data.error) {
        
          dispatch(postActionDone(true));
         dispatch(followUser(data.lookedForUserFollowers));
+        dispatch(followUserViaSuggested(data.followingDetails));
 
       } else {
          dispatch(postActionDone(true));
@@ -146,9 +150,10 @@ const UserProfile = () => {
 
   const unFollowedSocket = () => {
     socket?.on("unFollowed", (data: any) => {
-    
       if (!data.error) {
+        
         dispatch(unfollowViaProfile(data.userTheyWantToUnFollowFollowers));
+        dispatch(unfollowViaProfile2Suggested(data.userLoggedInFollowing));
          dispatch(postActionDone(true))
       } else {
          dispatch(postActionDone(true));
@@ -379,7 +384,7 @@ const UserProfile = () => {
     <>
       {!userProfileLoading ? (
         <div className="userProfileLoading_div">
-         <Texty/>      
+          <Texty />
         </div>
       ) : (
         <>
@@ -578,167 +583,179 @@ const UserProfile = () => {
                       </div>
                       <div className="post_container">
                         {userProfileDetails.post.length > 0 ? (
-                          userProfileDetails.post.map((id:number, details: POST) => (
-                            <button key={id}
-                              className="post_div"
-                              // disabled={true}
-                              // onClick={() =>
-                              //   openPost(details.postedBy, details.time)
-                              // }
-                            >
-                               <div className="date">
-                <span> 
-                  {<ReactTimeAgo  date={details.time} locale="en-US"/> }
-                  </span>
-              </div>
-                              <div
-                                className="posted"
-                                onClick={() =>
-                                  openPost(details.postedBy, details.time)
-                                }
+                          userProfileDetails.post.map(
+                            (details: POST, id: number) => (
+                              <button
+                                key={id}
+                                className="post_div"
+                                // disabled={true}
+                                // onClick={() =>
+                                //   openPost(details.postedBy, details.time)
+                                // }
                               >
-                                <p>{details.text}</p>
-                              </div>
-                              <div className="poster">
-                                <div className="username_img"
-                                  onClick={() =>
-                                  openPost(details.postedBy, details.time)
-                                }>
-                                  <img
-                                    src={
-                                      userProfileDetails.img_url === ""
-                                        ? noImg
-                                        : userProfileDetails.img_url
+                                <div className="date">
+                                  <span>
+                                    {
+                                      <ReactTimeAgo
+                                        date={details.time}
+                                        locale="en-US"
+                                      />
                                     }
-                                    alt=""
-                                  />
-                                  <span
-                                    style={{
-                                      width: "120px",
-                                      color: "white",
-                                      overflow: "hidden",
-                                      whiteSpace: "nowrap",
-                                      textOverflow: "ellipsis",
-                                    }}
-                                  >
-                                    {userProfileDetails.username}
                                   </span>
                                 </div>
-
                                 <div
-                                  className="postaction"
-                                  style={
-                                    userProfileDetails.username ===
-                                    userProfileDetails.registerdUserIdentification
-                                      ? {
-                                          position: "relative",
-                                          gridTemplateColumns: "30% 30% 30%",
-                                        }
-                                      : {
-                                          position: "relative",
-                                          gridTemplateColumns: "30% 30%",
-                                        }
+                                  className="posted"
+                                  onClick={() =>
+                                    openPost(details.postedBy, details.time)
                                   }
                                 >
-                                  <>
-                                    {details.likes.find(
-                                      (data) =>
-                                        data ===
-                                        userProfileDetails.registerdUserIdentification
-                                    ) ? (
-                                      <button
-                                        style={{
-                                          display: "flex",
-                                          justifyContent: "flex-end",
-                                        }}
-                                        onClick={() =>
-                                          likeUnlikeSocketFunction(
-                                            "unlike",
-                                            details.time,
-                                            details.postedBy,
-                                            "unlike"
-                                          )
-                                        }
-                                      >
-                                        <FaHeart
-                                          style={{
-                                            color: "red",
-                                            fontSize: "1.5rem",
-                                          }}
-                                        />{" "}
-                                        <span
-                                          style={{
-                                            fontSize: "0.6rem",
-                                            padding: "0 4px",
-                                          }}
-                                        >
-                                          {details.likes.length > 0 &&
-                                            details.likes.length}
-                                        </span>
-                                      </button>
-                                    ) : (
-                                      <button
-                                        onClick={() =>
-                                          likeUnlikeSocketFunction(
-                                            "like",
-                                            details.time,
-                                            details.postedBy,
-                                            "like"
-                                          )
-                                        }
-                                      >
-                                        <BiHeart
-                                          style={{ fontSize: "1.9rem" }}
-                                        />{" "}
-                                        <span
-                                          style={{
-                                            fontSize: "0.6rem",
-                                            padding: "0 4px",
-                                          }}
-                                        >
-                                          {Number(details.likes.length) > 0 &&
-                                            details.likes.length}
-                                        </span>
-                                      </button>
-                                    )}
-                                  </>
-                                  <button
+                                  <p>{details.text}</p>
+                                </div>
+                                <div className="poster">
+                                  <div
+                                    className="username_img"
                                     onClick={() =>
                                       openPost(details.postedBy, details.time)
                                     }
                                   >
-                                    <FaComment style={{ fontSize: "1.5rem" }} />{" "}
+                                    <img
+                                      src={
+                                        userProfileDetails.img_url === ""
+                                          ? noImg
+                                          : userProfileDetails.img_url
+                                      }
+                                      alt=""
+                                    />
                                     <span
                                       style={{
-                                        fontSize: "0.6rem",
-                                        padding: "0 4px",
+                                        width: "120px",
+                                        color: "white",
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
                                       }}
                                     >
-                                      {details.comment.length > 0 &&
-                                        details.comment.length}
+                                      {userProfileDetails.username}
                                     </span>
-                                  </button>
-                                  {/* {userProfileDetails.username ===
-                                    userProfileDetails.registerdUserIdentification && ( */}
-                                  <button
-                                    onClick={() =>
-                                      postActionBtn(
-                                        `${details.postedBy}`,
-                                        Number(details.time)
-                                      )
+                                  </div>
+
+                                  <div
+                                    className="postaction"
+                                    style={
+                                      userProfileDetails.username ===
+                                      userProfileDetails.registerdUserIdentification
+                                        ? {
+                                            position: "relative",
+                                            gridTemplateColumns: "30% 30% 30%",
+                                          }
+                                        : {
+                                            position: "relative",
+                                            gridTemplateColumns: "30% 30%",
+                                          }
                                     }
                                   >
-                                    <div>
-                                      <div></div>
-                                      <div></div>
-                                      <div></div>
-                                    </div>
-                                  </button>
-                                  {/* )} */}
+                                    <>
+                                      {details.likes.find(
+                                        (data) =>
+                                          data ===
+                                          userProfileDetails.registerdUserIdentification
+                                      ) ? (
+                                        <button
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                          }}
+                                          onClick={() =>
+                                            likeUnlikeSocketFunction(
+                                              "unlike",
+                                              details.time,
+                                              details.postedBy,
+                                              "unlike"
+                                            )
+                                          }
+                                        >
+                                          <FaHeart
+                                            style={{
+                                              color: "red",
+                                              fontSize: "1.5rem",
+                                            }}
+                                          />{" "}
+                                          <span
+                                            style={{
+                                              fontSize: "0.6rem",
+                                              padding: "0 4px",
+                                            }}
+                                          >
+                                            {details.likes.length > 0 &&
+                                              details.likes.length}
+                                          </span>
+                                        </button>
+                                      ) : (
+                                        <button
+                                          onClick={() =>
+                                            likeUnlikeSocketFunction(
+                                              "like",
+                                              details.time,
+                                              details.postedBy,
+                                              "like"
+                                            )
+                                          }
+                                        >
+                                          <BiHeart
+                                            style={{ fontSize: "1.9rem" }}
+                                          />{" "}
+                                          <span
+                                            style={{
+                                              fontSize: "0.6rem",
+                                              padding: "0 4px",
+                                            }}
+                                          >
+                                            {Number(details.likes.length) > 0 &&
+                                              details.likes.length}
+                                          </span>
+                                        </button>
+                                      )}
+                                    </>
+                                    <button
+                                      onClick={() =>
+                                        openPost(details.postedBy, details.time)
+                                      }
+                                    >
+                                      <FaComment
+                                        style={{ fontSize: "1.5rem" }}
+                                      />{" "}
+                                      <span
+                                        style={{
+                                          fontSize: "0.6rem",
+                                          padding: "0 4px",
+                                        }}
+                                      >
+                                        {details.comment.length > 0 &&
+                                          details.comment.length}
+                                      </span>
+                                    </button>
+                                    {/* {userProfileDetails.username ===
+                                    userProfileDetails.registerdUserIdentification && ( */}
+                                    <button
+                                      onClick={() =>
+                                        postActionBtn(
+                                          `${details.postedBy}`,
+                                          Number(details.time)
+                                        )
+                                      }
+                                    >
+                                      <div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                      </div>
+                                    </button>
+                                    {/* )} */}
+                                  </div>
                                 </div>
-                              </div>
-                            </button>
-                          ))
+                              </button>
+                            )
+                          )
                         ) : (
                           <div></div>
                         )}
@@ -754,13 +771,13 @@ const UserProfile = () => {
                   openFFNumber={openFFNumber}
                   setOpenFFNumber={setOpenFFNumber}
                 />
-                  )}
+              )}
 
-                 <FollowUser/>
-              <ChattingSpace />
+              <FollowUser />
+               <Chat/>
               <PostModal />
               <Create />
-              <SideBarModal/>
+              <SideBarModal />
               <Navbar />
               <Sidebar />
               <ActionModal />

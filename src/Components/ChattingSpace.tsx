@@ -71,11 +71,11 @@ try {
  
   socket?.emit("bv",{message:"no working"})
    socket?.emit("privateMessage", info);
-   if (emptyInput.current) {
-     emptyInput.current.value = "";
-   }
+  //  if (emptyInput.current) {
+  //    emptyInput.current.value = "";
+  //  }
 
-   const sendMessage = await axios.post(messageEndpointt, info);
+  const sendMessage = await axios.post(messageEndpointt, info);
 } catch (error) {
   
 }
@@ -90,7 +90,6 @@ try {
       {groupChatOrPrivateChatOpening === 1 && (
         <div className="chat_parent_body">
           <div></div>
-
           <div className="chatting_space">
             <div className="goBack_chatting_space">
               <button onClick={() => setGroupChatOrPrivateChatOpening(0)}>
@@ -99,14 +98,18 @@ try {
             </div>
             <div className="chat_group">
               {messageRedux.currentDetails.message.map(
-                (id:number, data: {
-                  text: string;
-                  sender: string;
-                  time: string;
-                  owner_imgurl: string;
-                  notowner_imgurl: string;
-                }) => (
-                  <div key={id}
+                (
+                  data: {
+                    text: string;
+                    sender: string;
+                    time: string;
+                    owner_imgurl: string;
+                    notowner_imgurl: string;
+                  },
+                  id: number
+                ) => (
+                  <div
+                    key={id}
                     className={
                       data.sender === userDetails.registerdUserIdentification
                         ? "chat-message_div_1"
@@ -132,8 +135,13 @@ try {
                             }
                             alt=""
                           />
-                          <div>
-                            <span>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "50% 50%",
+                            }}
+                          >
+                            <span style={{ fontSize: "0.7rem",width:"100px", overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis" }}>
                               {data.sender ===
                               userDetails.registerdUserIdentification
                                 ? "you"
@@ -143,6 +151,7 @@ try {
                               style={{
                                 borderLeft: "2px solid white",
                                 textAlign: "center",
+                                fontSize: "0.7rem",
                               }}
                             >
                               {data.time}
@@ -151,8 +160,13 @@ try {
                         </>
                       ) : (
                         <>
-                          <div>
-                            <span>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "50% 50%",
+                            }}
+                          >
+                            <span style={{fontSize:"0.7rem", width:"100px", overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis"}}>
                               {data.sender ===
                               userDetails.registerdUserIdentification
                                 ? "you"
@@ -186,13 +200,12 @@ try {
                           : "chat_message_2"
                       }
                     >
-                      <p onClick={() => alert(data.notowner_imgurl)}>
-                        {data.text}
-                      </p>
+                      <p>{data.text}</p>
                     </div>
                   </div>
                 )
               )}
+              <div ref={lastMessage} className="last_message" />
               {/* <div className="chat-message_div_2">
                   <div className="chat-message_imgdiv_2">
                      
@@ -204,8 +217,6 @@ try {
             
                   </div>
               </div> */}
-
-              <div ref={lastMessage} />
             </div>
             <div className="chat_input_div">
               <div className="chat_input">
@@ -215,7 +226,7 @@ try {
                     </label> */}
 
                 <div>
-                  <textarea 
+                  <textarea
                     ref={emptyInput}
                     onChange={(e) => setMessage(e.target.value)}
                   ></textarea>

@@ -11,6 +11,7 @@ import axios from "axios"
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { useSocket } from "../Socket";
+import noImg from "../images/noImage.png";
 // import Message from "../Features/Message"
   const Navbar = () => {
     const { showSideBarBtn, groupChatOrPrivateChatOpening, setGroupChatOrPrivateChatOpening,
@@ -79,7 +80,7 @@ import { useSocket } from "../Socket";
             groupChatOrPrivateChatOpening === 1 && <div className="navbar_img_name_space">
          
           <button >
-               <img src={boxer} alt="" />
+               <img src={messageRedux.currentDetails.notowner_imgurl === "" ? noImg : messageRedux.currentDetails.notowner_imgurl } alt="" />
           </button>
               <span>{messageRedux.currentDetails.notowner}</span>
          </div>

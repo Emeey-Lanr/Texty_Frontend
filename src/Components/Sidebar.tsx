@@ -199,12 +199,15 @@ const Sidebar = () => {
               //PRIVATE CHAT  //////////////////////////////////////////////////////////////////////////////
               <div className="group_chat">
                 {messageStore.allMessage.map(
-                  (id:number, name: {
-                    owner: string;
-                    notowner: string;
-                    notowner_imgurl: string;
-                    message: { checked: boolean; text: string }[];
-                  }) => (
+                  (
+                    name: {
+                      owner: string;
+                      notowner: string;
+                      notowner_imgurl: string;
+                      message: { checked: boolean; text: string }[];
+                    },
+                    id: number
+                  ) => (
                     <div key={id}>
                       <button
                         className="link"
@@ -287,7 +290,10 @@ const Sidebar = () => {
                   />
                   <p>{userDetail.registerdUserIdentification}</p>
                 </div>
-                <Link className="link" to={`/${userDetail.registerdUserIdentification}`}>
+                <Link
+                  className="link"
+                  to={`/${userDetail.registerdUserIdentification}`}
+                >
                   View
                 </Link>
               </button>

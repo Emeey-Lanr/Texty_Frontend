@@ -58,12 +58,14 @@ margin: 0 auto;
     font-size: 1rem;
     font-weight: 600;
 }
+
 .signup_password div .invalid:focus{
     outline: 3px solid #ff00008f;
 }
 .signup_password div .valid:focus{
     outline: 3px solid #00000086;
 }
+
 .signup_line{
     width: 20%;
     margin:  0 auto;

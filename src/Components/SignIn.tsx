@@ -37,9 +37,13 @@ const SignIn = () => {
   const loadFunction = (onSpinner:boolean) => {
     setSpinnerState(onSpinner)
   }
+  const preventSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  }
   interface DetailModel  {
               id:string
-     }
+  }
+  
   const verfifyUserBtn = () => {
    
     if (username !== "" && password !== "") {
@@ -52,6 +56,7 @@ const SignIn = () => {
             }
             localStorage.xxxxxxxxxxxxxxx = JSON.stringify(details)
             navigate(`/${result.data.username}`)
+            loadFunction(false)
           } else {
             loadFunction(false)
              messageAlertFunction(true, result.data.message)
@@ -68,7 +73,7 @@ const SignIn = () => {
   
   return (
     <>
-      <form className="signup_div">
+      <form className="signup_div" onSubmit={preventSubmit}>
           <div style={{width:"100%"}}>
               <div className="signup_logo_div">
                   <Logo/>
@@ -79,15 +84,15 @@ const SignIn = () => {
               <div style={{width:"100%"}}>
                 <div className="signup_username">
                  <p>Username</p>
-                 <div> <input type="text" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setUsername(e.target.value)} /></div>
+                 <div> <input  type="text" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setUsername(e.target.value)} /></div>
                </div>
                <div className="signup_password">
                 <p>Password</p>
-                <div><input type="password" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setPassword(e.target.value)} /></div>
+                <div><input className='valid'  type="password" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setPassword(e.target.value)} /></div>
                </div>
               </div>
               <div className="signup_btn">
-                  <button onClick={()=>verfifyUserBtn()}>Signin</button>
+                  <button  onClick={()=>verfifyUserBtn()}>Signin</button>
               </div>
               <div className="signup_signin_link">
           <div>
