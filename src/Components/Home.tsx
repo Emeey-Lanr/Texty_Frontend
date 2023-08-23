@@ -192,11 +192,10 @@ const Home = () => {
           )}
           {/* <div /> */}
           <div className="home_post_container">
-            {homePost.map((id:number, details: POST) => (
+            {homePost.map((details: POST, id:number) => (
               <button key={id}
                 className="home_post_div"
-                // disabled={true}
-                // onClick={() => openPost(details.postedBy, details.time)}
+              
               >
                 <div className="date">
                   <span>

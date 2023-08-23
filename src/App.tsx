@@ -178,6 +178,7 @@ const App = () => {
         },
       })
       .then((result) => {
+        console.log(result.data)
         if (result.data.status) {
           setNoUserFound(false);
           setAbout_MeText(result.data.userData.about_me);
@@ -334,7 +335,6 @@ const App = () => {
   };
   const suggestedUserF = () => {
     socket?.on("suggestedUser", (data)=>{
-      console.log(data)
       dispatch(getSuggestedUsersDetails(data.suggestedUser));
       
     })
@@ -362,7 +362,6 @@ const App = () => {
     socket?.on(
       "incomingMessage",
       (data: { owner: string; notowner: string; notowner_imgurl: string }) => {
-        console.log(data)
         dispatch(
           incomingMesageR({
             chattingWithName: data.notowner,
@@ -451,9 +450,9 @@ const App = () => {
     setIcon("hideIcon");  
   }
  
+  const [openReportModal, setOpenReportModal] = useState(false)
 
   return (
-
     <appContext.Provider
       value={{
         suggestedUserF,
@@ -538,7 +537,9 @@ const App = () => {
         icon,
         hide,
         openSuggest,
-        alwaysOpenSuggested
+        alwaysOpenSuggested,
+        openReportModal,
+        setOpenReportModal,
       }}
     >
       <Routes>

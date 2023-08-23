@@ -47,17 +47,14 @@ export const userProfileSlice = createSlice({
       state.value = action.payload;
     },
     updatePost: (state, action) => {
-      if (
-        (state.value.username === state.value.registerdUserIdentification) ===
-        (action.payload.user.username === state.value.username)
-      ) {
-        state.value.post = action.payload.user.post;
-      } else if (
-        (state.value.username !== state.value.registerdUserIdentification) ===
-        (action.payload.lookedForUser.username === state.value.username)
-      ) {
-        state.value.post = action.payload.lookedForUser.psot;
+      if (state.value.username === state.value.registerdUserIdentification) {
+     
+           state.value.post = action.payload.user.post;
+      } else if (state.value.username !== state.value.registerdUserIdentification) {
+       
+         state.value.post = action.payload.lookedForUser.post;
       }
+     
     },
     followUser: (state, action) => {
       state.value.followers = action.payload;

@@ -68,6 +68,7 @@ const ActionModal = () => {
   };
   const logOut = () => {
     localStorage.removeItem("xxxxxxxxxxxxxxx");
+    setOpenActionModal(false)
     navigate("/signin");
   };
   const proceedToDeleteBtn = () => {
@@ -80,9 +81,10 @@ const ActionModal = () => {
         })
         .then((result) => {
           
-            setProceed(false)
+          setProceed(false)
+          setOpenActionModal(false)
             navigate("/signup");
-          
+           
         })
         .catch((err) => {
            setProceed(false)

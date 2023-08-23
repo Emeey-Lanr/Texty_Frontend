@@ -8,30 +8,20 @@
     justify-content: center;
     align-items: center;
 }
-/* .magicT1{
-    width: 300px;
-    height: 300px;
-   background: black;
-   position: absolute;
-   top: -300px;
-   transition: 0.5s ease-in;
-}
-.magicT2{
-       width: 300px;
-    height: 300px;
-   background: black;
-      position: absolute;
-    top: -30px;
-    transition
-    
-     : 0.5s ease-out;
-} */
-.friends_space{
-    width: 81.5%;
+
+.friends_space_parent_div{
+       width: 100%;
     height: 90%;
     position: fixed;
     bottom: 0;
-   right: 0;
+    display: grid;
+    grid-template-columns: 280px 7fr;
+    align-items: flex-end;
+    
+}
+.friends_space{
+    height: 100%;
+
    background:white;
 }
 
@@ -259,32 +249,7 @@ border-radius: 20px;
     justify-content: center;
     align-items: center;
 }
-/* Follow Unfollow */
-/* .user_profile_div .follow_unfollow_block_space{
-    position: relative;
-    
 
-}
-.user_profile_div .follow_unfollow_block_space_action_show_btn{
-
-}
-.follow_unfollow_block_space_action_show_btn span{
-    display: block;
-    width: 5px;
-    height: 5px;
-    margin-bottom: 5px;
-    background: black;
-}
-.user_profile_div .follow_unfollow_block_space .fub{
-     display: none;
-}
-
-.user_profile_div .follow_unfollow_block_space_action_show_btn:hover > .fub{
-    display: block;
-    position: relative;
-    background-color: red;
-    width: 200px;
-} */
 
 .user_profile_div .user_username .bfu{
     border: none;
@@ -334,9 +299,6 @@ border-radius: 20px;
  border-radius: 5px;
  padding-top: 10px;
  right: 0;
-
- /* justify-content: center; */
-  /* top: -50px; */
 }
 .user_profile_div .user_username div .follow_unfollow_block_space:hover .fub_div button{
     border: none;
@@ -345,13 +307,10 @@ border-radius: 20px;
     padding: 10px 0;
     
     color: #9b9b9b;
-    
-      /* width: 90%; */
+  
 
 }
-/* .user_profile_div .user_username div .follow_unfollow_block_space:hover .fub_div button{
-    display: block;
-} */
+
 .user_profile_div .following_followers{
     display: flex;
     justify-content: center;
@@ -380,7 +339,7 @@ border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #111111; */
+  
 }
 .user_profile_div .about_Me .caption_edit_div div{
     margin:  0 10px;
@@ -537,7 +496,21 @@ padding-bottom: 10px;
     text-align: left;
     color: #3e3e3e;
 }
+.no_post_yet{
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
 
+.no_post_yet div p{
+    font-size: 2rem;
+    color: #9b9b9b;
+    text-align: center;
+    font-weight: 400;
+    text-transform: capitalize;
+}
 /* USER NOTIFICATION DIV*/
 .parent_userNotificationDiv{
     width: 100%;
@@ -575,8 +548,7 @@ padding-bottom: 10px;
 .userNotificationDiv .heading_demacation_div .userNofication_heading{
      width: 200px;
      margin:  0  0 0 10px;
-     /* margin: 0 auto; */
-    /* margin:  0 auto; */ 
+  
   height: 40px;
   border-bottom: 2px solid black;
 
@@ -586,7 +558,7 @@ padding-bottom: 10px;
    
     margin:  0 auto;
     height: 1px;
-    /* background: rgb(8, 237, 107); */
+   
     margin-top: 20px;
 }
 .user_notification_div_details{
@@ -925,6 +897,11 @@ font-weight: lighter;
        /* width: 400px; */
     }
 }
+@media (max-width:1000px) {
+     .friends_space_parent_div{
+        display: unset;
+       }
+}
 
 @media (max-width:472px) {
     .post_div{
@@ -941,4 +918,5 @@ font-weight: lighter;
        .post_div .date{
           width:100%;
        }
+      
 }

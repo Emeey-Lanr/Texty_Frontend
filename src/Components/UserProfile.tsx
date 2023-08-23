@@ -45,6 +45,7 @@ import IndexPage from "./IndexPage";
 import Texty from "./Texty";
 import { io } from "socket.io-client"
 import { useSocket } from "../Socket";
+import ReportUser from "./ReportUser";
 // import { followerUser} from "../Features/Profile"
 
 const UserProfile = () => {
@@ -757,7 +758,24 @@ const UserProfile = () => {
                             )
                           )
                         ) : (
-                          <div></div>
+                          <div className="no_post_yet">
+                            {userProfileDetails.username ===
+                            userProfileDetails.registerdUserIdentification ? (
+                              <div>
+                                <p >
+                                  No post yet <br />
+                                  create new post
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <p>
+                                  @ {userProfileDetails.username} <br />
+                                  has not posted yet
+                                </p>
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
                     </>
@@ -774,7 +792,7 @@ const UserProfile = () => {
               )}
 
               <FollowUser />
-               <Chat/>
+              <Chat />
               <PostModal />
               <Create />
               <SideBarModal />
@@ -783,6 +801,7 @@ const UserProfile = () => {
               <ActionModal />
               <ProfileEdit />
               <Postaction />
+                    <ReportUser/>
             </>
           )}
         </>

@@ -85,7 +85,9 @@ export const appModelContext = {
   icon: "",
   hide: "",
   openSuggest: () => {},
-  alwaysOpenSuggested:"",
+  alwaysOpenSuggested: "",
+  openReportModal:false,
+        setOpenReportModal:(openReportModal:boolean)=>{}
 };
 
 // export  const appValue = {

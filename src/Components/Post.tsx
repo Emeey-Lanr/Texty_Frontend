@@ -98,6 +98,7 @@ webkitRelativePath:string;
                         {image !== "" && <img src={image} alt="" />}
                     </div>
                     <div className="action_post">
+                        <p className="max">Max-length 100</p>
                         {/* <label id="upload">
                             <BiImageAdd className="icon" />
                             <input type="file" hidden id="upload" onChange={(e) => pickImg(e)} />

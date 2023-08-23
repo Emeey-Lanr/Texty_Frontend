@@ -169,3 +169,105 @@ padding: 6px 0;
     border-radius: 5px;
 
 }
+/* Report */
+.report_div{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #00000061;
+}
+.report_div .report{
+    width: 400px;
+    background: black;
+    padding: 5px 3px;
+    border-radius: 10px;
+    padding-bottom: 10px;
+}
+.exit_report{
+    height: 40px;
+    display: flex;
+     align-items: center;
+}
+.exit_report button{
+    border: none;
+    background: none;
+    color: #555555;
+}
+.error_div{
+    width: 95%;
+    margin: 0 auto; 
+    display: flex;
+     justify-content: center;
+     align-items: center;
+     padding: 10px;
+     border-radius: 5px;
+     text-align: center;
+     background: #111111;
+}
+.error_div p{
+    font-size: 0.76rem;
+    color: red;
+}
+.report_case_div{
+  padding-top: 5px;
+}
+.report_case_div .report_case{
+  width: 97%;
+  margin: 0 auto;   
+}
+.report_case_div .report_case .heading{
+    display: flex;
+    align-items: center;
+
+}
+.heading{
+    line-height: 5px;
+}
+.heading .clicked{
+    border: 4px  solid #555555;
+    width: 20px;
+    height: 20px;
+    background: none;
+    border-radius: 20px;
+}
+.heading .unclicked{
+    border: 1.2px  solid #555555;
+    width: 18px;
+    height: 18px;
+    background: none;
+    border-radius: 20px;
+}
+.heading h1{
+    color: white;
+    margin-left: 5px;
+}
+ .context{
+    width: 90%;
+    margin: 0  0 0 auto;
+}
+.context p{
+    font-size: 0.7rem;
+    color: #b9b9b9;
+}
+.report_case_btn{
+    width:98%;
+    padding: 5px 0;
+    margin:0 0 0 auto;
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.report_case_btn button{
+    width:90px;
+    height: 38px;
+    border-radius: 20px;
+    border: none;
+    background: white;
+    color: black;
+    font-size: 0.9rem;
+    
+}

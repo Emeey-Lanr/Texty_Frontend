@@ -1,4 +1,4 @@
-import { FaCoins, FaSpinner, FaTrash, FaUserPlus } from "react-icons/fa";
+import { FaSpinner, FaTrash, FaUserPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import "../styles/postDescision.css";
 import { closePostActionModal, openSpinner, postActionDone } from "../Redux/Postdecision";
@@ -7,9 +7,11 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { appContext } from "../App";
 import { deletePost, unfollowFollowingR } from "../Redux/Profile";
+import { RiUserUnfollowFill } from "react-icons/ri"
+import {MdReportProblem} from "react-icons/md"
 import { useSocket } from "../Socket";
 const Postaction = () => {
-  const { userEndPoint, unfollowFunction, followFunction } =
+  const { userEndPoint, unfollowFunction, followFunction, openReportModal, setOpenReportModal } =
     useContext(appContext);
   const dispatch = useDispatch();
   const profile = useSelector((state: any) => state.userprofile.value);
@@ -92,6 +94,10 @@ const Postaction = () => {
       );
     }
   };
+  const reportPost = ()=>{
+    setOpenReportModal(true)
+    dispatch(closePostActionModal(false));
+  }
   return (
     <>
       {postDecisionState.postStatus && (
@@ -129,7 +135,7 @@ const Postaction = () => {
               <div>
                 <button disabled={disabled} onClick={() => unfollow()}>
                   <span>
-                    <FaCoins className="icon" />{" "}
+                    <RiUserUnfollowFill className="icon" />{" "}
                     <span>Unfollow @ {postDecisionState.postedBy}</span>
                   </span>
                   {postDecisionState.spinnerStatus === 3 && <FaSpinner className="spin" />}
@@ -138,9 +144,9 @@ const Postaction = () => {
             )}
             {!postDecisionState.sameUser && (
               <div>
-                <button disabled={disabled}>
+                <button onClick={()=>reportPost()} disabled={disabled}>
                   <span>
-                    <FaCoins className="icon" />{" "}
+                    <MdReportProblem className="icon" />{" "}
                     <span>Report @ {postDecisionState.postedBy}</span>
                   </span>
                 </button>

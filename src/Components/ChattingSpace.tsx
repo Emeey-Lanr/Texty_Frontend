@@ -49,33 +49,40 @@ const ChattingSpace = () => {
   // const messageTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
   //   setMessage(e.target.value);
   // };
+  const [ifBlocked, setIfBlocked] = useState<boolean>(false)
   const sendMessageBtn = async () => {
         
 try {
-   let m = "";
-   m = message;
-   const date = new Date();
-   const hours = date.getHours();
-   const minutes = date.getMinutes();
-   const info = {
-     owner: userDetails.registerdUserIdentification,
-     owner_imgurl: userDetails.registeredUserImgUrl,
-     notowner: messageRedux.currentDetails.notowner,
-     notowner_imgurl: messageRedux.currentDetails.notowner_imgurl,
-     sender: userDetails.registerdUserIdentification,
-     text: m,
-     time: `${hours}:${minutes}${hours >= 12 ? "PM" : "AM"}`,
+  const check = userDetails.registeredUserBlocked.find((details: { username: string }) => details.username === messageRedux.currentDetails.notowner)
+  if (check) {
+    setIfBlocked(true);
+    setTimeout(()=>{
+      setIfBlocked(false);
+    },1_000)
+  } else {
+       let m = "";
+       m = message;
+       const date = new Date();
+       const hours = date.getHours();
+       const minutes = date.getMinutes();
+       const info = {
+         owner: userDetails.registerdUserIdentification,
+         owner_imgurl: userDetails.registeredUserImgUrl,
+         notowner: messageRedux.currentDetails.notowner,
+         notowner_imgurl: messageRedux.currentDetails.notowner_imgurl,
+         sender: userDetails.registerdUserIdentification,
+         text: m,
+         time: `${hours}:${minutes}${hours >= 12 ? "PM" : "AM"}`,
+       };
 
-   
-   };
- 
-  socket?.emit("bv",{message:"no working"})
-   socket?.emit("privateMessage", info);
-  //  if (emptyInput.current) {
-  //    emptyInput.current.value = "";
-  //  }
+       socket?.emit("privateMessage", info);
+       //  if (emptyInput.current) {
+       //    emptyInput.current.value = "";
+       //  }
 
-  const sendMessage = await axios.post(messageEndpointt, info);
+       const sendMessage = await axios.post(messageEndpointt, info);
+  }
+
 } catch (error) {
   
 }
@@ -141,7 +148,15 @@ try {
                               gridTemplateColumns: "50% 50%",
                             }}
                           >
-                            <span style={{ fontSize: "0.7rem",width:"100px", overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis" }}>
+                            <span
+                              style={{
+                                fontSize: "0.7rem",
+                                width: "100px",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
                               {data.sender ===
                               userDetails.registerdUserIdentification
                                 ? "you"
@@ -166,7 +181,15 @@ try {
                               gridTemplateColumns: "50% 50%",
                             }}
                           >
-                            <span style={{fontSize:"0.7rem", width:"100px", overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis"}}>
+                            <span
+                              style={{
+                                fontSize: "0.7rem",
+                                width: "100px",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
                               {data.sender ===
                               userDetails.registerdUserIdentification
                                 ? "you"
@@ -205,6 +228,17 @@ try {
                   </div>
                 )
               )}
+              {userDetails.registeredUserBlocked.find(
+                (details: { username: string }) => () =>
+                  details.username === messageRedux.currentDetails.notowner
+              ) && (
+                <div className="if_you_have_blocked">
+                  <p>
+                    you've blocked @{" "}
+                    <span>{messageRedux.currentDetails.notowner}</span>{" "}
+                  </p>
+                </div>
+              )}
               <div ref={lastMessage} className="last_message" />
               {/* <div className="chat-message_div_2">
                   <div className="chat-message_imgdiv_2">
@@ -220,11 +254,6 @@ try {
             </div>
             <div className="chat_input_div">
               <div className="chat_input">
-                {/* <label id="pic">
-                      <AiOutlineCamera className="camera_icon" />
-                      <input type="file" id="pic" hidden/>
-                    </label> */}
-
                 <div>
                   <textarea
                     ref={emptyInput}
@@ -243,7 +272,11 @@ try {
           </div>
         </div>
       )}
-
+      { ifBlocked && <div className="unblock_modal">
+        <div>
+          <p>Unblock to send message</p>
+        </div>
+      </div>}
       <ActionModal />
     </>
   );

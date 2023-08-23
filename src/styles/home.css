@@ -50,7 +50,7 @@ grid-template-columns: 280px 7fr;
     margin: 0 auto;
 }
 .home_post_div {
-    width: 70%;
+    width: 400px;
     border: none;
     margin: 20px 0;
     background: none;
@@ -253,6 +253,7 @@ padding-bottom: 10px;
     /* background: red; */
     overflow-y: scroll;
    
+   
 }
 .post_modal_comment::-webkit-scrollbar{
     width: 5px;
@@ -319,16 +320,21 @@ align-items:center;
     
 }
 .post_modal_p_div .post_modal_input{
-    height: 10%;
+    height: 40px;
    display: grid;
    grid-template-columns: 70% 20%;
    justify-content: center;
     align-items: center;
    padding: 10px 0;
+   position: absolute;
+   bottom: 0;
+   width: 100%;
+   background: black
    /* background: red; */
 }
 .post_modal_p_div .post_modal_input textarea {
-    height: 50%;
+    height: 40px;
+    /* width: ; */
     resize: none;
     background: none;
     color: #c9c9c9;
@@ -478,13 +484,19 @@ align-items:center;
     color: white;
     font-size: 1.2rem;
 }
+.create_group_post_div .create_post_div .action_post p{
+    color: #c1c1c1;
+    font-size: 0.8rem;
+}
 .create_group_post_div .create_post_div .action_post button{
     border: none;
     background: white;
-    padding: 10px 30px;
+    padding: 0 30px;
+    height: 40px;
     border-radius: 20px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .btnAction_spin span{
     display: block;
@@ -566,6 +578,9 @@ align-items:center;
          /* left: 10%; */
        
     }
+    .post_modal_p_div .post_modal_input{
+        bottom: 40px;
+    }
 }
 
 @media (max-width:600px){
@@ -599,6 +614,9 @@ align-items:center;
         width: 100%;
     }
  .home_post_container .home_post_div .home_poster{
+    width: 100%;
+  }
+  .home_post_div .date{
     width: 100%;
   }
     
