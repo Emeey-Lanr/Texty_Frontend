@@ -20,7 +20,8 @@ export const homePostSlice = createSlice({
     initialState: { value: post },
     reducers: {
         socketHomePost: (state:{value:POST[]}, action) => {
-            state.value = action.payload.reverse()
+            state.value = action.payload
+            
         },
         followerNewHomePost: (state:{value:POST[]}, action) => {
             // the seconds inthe time and psted by make a difference and that's checked to prevent

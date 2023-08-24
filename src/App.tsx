@@ -412,12 +412,16 @@ const App = () => {
     name: string,
     state: string
   ) => {
+
     socket?.emit(socketName, {
       user: userProfileDetails.registerdUserIdentification,
       postedBy: name,
       time: time,
       state: state,
     });
+    if (state === "like") {
+        axios.put(`${userEndPoint}/commentLikesNotification`, { user: userProfileDetails.registerdUserIdentification, postedBy: name, type: "like" })
+    }
   };
  
 

@@ -778,7 +778,7 @@ font-weight: lighter;
     width: 97%;
     height: 10%;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
 }
 .profile_edit_div_background .edit_imgPreview .edit_preview_upload_action button{

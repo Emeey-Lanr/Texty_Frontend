@@ -1,6 +1,6 @@
-import { FaArrowDown, FaArrowUp, FaTimes } from "react-icons/fa"
+import { FaArrowDown } from "react-icons/fa"
 import "../styles/followUser.css"
-import { useState, useContext, useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { appContext } from "../App"
 import { useSelector } from "react-redux"
 import { suggestedUserProfile } from "../Redux/SuggestedUser"
@@ -27,22 +27,32 @@ const FollowUser = () => {
       suggestedUserF()
     }
   })
-  const followUser = (follow:string) => {
-    if(userProfileDetails.registerdUserIdentification === userProfileDetails.username){
-    followFunction(
-      "followSocket2",
-      userProfileDetails.registerdUserIdentification,
-      follow,
-      "followed you"
-    )
+  const followUser = (follow: string) => {
+   const check  = userProfileDetails.registeredUserBlocked.find((details:{username:string})=>details.username === follow)
+    if (check) {
+      
     } else {
-      followFunction(
-      "followSocket1",
-      userProfileDetails.registerdUserIdentification,
-      follow,
-      "followed you"
-    )
+        if (
+          userProfileDetails.registerdUserIdentification ===
+          userProfileDetails.username
+        ) {
+          followFunction(
+            "followSocket2",
+            userProfileDetails.registerdUserIdentification,
+            follow,
+            "followed you"
+          );
+        } else {
+          followFunction(
+            "followSocket1",
+            userProfileDetails.registerdUserIdentification,
+            follow,
+            "followed you"
+          );
+        }
+      
     }
+  
     
   }
   const unfollowBtn = (unfollow:string) => {

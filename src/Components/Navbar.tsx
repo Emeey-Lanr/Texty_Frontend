@@ -1,7 +1,14 @@
 import "../styles/navbar.css"
 import { appContext } from "../App"
 import {useContext} from "react"
-import { FaSearch, FaTrash, FaBell, FaPeopleCarry, FaPlus } from "react-icons/fa"
+import {
+  FaSearch,
+  FaTrash,
+  FaBell,
+  FaPeopleCarry,
+  FaPlus,
+} from "react-icons/fa";
+import {BsHouse} from "react-icons/bs"
 import boxer from "../images/boxer.jpg"
 import { Link, Navigate, useNavigate} from "react-router-dom"
 import { useSelector } from "react-redux"
@@ -91,7 +98,7 @@ import {BsFillFilePersonFill} from "react-icons/bs"
               className="new_post_link"
             >
               {newPostAlert && <span></span>}
-              <BiNews className="icon" />
+              <BsHouse className="icon" />
             </button>
           </div>
           <div className="navbar_group_details">
@@ -159,7 +166,7 @@ import {BsFillFilePersonFill} from "react-icons/bs"
                           details.username ===
                           messageRedux.currentDetails.notowner
                       ) ? (
-                        <button onClick={()=>unblock()}>
+                        <button onClick={() => unblock()}>
                           <TbLockSquareRoundedFilled
                             style={{ paddingRight: "10px" }}
                           />

@@ -50,9 +50,9 @@ const ChattingSpace = () => {
   //   setMessage(e.target.value);
   // };
   const [ifBlocked, setIfBlocked] = useState<boolean>(false)
-  const sendMessageBtn = async () => {
+  const sendMessageBtn =  () => {
         
-try {
+
   const check = userDetails.registeredUserBlocked.find((details: { username: string }) => details.username === messageRedux.currentDetails.notowner)
   if (check) {
     setIfBlocked(true);
@@ -76,16 +76,15 @@ try {
        };
 
        socket?.emit("privateMessage", info);
-       //  if (emptyInput.current) {
-       //    emptyInput.current.value = "";
-       //  }
+       
 
-       const sendMessage = await axios.post(messageEndpointt, info);
+        axios.post(messageEndpointt, info);
+         if (emptyInput.current) {
+           emptyInput.current.value = "";
+         }
   }
 
-} catch (error) {
-  
-}
+
       
    
     

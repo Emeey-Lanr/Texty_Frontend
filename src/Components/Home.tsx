@@ -10,7 +10,7 @@ import SideBarModal from "./SideBarModal";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Create from "./Create";
-import { useContext, useEffect, useRef } from "react";
+import React, { HTMLAttributes, useContext, useEffect, useRef } from "react";
 import { appContext } from "../App";
 import Group from "./Group";
 import ChattingSpace from "./ChattingSpace";
@@ -32,6 +32,7 @@ import ReactTimeAgo from "react-time-ago";
 import { Link, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client"
 import { useSocket } from "../Socket";
+import Chat from "./Chat";
 const Home = () => {
   // const socket = io("http://localhost:2001");
    const { socket } = useSocket();
@@ -54,7 +55,7 @@ const Home = () => {
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
   );
-  const newPost = useRef<HTMLButtonElement>(null);
+  const newPost = useRef<HTMLDivElement>(null);
   let dispatch = useDispatch();
   useEffect(() => {
     getUserProfile("-;;'kjg", "home");
@@ -75,8 +76,8 @@ const Home = () => {
   };
   const socketHomePostFunction = () => {
     socket?.on("homePost", (data: any) => {
-     
-      dispatch(socketHomePost(data.post));
+      const post  = data.post.reverse()
+      dispatch(socketHomePost(post));
     });
   };
 
@@ -131,15 +132,7 @@ const Home = () => {
 
     }
   });
-  const scrollToTopBtn = () => {
-    alert(20);
-    //   window.scrollTo({
-    //     top: 0,
-    //    behavior: 'smooth',
-
-    //   })
-    setNewPostAlert(false);
-  };
+  
   const openPost = (name: string, time: number) => {
     setPostModalStatus(true);
     dispatch(
@@ -153,7 +146,8 @@ const Home = () => {
   };
   interface HOMEPOST {}
   const scrollToNewPost = () => {
-    newPost.current?.scrollIntoView();
+    newPost.current?.scrollIntoView()
+     setNewPostAlert(false);
   };
   const openPostAction = (postBy: string, time: number) => {
   
@@ -182,7 +176,6 @@ const Home = () => {
               style={{ position: "sticky", top: "0" }}
             >
               <button
-                ref={newPost}
                 className="home_newPost_view_btn"
                 onClick={() => scrollToNewPost()}
               >
@@ -192,11 +185,9 @@ const Home = () => {
           )}
           {/* <div /> */}
           <div className="home_post_container">
-            {homePost.map((details: POST, id:number) => (
-              <button key={id}
-                className="home_post_div"
-              
-              >
+            <div ref={newPost} />
+            {homePost.map((details: POST, id: number) => (
+              <button key={id} className="home_post_div">
                 <div className="date">
                   <span>
                     {<ReactTimeAgo date={details.time} locale="en-US" />}
@@ -211,7 +202,7 @@ const Home = () => {
                 <div className="home_poster">
                   <div className="home_username_img">
                     <img
-                       onClick={()=>navigateToProfile(details.postedBy)}
+                      onClick={() => navigateToProfile(details.postedBy)}
                       src={
                         details.poster_imgUrl === ""
                           ? noImg
@@ -327,7 +318,7 @@ const Home = () => {
       <FollowUser />
       <PostModal />
       <Group />
-      <ChattingSpace />
+      <Chat/>
       <Create />
       <SideBarModal />
       <Navbar />

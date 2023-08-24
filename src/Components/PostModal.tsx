@@ -9,10 +9,11 @@ import noImg from "../images/noImage.png";
 import ReactTimeAgo from "react-time-ago";
 import { io } from "socket.io-client"
 import { useSocket } from "../Socket";
+import axios from "axios";
 const PostModal: React.FC = () => {
    const { socket } = useSocket();
   // const socketTesting = io("http://localhost:2001");
-  const { postModalStatus, setPostModalStatus, likeUnlikeSocketFunction } =
+  const { userEndPoint,postModalStatus, setPostModalStatus, likeUnlikeSocketFunction } =
     useContext(appContext);
     let commentRef = useRef<HTMLTextAreaElement>(null);
   const currentPost = useSelector((state: any) => state.current_post.value);
@@ -81,6 +82,12 @@ const PostModal: React.FC = () => {
     if (commentRef.current?.value) {
       commentRef.current.value = ""
     } 
+
+     axios.put(`${userEndPoint}/commentLikesNotification`, {
+       user: userProfileDetails.registerdUserIdentification,
+       postedBy: currentPost.postedBy,
+       type: "commented",
+     });
     
   };
 

@@ -97,7 +97,7 @@ grid-template-columns: 280px 7fr;
 .chat-message_imgdiv_2 {
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content:flex-end;
 
 }
 .chat-message_imgdiv_2 div{

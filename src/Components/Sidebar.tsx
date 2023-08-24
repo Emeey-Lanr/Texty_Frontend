@@ -39,6 +39,29 @@ const Sidebar = () => {
   // PrivateChat or Group Chat
   const [privateChatOrGroupChat, setPrivateChatOrGroupChat] =
     useState<boolean>(true);
+  
+   const likeCommentNotification = (
+     socketName: string,
+     commentedOrPost: string
+   ) => {
+     socket?.on(socketName, (data) => {
+          console.log(data);
+       if (data.postedBy !== data[`${commentedOrPost}`]) {
+        if(data.notified){
+           dispatch(getFollowedNotification(data.notification));
+        }
+       
+       }
+     });
+   };
+   const likeNotification = () => {
+     likeCommentNotification("likeOrUnlike1", "userThatLiked");
+   
+   };
+   const commentNofication = () => {
+     likeCommentNotification("comment1", "userThatCommented");
+
+   };
 
   useEffect(() => {
     if (socket) {
@@ -50,6 +73,8 @@ const Sidebar = () => {
           }
         }
       );
+      likeNotification()
+      commentNofication()
     }
   });
 

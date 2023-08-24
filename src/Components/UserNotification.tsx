@@ -1,7 +1,6 @@
 import "../styles/user.css";
 import boxer from "../images/boxer.jpg";
 import { useEffect, useState } from "react";
-import { url } from "inspector";
 import Sidebar from "./Sidebar";
 import SideBarModal from "./SideBarModal";
 import Navbar from "./Navbar";
@@ -12,10 +11,9 @@ import { useDispatch } from "react-redux";
 import { getFollowedNotification, unfollowFollowingR } from "../Redux/Profile";
 import noImg from "../images/noImage.png";
 import ActionModal from "./ActionModal";
-import { io } from "socket.io-client"
 import { useSocket } from "../Socket";
+import Chat from "./Chat";
 const UserNotification = () => {
-  // const socket? = io("http://localhost:2001");
   const { socket } = useSocket();
   const {
     setRouteIdentification,
@@ -27,7 +25,7 @@ const UserNotification = () => {
   } = useContext(appContext);
   const dispatch = useDispatch();
   const userDetail = useSelector((state: any) => state.userprofile.value);
-  // const socket = useSelector((state: any) => state.socket.value);
+
   useEffect(() => {
     
     getUserProfile("notification", "notification");
@@ -73,11 +71,33 @@ const UserNotification = () => {
       }
     });
   };
+  const likeCommentNotification = (socketName:string, commentedOrPost:string) => {
+    socket?.on(socketName, (data) => {
+          console.log(data);
+      if (data.postedBy !== data[`${commentedOrPost}`]) {
+         if (data.notified) {
+           dispatch(getFollowedNotification(data.notification));
+         }
+
+      }
+    })
+  }
+  const likeNotification = () => {
+    likeCommentNotification("likeOrUnlike1", "userThatLiked");
+  
+  }
+  const commentNofication = () => {
+    likeCommentNotification("comment1", "userThatCommented");
+
+ 
+  }
   useEffect(() => {
     if (socket) {
       followedNotification();
       followed();
       unFollowed();
+      likeNotification();
+      commentNofication();
     }
   });
 
@@ -175,6 +195,7 @@ const UserNotification = () => {
           </div>
         </div>
       </div>
+      <Chat/>
       <ActionModal/>
       <Navbar />
       <SideBarModal />
