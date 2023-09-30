@@ -197,12 +197,16 @@ const UserProfile = () => {
     };
 
     socket?.on("likeOrUnlike1", (data: any) => {
-   
-
-      dispatchFunction(data.postedBy, data.time, data.likes);
+      // Note: if not available you can delete the post, same applies to likes also using the time and posted by
+      if (data.available) {
+        dispatchFunction(data.postedBy, data.time, data.likes);
+      }
     });
     socket?.on("likeOrUnlike2", (data: any) => {
-      dispatchFunction(data.postedBy, data.time, data.likes);
+      // Note: if not available you can delete the post, same applies to likes also using the time and posted by
+      if (data.available) {
+        dispatchFunction(data.postedBy, data.time, data.likes);
+      }
     });
   };
   const incomingCommentSocketFunction = () => {
@@ -215,12 +219,17 @@ const UserProfile = () => {
     };
 
     socket?.on("comment1", (data: any) => {
-     
-
-      dispatchFunction(data.postedBy, data.time, data.comment);
+      // Note: if not available you can delete the post, same applies to likes also using the time and posted by
+      if (data.available) {
+        dispatchFunction(data.postedBy, data.time, data.comment);
+      }
     });
     socket?.on("Comment2", (data: any) => {
-      dispatchFunction(data.postedBy, data.time, data.comment);
+      // Note: if not available you can delete the post, same applies to likes also using the time and posted by
+      if (data.available) {
+          dispatchFunction(data.postedBy, data.time, data.comment);
+      }
+
     });
   };
   const blockedVPFunction = () => {
@@ -392,7 +401,7 @@ const UserProfile = () => {
           {noUserFound ? (
             <>
               <div>
-                <p>No user found</p>
+                <p  style={{textAlign:"center"}}>No user found</p>
               </div>
             </>
           ) : (

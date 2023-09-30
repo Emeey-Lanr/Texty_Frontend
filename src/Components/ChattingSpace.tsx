@@ -1,6 +1,4 @@
 import "../styles/chat.css";
-import boxer from "../images/boxer.jpg";
-import { AiOutlineCamera } from "react-icons/ai";
 import { appContext } from "../App";
 import { useContext, useState, useEffect, useRef } from "react";
 import GroupNotification from "./GroupNotification";
@@ -11,7 +9,6 @@ import { incomingMesageR } from "../Redux/Message";
 import axios from "axios";
 import ActionModal from "./ActionModal";
 import noImg from "../images/noImage.png";
-import { io } from "socket.io-client";
 import { useSocket } from "../Socket";
 
 const ChattingSpace = () => {
@@ -24,6 +21,8 @@ const ChattingSpace = () => {
     setGroupChatOrPrivateChatOpening,
     incomingMessageDetails,
     messageEndPoint,
+    messageError,
+    setMessageError
   } = useContext(appContext);
    const { socket } = useSocket();
   // const socket = useSelector((state: any) => state.socket.value);
@@ -55,9 +54,9 @@ const ChattingSpace = () => {
 
   const check = userDetails.registeredUserBlocked.find((details: { username: string }) => details.username === messageRedux.currentDetails.notowner)
   if (check) {
-    setIfBlocked(true);
+    setMessageError(`Unblock to send message`)
     setTimeout(()=>{
-      setIfBlocked(false);
+     setMessageError("")
     },1_000)
   } else {
        let m = "";
@@ -271,9 +270,9 @@ const ChattingSpace = () => {
           </div>
         </div>
       )}
-      { ifBlocked && <div className="unblock_modal">
+      { messageError !== "" && <div className="unblock_modal">
         <div>
-          <p>Unblock to send message</p>
+          <p>{messageError}</p>
         </div>
       </div>}
       <ActionModal />

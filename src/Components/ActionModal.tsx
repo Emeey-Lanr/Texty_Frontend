@@ -23,7 +23,7 @@ const ActionModal = () => {
   const messageRedux = useSelector(
     (state: any) => state.privatemessagechat.value
   );
-  // const socket = useSelector((state: any) => state.socket.value);
+ 
     const { socket } = useSocket();
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
@@ -83,6 +83,9 @@ const ActionModal = () => {
           
           setProceed(false)
           setOpenActionModal(false)
+          socket?.emit("deleteAccount", {
+            username: userProfileDetails.registerdUserIdentification,
+          });
             navigate("/signup");
            
         })

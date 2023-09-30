@@ -1,6 +1,3 @@
-import { useRef } from "react"
-import { Socket } from "socket.io-client"
-
 
 export const appModelContext = {
    suggestedUserF:()=>{},
@@ -87,36 +84,12 @@ export const appModelContext = {
   openSuggest: () => {},
   alwaysOpenSuggested: "",
   openReportModal:false,
-        setOpenReportModal:(openReportModal:boolean)=>{}
+  setOpenReportModal: (openReportModal: boolean) => { },
+  messageError: "",
+  setMessageError:(messageError:string)=>{}
 };
 
-// export  const appValue = {
-    
-//         userEndPoint,
-//         hideSideBar,
-//         setHideSideBar,
-//         showSideBarBtn,
-//       hidebarBool,
-//       hideSideBarBtn,
-// // // 
-//       loginModalState,
-//    setLoginModalState,
-//       loginModalMessage,
-//       setLoginModalMessage,
-//       // 
-//       spinnerState,
-//       setSpinnerState,
-//       openPrePost,
-//    setOpenPrePost,
-//    createPostModal,
-//    setCreatePostModal,
-//    createGroupModal,
-//    setCreateGroupModal,
-      
-        
-    
 
-//   }
  
 export  interface UserDetailsModel  {
   username: string;

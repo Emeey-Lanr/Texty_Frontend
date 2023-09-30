@@ -9,7 +9,19 @@ const Create:React.FC = () => {
   const { openPrePost,
     setOpenPrePost,
     setCreatePostModal,
-   setCreateGroupModal,}= useContext(appContext)
+    setCreateGroupModal,
+    setMessageError
+  } = useContext(appContext)
+  const featuresNotReady = () => {
+    setOpenPrePost(false)
+    setMessageError("Features Not Ready")
+    setTimeout(() => {
+       setMessageError("");
+    },1_000)
+   
+    
+    
+  }
   return (
     <>
       {openPrePost &&<div className="create_group_post">
@@ -20,7 +32,9 @@ const Create:React.FC = () => {
             </button>
           </div>
           <div className="c_create">
-            <button onClick={()=>setCreatePostModal(1)}>Post</button><button onClick={()=>setCreateGroupModal(true)}>Group</button>
+            <button onClick={() => setCreatePostModal(1)}>Post</button>
+            <button onClick={()=>featuresNotReady()}>Group</button>
+            {/* <button onClick={() => setCreateGroupModal(true)}>Group</button> */}
           </div>
       
         </div>

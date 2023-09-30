@@ -150,7 +150,7 @@ const App = () => {
         // these two get the looged in user followers and following incase both user are found if not it's empty
         ifUserFollowing: checkBothFollowing,
         ifUserFollowers: checkBothFollowers,
-        post: post,
+        post: post.reverse(),
         blocked,
         socketPost: [],
         isLoggedIn: isLoggedIn,
@@ -236,7 +236,7 @@ const App = () => {
                 result.data.followingFollowersUser.following,
                 result.data.followingFollowersUser.following,
                 result.data.followingFollowersUser.followers,
-                result.data.userData.post,
+                result.data.userData.post.reverse(),
                 result.data.userData.blocked,
                 result.data.loggedIn,
                 result.data.userData.notification,
@@ -261,7 +261,7 @@ const App = () => {
                   result.data.followingFollowersUser.following,
                   [],
                   [],
-                  result.data.userData.post,
+                  result.data.userData.post.reverse(),
                   result.data.userData.blocked,
                   result.data.loggedIn,
                   result.data.userData.notification,
@@ -288,7 +288,7 @@ const App = () => {
                 result.data.followingFollowersLookedFor.following,
                 result.data.followingFollowersUser.following,
                 result.data.followingFollowersUser.followers,
-                result.data.lookedForUser.post,
+                result.data.lookedForUser.post.reverse(),
                 result.data.lookedForUser.blocked,
                 result.data.loggedIn,
                 result.data.userData.notification,
@@ -312,7 +312,7 @@ const App = () => {
                 result.data.followingFollowersLookedFor.followers,
                 [],
                 [],
-                result.data.lookedForUser.post,
+                result.data.lookedForUser.post.reverse(),
                 result.data.lookedForUser.blocked,
                 result.data.loggedIn,
                 [],
@@ -340,7 +340,7 @@ const App = () => {
     })
   }
   const newPostForFollowersFunction = () => {
-    socket?.on("newPostForFollowers", (data: any) => {
+    socket?.on("newPostForFollowers", (data) => {
       setNewPostAlert(true);
 
       const postComing = [data.newPost];
@@ -349,25 +349,38 @@ const App = () => {
     });
   };
   const userNewPostFunction = () => {
-    socket?.on("userNewPost", (data: any) => {
+    socket?.on("userNewPost", (data) => {
 
       setOpenPrePost(false);
       setCreatePostModal(0);
-      dispatch(userNewHomePost(data.homePost.post));
+      dispatch(userNewHomePost(data.homePost.post.reverse()));
       dispatch(newUserPost(data.post));
     });
   };
+  const [messageError, setMessageError] = useState<string>("")
   const incomingMessageDetails = () => {
     
     socket?.on(
       "incomingMessage",
-      (data: { owner: string; notowner: string; notowner_imgurl: string }) => {
-        dispatch(
-          incomingMesageR({
-            chattingWithName: data.notowner,
-            incomingMessage: data,
-          })
-        );
+      (data) => {
+        console.log(data)
+        if (!data.blocked) {
+           dispatch(
+             incomingMesageR({
+               chattingWithName: data.message.notowner,
+               incomingMessage: data.message,
+             })
+           );
+          
+        }
+
+        if (data.blocked && data.owner) {
+          setMessageError("Message Not Delivered") 
+          setTimeout(()=>{
+            setMessageError("")
+          },1_000)
+        }
+       
       }
     );
   };
@@ -544,6 +557,8 @@ const App = () => {
         alwaysOpenSuggested,
         openReportModal,
         setOpenReportModal,
+        messageError,
+        setMessageError
       }}
     >
       <Routes>

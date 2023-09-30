@@ -99,11 +99,8 @@ webkitRelativePath:string;
                     </div>
                     <div className="action_post">
                         <p className="max">Max-length 100</p>
-                        {/* <label id="upload">
-                            <BiImageAdd className="icon" />
-                            <input type="file" hidden id="upload" onChange={(e) => pickImg(e)} />
-                        </label> */}
-                        <button className="btnAction_spin" onClick={()=>uploadPostBtn()}>
+                   
+                        <button className="btnAction_spin" disabled={fireAction} onClick={()=>uploadPostBtn()}>
                             {!fireAction ? <>
                                 post
                             </> :

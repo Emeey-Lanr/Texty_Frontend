@@ -1,6 +1,5 @@
 import "../styles/user.css";
 import { CiChat1 } from "react-icons/ci";
-import boxer from "../images/boxer.jpg";
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,6 +11,7 @@ import { setOrOpenChat } from "../Redux/Message";
 import axios from "axios";
 import { useSocket } from "../Socket";
 import noImg from "../images/noImage.png";
+
 interface FriendsInterface {
   setOpenFollowersFollowing: React.Dispatch<React.SetStateAction<boolean>>;
   openFFNumber: number;
@@ -121,7 +121,10 @@ const Friends = ({
     } catch (error) {}
   };
   const blockViaOtherProfile = (name: string) => {};
-  const unblockViaOtherProfile = (name: string) => {};
+  const unblockViaOtherProfile = (name: string) => { };
+  const checkProfile = (username:string)=>{
+    navigate(`/${username}`)
+  }
   return (
     <div className="friends_space_parent_div">
       <div></div>
@@ -165,7 +168,7 @@ const Friends = ({
                 <div key={id} className="following_user_details">
                   <div className="following_user_head">
                     <div className="img_div">
-                      <img
+                      <img onClick={()=>checkProfile(name.username)}
                         src={name.img_url === "" ? noImg : name.img_url}
                         alt="following"
                       />
@@ -355,52 +358,14 @@ const Friends = ({
             )}
           </div>
         ) : (
-          //   <div className="friends_details_div">
-          //   <div className="friends_details">
-          //       <div className="friends_img_div">
-          //           <img src={boxer} alt="" />
-          //       </div>
-          //       <div className="friend_body_div">
-          //           <div className="friends_body_name_chat">
-          //           <div className="friends_body_name">
-          //               <h4>Oyelowo Emmanuel</h4>
-          //               <p><span>13k Following</span><span style={{paddingLeft:"10px"}}>12k Followers</span></p>
-          //               </div>
-          //               <div className="friends_body_chat">
-          //                   <button>
-          //                       <CiChat1 />
-          //                   </button>
-          //               </div>
-          //           </div>
-          //       <div className="friends_btn_action">
-          //           <button>Follow</button>
-          //           <button style={{ marginLeft: "10px" }}>Block</button>
-
-          //           {/* <button>Unblock</button>
-          //           <button>UnFollow</button> */}
-          //      </div>
-          //           <div className="friends_about_me">
-          //               <div className="heading">
-          //                   <p>About Me</p>
-          //           </div>
-          //           <div className="details">
-          //                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur blanditiis voluptatem laboriosam. Et dolorum, voluptate eius quia optio assumenda voluptatem?</p>
-          //           </div>
-
-          //           </div>
-
-          //       </div>
-
-          //       </div>
-
-          //       </div>:
+        
           <div className="following_user_div">
             {userDetails.following.map(
               (name: FollowersFollowingDetails, id: number) => (
                 <div key={id} className="following_user_details">
                   <div className="following_user_head">
                     <div className="img_div">
-                      <img
+                      <img onClick={()=>checkProfile(name.username)}
                         src={name.img_url === "" ? noImg : name.img_url}
                         alt=""
                       />
@@ -485,12 +450,22 @@ const Friends = ({
                             namee.username === name.username
                         ) ? (
                           <button
-                            style={{ marginLeft: "10px", background: "red" }}
+                            onClick={() => unBlockUserBtn(name.username)}
+                            style={{
+                              marginLeft: "10px",
+                              background: "red",
+                              color: "white",
+                            }}
                           >
                             Blocked
                           </button>
                         ) : (
-                          <button style={{ marginLeft: "10px" }}>Block</button>
+                          <button
+                            onClick={() => blockUserBtn(name.username)}
+                            style={{ marginLeft: "10px" }}
+                          >
+                            Block
+                          </button>
                         )}
                       </div>
                     </>

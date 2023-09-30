@@ -45,14 +45,15 @@ export const userProfileSlice = createSlice({
   reducers: {
     collectUserProfile: (state, action) => {
       state.value = action.payload;
+      
     },
     updatePost: (state, action) => {
       if (state.value.username === state.value.registerdUserIdentification) {
-     
-           state.value.post = action.payload.user.post;
+          let post  = action.payload.user.post
+           state.value.post = post.reverse() ;
       } else if (state.value.username !== state.value.registerdUserIdentification) {
-       
-         state.value.post = action.payload.lookedForUser.post;
+         let post = action.payload.lookedForUser.post;
+         state.value.post = post.reverse()
       }
      
     },

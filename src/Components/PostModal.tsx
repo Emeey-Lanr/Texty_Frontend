@@ -1,13 +1,12 @@
 import "../styles/home.css";
 import Home from "./Home";
-import { FaComment, FaHeart } from "react-icons/fa";
+import { FaArrowLeft, FaComment, FaHeart } from "react-icons/fa";
 import { useContext, useEffect, useState, useRef } from "react";
 import { appContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
 import { getCurrentLikes, commentR } from "../Redux/CurrentPost";
 import noImg from "../images/noImage.png";
 import ReactTimeAgo from "react-time-ago";
-import { io } from "socket.io-client"
 import { useSocket } from "../Socket";
 import axios from "axios";
 const PostModal: React.FC = () => {
@@ -102,6 +101,11 @@ const PostModal: React.FC = () => {
       {postModalStatus && (
         <div className="post_modal_p_div">
           <div className="post_modal_home_div">
+            <div className="post_modal_exit">
+              <button onClick={() => setPostModalStatus(false)}>
+                <FaArrowLeft className="icon" />
+              </button>
+            </div>
             <div className="post_modal_home_post">
               <div className="date">
                 <span>
@@ -198,12 +202,7 @@ const PostModal: React.FC = () => {
                     <div className="post_modal_comment_username_time">
                       <p>{details.username}</p>{" "}
                       <span>
-                        {
-                          <ReactTimeAgo
-                            date={details.time}
-                            locale="en-US"
-                          />
-                        }
+                        {<ReactTimeAgo date={details.time} locale="en-US" />}
                       </span>
                     </div>
                     <div className="comment">
@@ -215,7 +214,10 @@ const PostModal: React.FC = () => {
             )}
           </div>
           <div className="post_modal_input">
-            <textarea ref={commentRef} onChange={(e) => setComment(e.target.value)}></textarea>
+            <textarea
+              ref={commentRef}
+              onChange={(e) => setComment(e.target.value)}
+            ></textarea>
             <button onClick={() => addCommentBtn()}>
               <span>{`>>`}</span>
             </button>

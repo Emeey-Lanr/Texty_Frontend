@@ -31,6 +31,7 @@ export const homePostSlice = createSlice({
             if (check.length < 1) {
                 // user doesn't exist
                 state.value.push(action.payload) 
+                state.value.reverse()
             } 
         },
         userNewHomePost: (state, action) => {

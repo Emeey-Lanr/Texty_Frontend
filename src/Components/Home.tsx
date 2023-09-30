@@ -33,6 +33,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client"
 import { useSocket } from "../Socket";
 import Chat from "./Chat";
+import ReportUser from "./ReportUser";
 const Home = () => {
   // const socket = io("http://localhost:2001");
    const { socket } = useSocket();
@@ -93,12 +94,18 @@ const Home = () => {
     };
 
     socket?.on("likeOrUnlike1", (data: any) => {
+      if(data.available){
+        dispatchFunction(data.postedBy, data.time, data.likes);
+      }
       
-      dispatchFunction(data.postedBy, data.time, data.likes);
+     
     });
     socket?.on("likeOrUnlike2", (data: any) => {
+      
+      if (data.available) {
+          dispatchFunction(data.postedBy, data.time, data.likes);
+      }
     
-      dispatchFunction(data.postedBy, data.time, data.likes);
     });
   };
   const incomingCommentSocketFunction = () => {
@@ -113,11 +120,16 @@ const Home = () => {
     };
 
     socket?.on("comment1", (data: any) => {
-
-      dispatchFunction(data.postedBy, data.time, data.comment);
+      if (data.available) { 
+             dispatchFunction(data.postedBy, data.time, data.comment);
+      }
+ 
     });
     socket?.on("Comment2", (data: any) => {
-      dispatchFunction(data.postedBy, data.time, data.comment);
+      if (data.available) {
+         dispatchFunction(data.postedBy, data.time, data.comment);
+      }
+       
     });
   };
   useEffect(() => {
@@ -324,6 +336,7 @@ const Home = () => {
       <Navbar />
       <Sidebar />
       <Postaction />
+      <ReportUser/>
     </>
   );
 };
