@@ -10,7 +10,7 @@ const SocketContext = createContext<SocketContextInterFace>({ socket: null })
 export const useSocket =()=>  useContext(SocketContext)
 
 export const SocketProvider:React.FC<ComponentProps> = ({ children }) => {
-    const socket = io("http://localhost:2001");
+    const socket = io("https://texty-api.onrender.com");
     return (
         <SocketContext.Provider value={{socket}}>
              {children}
