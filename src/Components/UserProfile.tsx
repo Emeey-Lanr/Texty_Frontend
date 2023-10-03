@@ -36,6 +36,7 @@ import { getCurrentPost } from "../Redux/CurrentPost";
 import { FaComment, FaHeart } from "react-icons/fa";
 import LoginSpinner from "./LoginSpinner";
 import { openPostActionModal, postActionDone } from "../Redux/Postdecision";
+import ErrorModal from "./ErrorModal";
 import Postaction from "./Postaction";
 import FollowUser from "./FollowUser";
 import SideBarModal from "./SideBarModal";
@@ -45,7 +46,9 @@ import IndexPage from "./IndexPage";
 import Texty from "./Texty";
 import { io } from "socket.io-client"
 import { useSocket } from "../Socket";
+import { openClose } from "../Redux/Error";
 import ReportUser from "./ReportUser";
+
 // import { followerUser} from "../Features/Profile"
 
 const UserProfile = () => {
@@ -77,6 +80,7 @@ const UserProfile = () => {
   );
   const [openFollowersFollowing, setOpenFollowersFollowing] =
     useState<boolean>(false);
+    const [couldntFollow, setCouldntFolow] =useState<string>("an error occured, couldn't unfollow")
   const [checkIfFollowing, setCheckIfFollowing] = useState([]);
   // the number used to open either follwers or following
   const [openFFNumber, setOpenFFNumber] = useState<number>(0);
@@ -113,7 +117,7 @@ const UserProfile = () => {
 
       } else {
          dispatch(postActionDone(true));
-        alert("an error occured");
+         dispatch(openClose({ message: "An error occured" }));
       }
     });
   };
@@ -122,7 +126,7 @@ const UserProfile = () => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.followingDetails));
       } else {
-        alert("an error occured couldn't follow");
+      dispatch(openClose({ message: couldntFollow }));
       }
     });
   };
@@ -131,7 +135,7 @@ const UserProfile = () => {
       if (!data.error) {
         dispatch(unfollowFollowingViaAnotherUserFFlistR(data.followingDetails));
       } else {
-        alert("an error occured, couldn't follow");
+  dispatch(openClose({ message: couldntFollow }));
       }
     });
   };
@@ -158,7 +162,8 @@ const UserProfile = () => {
          dispatch(postActionDone(true))
       } else {
          dispatch(postActionDone(true));
-        alert("an error occured, couldn't unfollow");
+         dispatch(openClose({ message: couldntFollow }));
+      
       }
     });
   };
@@ -169,7 +174,7 @@ const UserProfile = () => {
         dispatch(postActionDone(true));
         dispatch(unfollowFollowingR(data.userLoggedInFollowing));
       } else {
-        alert("an error occur couldn't unfollow");
+   dispatch(openClose({ message: couldntFollow }));
       }
     });
   };
@@ -180,7 +185,7 @@ const UserProfile = () => {
           unfollowFollowingViaAnotherUserFFlistR(data.userLoggedInFollowing)
         );
       } else {
-        alert("an error occured, couldn't unfollow");
+         dispatch(openClose({ message: couldntFollow }));
       }
     });
   };
@@ -799,7 +804,7 @@ const UserProfile = () => {
                   setOpenFFNumber={setOpenFFNumber}
                 />
               )}
-
+  
               <FollowUser />
               <Chat />
               <PostModal />
@@ -807,7 +812,8 @@ const UserProfile = () => {
               <SideBarModal />
               <Navbar />
               <Sidebar />
-              <ActionModal />
+                  <ActionModal />
+                <ErrorModal/>
               <ProfileEdit />
               <Postaction />
                     <ReportUser/>

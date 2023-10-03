@@ -13,6 +13,8 @@ import noImg from "../images/noImage.png";
 import ActionModal from "./ActionModal";
 import { useSocket } from "../Socket";
 import Chat from "./Chat";
+import { openClose } from "../Redux/Error";
+import ErrorModal from "./ErrorModal";
 const UserNotification = () => {
   const { socket } = useSocket();
   const {
@@ -48,7 +50,8 @@ const UserNotification = () => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.followingDetails));
       } else {
-        alert("an error occur couldn't follow");
+         dispatch(openClose({ message: "an error occured couldn't follow" }));
+
       }
     });
   };
@@ -67,7 +70,8 @@ const UserNotification = () => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.userLoggedInFollowing));
       } else {
-        alert(" an error occured");
+         dispatch(openClose({ message: "an error occured" }));
+
       }
     });
   };
@@ -200,6 +204,7 @@ const UserNotification = () => {
       <Navbar />
       <SideBarModal />
       <Sidebar />
+      <ErrorModal/>
     </>
   );
 };

@@ -11,7 +11,7 @@ import { useSocket } from "../Socket";
 import axios from "axios";
 const PostModal: React.FC = () => {
    const { socket } = useSocket();
-  // const socketTesting = io("http://localhost:2001");
+ 
   const { userEndPoint,postModalStatus, setPostModalStatus, likeUnlikeSocketFunction } =
     useContext(appContext);
     let commentRef = useRef<HTMLTextAreaElement>(null);

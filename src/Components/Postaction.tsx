@@ -10,6 +10,8 @@ import { deletePost, unfollowFollowingR } from "../Redux/Profile";
 import { RiUserUnfollowFill } from "react-icons/ri"
 import {MdReportProblem} from "react-icons/md"
 import { useSocket } from "../Socket";
+import { openClose } from "../Redux/Error";
+import ErrorModal from "./ErrorModal";
 const Postaction = () => {
   const { userEndPoint, unfollowFunction, followFunction, openReportModal, setOpenReportModal } =
     useContext(appContext);
@@ -39,7 +41,8 @@ const Postaction = () => {
            dispatch(postActionDone(true));
           dispatch(unfollowFollowingR(data.followingDetails));
         } else {
-          alert("an error occur couldn't follow");
+           dispatch(openClose({ message: "an error occured, couldn't follow" }));
+        
         }
       });
       
@@ -155,6 +158,7 @@ const Postaction = () => {
           </div>
         </>
       )}
+      <ErrorModal/>
     </>
   );
 };

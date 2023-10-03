@@ -18,7 +18,9 @@ import SuggestedUser from "./Redux/SuggestedUser";
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en.json"
 import ru from "javascript-time-ago/locale/ru.json"
+import  ErrorSlice from "./Redux/Error";
 import { SocketProvider } from "./Socket"
+
 
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
@@ -35,7 +37,8 @@ const store = configureStore({
     home_post: HomePost,
     current_post: CurrentPost,
     postdecision: Postdecision,
-    suggested_user:SuggestedUser,
+    suggested_user: SuggestedUser,
+    texty_error:ErrorSlice
   },
 });
 

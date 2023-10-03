@@ -11,13 +11,13 @@ const initialState:InitialState = {
     isConnected:false,
     errorMessage:null,
 }
-const appEndPoint: string = "http://localhost:2001"
-const socket = "http://localhost:2001";
+// const appEndPoint: string = "http://localhost:2001"
+// const socket = "http://localhost:2001";
 
 export const socketSlice = createSlice(
     {
         name: "socketio",
-        initialState:{value:socket},
+        initialState:{value:""},
         reducers: {
        
             

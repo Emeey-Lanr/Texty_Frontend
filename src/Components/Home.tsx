@@ -10,10 +10,10 @@ import SideBarModal from "./SideBarModal";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Create from "./Create";
-import React, { HTMLAttributes, useContext, useEffect, useRef } from "react";
+import React, {  useContext, useEffect, useRef } from "react";
 import { appContext } from "../App";
 import Group from "./Group";
-import ChattingSpace from "./ChattingSpace";
+
 import { useSelector } from "react-redux";
 import { POST } from "../Redux/HomePost";
 import { unfollowFollowingR } from "../Redux/Profile";
@@ -24,18 +24,18 @@ import {
 } from "../Redux/HomePost";
 import { useDispatch } from "react-redux";
 import { getCurrentPost } from "../Redux/CurrentPost";
-import { BiHeart, BiChat } from "react-icons/bi";
+import { BiHeart } from "react-icons/bi";
 import Postaction from "./Postaction";
 import { openPostActionModal } from "../Redux/Postdecision";
 import FollowUser from "./FollowUser";
 import ReactTimeAgo from "react-time-ago";
-import { Link, useNavigate } from "react-router-dom";
-import { io } from "socket.io-client"
+import { useNavigate } from "react-router-dom";
 import { useSocket } from "../Socket";
 import Chat from "./Chat";
 import ReportUser from "./ReportUser";
+import { openClose } from "../Redux/Error";
 const Home = () => {
-  // const socket = io("http://localhost:2001");
+ 
    const { socket } = useSocket();
   const {
     setRouteIdentification,
@@ -71,7 +71,8 @@ const Home = () => {
         // dispatch(postActionDone(true));
         dispatch(unfollowFollowingR(data.userLoggedInFollowing));
       } else {
-        alert("an error occur couldn't unfollow");
+         dispatch(openClose({ message: "an error occured, couldn't follow" }));
+
       }
     });
   };

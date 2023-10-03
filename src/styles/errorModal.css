@@ -1,0 +1,53 @@
+.errorModal_div{
+    width:100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+      background: #00000061;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
+.errorModal_div .error_content{
+    width: 350px;
+    background: black;
+     border-radius: 5px;
+         padding: 3;
+         box-sizing: border-box;
+
+
+}
+.errorModal_div .error_content .error_exit{
+    width: 98%;
+    display: flex;
+    justify-content: flex-end;
+    margin:  0 auto;
+
+    height: 20px;
+}
+.errorModal_div .error_content .error_exit button{
+    border: none;
+    background: none;
+  color: white;
+}
+.errorModal_div .error_content .error_exit button .off{
+font-size: 1rem;
+color: white;
+}
+.errorModal_div .error_content .error_message{
+    width: 97%;
+    margin:  0 auto;
+    padding: 5px 0;
+}
+.errorModal_div .error_content .error_message p{
+    text-align: center;
+    font-size: 0.9rem;
+    color: #b9b9b9;
+
+}
+
+@media (max-width:400px){
+.errorModal_div .error_content{
+    width: 98%;
+}
+}

@@ -14,6 +14,8 @@ import { unfollowFollowingR } from "../Redux/Profile";
 import { useNavigate } from "react-router-dom";
 import noImg from "../images/noImage.png";
 import { useSocket } from "../Socket";
+import { openClose } from "../Redux/Error";
+import ErrorModal from "./ErrorModal";
 const Search = () => {
   const {
     userEndPoint,
@@ -47,7 +49,9 @@ const Search = () => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.followingDetails));
       } else {
-        alert("an error occur couldn't follow");
+         dispatch(openClose({ message: "An error occured, couldn't follow" }));
+
+
       }
     });
   };
@@ -56,7 +60,8 @@ const Search = () => {
       if (!data.error) {
         dispatch(unfollowFollowingR(data.userLoggedInFollowing));
       } else {
-        alert(" an error occured");
+         dispatch(openClose({ message:"An error occured" }));
+
       }
     });
   };
@@ -66,9 +71,7 @@ const Search = () => {
       unFollowed();
     }
   });
-  // const openuserPage = () => {
-  //   alert(30)
-  // }
+ 
 
 const searchBtn = () => {
     setSpin(true);
@@ -84,10 +87,7 @@ const searchBtn = () => {
         }
       });
 };
-  const followUser = () => {
-    alert(10);
-  };
-    
+ 
 const follow = (userTheyWantToFollow: string) => {
     let notificationWords = "";
 
@@ -269,6 +269,7 @@ const follow = (userTheyWantToFollow: string) => {
       <Navbar />
       <SideBarModal />
       <Sidebar />
+      <ErrorModal/>
     </>
   );
 };
