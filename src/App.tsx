@@ -36,7 +36,7 @@ export const appContext = createContext(appModelContext);
 const App = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const socketTesting = io("http://localhost:2001");
+  const socketTesting = io("https://texty-api.onrender.com");
   const {socket} = useSocket()
 
 
@@ -54,10 +54,10 @@ const App = () => {
   const [hideSideBar, setHideSideBar] = useState<string>("hidesidebar");
   const [hidebarBool, setHideBarBool] = useState<boolean>(true);
   const [userEndPoint, setuserEndPoint] = useState<string>(
-    "http://localhost:2001/user"
+    "https://texty-api.onrender.com/user"
   );
   const [messageEndPoint, setMessageEndPoint] = useState<string>(
-    "http://localhost:2001/message"
+    "https://texty-api.onrender.com/message"
   );
   //
   const [loginModalState, setLoginModalState] = useState<boolean>(false);
