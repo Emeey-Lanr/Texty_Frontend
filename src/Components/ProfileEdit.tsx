@@ -39,7 +39,7 @@ const ProfileEdit = () => {
         try {
             setSwitchAction(true)
             const updateUser = await axios.put(`${userEndPoint}/updateAboutMe`, { username: userProfileDetails.registerdUserIdentification, aboutme: about_meText })
-           updateStateFunction(`${updateUser.data.message}`);  
+           updateStateFunction(`updated successfully`);  
                getUserProfile(`${userProfileDetails.registerdUserIdentification}`, "")
               setSwitchAction(false)
            
