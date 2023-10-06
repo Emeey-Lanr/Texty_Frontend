@@ -65,10 +65,10 @@ const PostModal: React.FC = () => {
     }
   }, []);
 
-  const addCommentBtn = () => {
+  const addCommentBtn =   async () => {
     const date = new Date();
     if (comment !== "") {
-      socket?.emit("comment", {
+      let data = {
         user: userProfileDetails.registerdUserIdentification,
         comment,
         time: currentPost.time,
@@ -76,7 +76,12 @@ const PostModal: React.FC = () => {
         imgUrl: userProfileDetails.registeredUserImgUrl,
         commentTime: date.getTime(),
         state: "comment",
-      });
+      }
+      socket?.emit("comment", data);
+       const commentEndPoint = axios.put(
+         `${userEndPoint}/likeUnlikeComment`,
+         data
+       );
     }
     if (commentRef.current?.value) {
       commentRef.current.value = ""

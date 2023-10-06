@@ -60,6 +60,7 @@ const UserProfile = () => {
     setUsername,
     getUserProfile,
     noUserFound,
+    userExitOrNot,
     userProfileLoading,
     followFunction,
     unfollowFunction,
@@ -406,7 +407,7 @@ const UserProfile = () => {
           {noUserFound ? (
             <>
               <div>
-                <p  style={{textAlign:"center"}}>No user found</p>
+                <p style={{ textAlign: "center" }}>{userExitOrNot}</p>
               </div>
             </>
           ) : (
@@ -776,7 +777,7 @@ const UserProfile = () => {
                             {userProfileDetails.username ===
                             userProfileDetails.registerdUserIdentification ? (
                               <div>
-                                <p >
+                                <p>
                                   No post yet <br />
                                   create new post
                                 </p>
@@ -804,7 +805,7 @@ const UserProfile = () => {
                   setOpenFFNumber={setOpenFFNumber}
                 />
               )}
-  
+
               <FollowUser />
               <Chat />
               <PostModal />
@@ -812,11 +813,11 @@ const UserProfile = () => {
               <SideBarModal />
               <Navbar />
               <Sidebar />
-                  <ActionModal />
-                <ErrorModal/>
+              <ActionModal />
+              <ErrorModal />
               <ProfileEdit />
               <Postaction />
-                    <ReportUser/>
+              <ReportUser />
             </>
           )}
         </>

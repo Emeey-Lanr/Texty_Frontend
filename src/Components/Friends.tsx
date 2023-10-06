@@ -129,8 +129,8 @@ const Friends = ({
     <div className="friends_space_parent_div">
       <div></div>
       <div className="friends_space">
-        <div>
-          <button
+        <div className="friends_exit_div">
+          <button className="friends_exit"
             onClick={() => setOpenFollowersFollowing(false)}
             style={{ border: "none", background: "none", marginTop: "10px" }}
           >

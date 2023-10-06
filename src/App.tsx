@@ -36,7 +36,9 @@ export const appContext = createContext(appModelContext);
 const App = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const socketTesting = io("https://texty-api.onrender.com");
+  let serverApiRoute = "https://texty-api.onrender.com"
+  let localApiRoute = "http://localhost:2001";
+  const socketTesting = io(`${serverApiRoute}`);
   const {socket} = useSocket()
 
 
@@ -54,10 +56,10 @@ const App = () => {
   const [hideSideBar, setHideSideBar] = useState<string>("hidesidebar");
   const [hidebarBool, setHideBarBool] = useState<boolean>(true);
   const [userEndPoint, setuserEndPoint] = useState<string>(
-    "https://texty-api.onrender.com/user"
+    `${serverApiRoute}/user`
   );
   const [messageEndPoint, setMessageEndPoint] = useState<string>(
-    "https://texty-api.onrender.com/message"
+    `${serverApiRoute}/message`
   );
   //
   const [loginModalState, setLoginModalState] = useState<boolean>(false);
@@ -92,6 +94,7 @@ const App = () => {
   // If no user is found
   const [userProfileLoading, setUserProfileLoading] = useState<boolean>(false);
   const [noUserFound, setNoUserFound] = useState<boolean>(false);
+  const [userExitOrNot, setUserExitOrNot] = useState<string>("Wait..")
   const verifyUserProfile: string = `${userEndPoint}/verifyUserProfile`;
   // const userProfileDetails = useSelector((state: any) => state.userprofile.value)
 
@@ -161,6 +164,7 @@ const App = () => {
   };
 
   const getUserProfile = (id: string, route: string): any => {
+    setUserExitOrNot("Wait..");
     let check = false;
     let appUserToken = { id: "" };
     if (localStorage.xxxxxxxxxxxxxxx) {
@@ -179,6 +183,7 @@ const App = () => {
       })
       .then((result) => {
         console.log(result.data)
+        
         if (result.data.status) {
           setNoUserFound(false);
           setAbout_MeText(result.data.userData.about_me);
@@ -211,13 +216,15 @@ const App = () => {
             setBlocked(false);
           }
           //  switch(result.data.)
-         
-          socket?.emit("userInfoOrSearchedForInfo", {
-            userinfo: result.data.userData,
-            userLookedFor: result.data.lookedForUser,
-            usermessage: result.data.userMessage,
-            post: result.data.post,
-          });
+          if (result.data.message === "User Searched for not found") {
+           setUserExitOrNot("User not found")
+         }
+           socket?.emit("userInfoOrSearchedForInfo", {
+             userinfo: result.data.userData,
+             userLookedFor: result.data.lookedForUser,
+             usermessage: result.data.userMessage,
+             post: result.data.post,
+           });
           switch (result.data.message) {
             case "Only the user logged in is found": {
               return sendUserData(
@@ -267,6 +274,7 @@ const App = () => {
                   result.data.userData.notification,
                   result.data.userMessage
                 ),
+             
                 setNoUserFound(true)
               );
             }
@@ -327,7 +335,9 @@ const App = () => {
               return navigate("/signin");
             }
             case "": {
-              return setNoUserFound(true);
+                    return(                          
+              setUserExitOrNot("Username doesn't exit"),
+            setNoUserFound(true))
             }
           }
         }
@@ -419,19 +429,21 @@ const App = () => {
     });
   };
 
-  const likeUnlikeSocketFunction = (
+  const likeUnlikeSocketFunction = async (
     socketName: string,
     time: number,
     name: string,
     state: string
   ) => {
-
-    socket?.emit(socketName, {
-      user: userProfileDetails.registerdUserIdentification,
-      postedBy: name,
-      time: time,
-      state: state,
-    });
+  const data = {
+    user: userProfileDetails.registerdUserIdentification,
+    postedBy: name,
+    time: time,
+    state: state,
+  };
+    socket?.emit(socketName, data);
+  
+      const likeUnlike = axios.put(`${userEndPoint}/likeUnlikeComment`, data)
     if (state === "like") {
         axios.put(`${userEndPoint}/commentLikesNotification`, { user: userProfileDetails.registerdUserIdentification, postedBy: name, type: "like" })
     }
@@ -510,7 +522,7 @@ const App = () => {
         setUserProfileLoading,
         // if no user is found
         noUserFound,
-
+        userExitOrNot,
         // about_ me
         about_meText,
         setAbout_MeText,

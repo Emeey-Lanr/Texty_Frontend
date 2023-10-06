@@ -49,12 +49,15 @@ export const homePostSlice = createSlice({
              if (currentPostLiked) {
                 currentPostLiked.comment = action.payload.commentBox
              }
-       }
+        },
+        deleteHomePost: (state, action) => {
+            state.value = action.payload
+        }
 
     }
 })
 
 
 
-export const {socketHomePost, followerNewHomePost, userNewHomePost,getLikesHomePost, commentHomePostR} = homePostSlice.actions
+export const {socketHomePost, followerNewHomePost, userNewHomePost,getLikesHomePost, commentHomePostR, deleteHomePost} = homePostSlice.actions
 export default homePostSlice.reducer

@@ -21,8 +21,21 @@
 }
 .friends_space{
     height: 100%;
-
+overflow-x: scroll;
    background:white;
+   padding-left:5px;
+   padding-right: 5px;
+   box-sizing: border-box;
+}
+.friends_space::-webkit-scrollbar{
+    width: 5px;
+}
+.friends_space .friends_exit_div{
+    position: sticky;
+    top: 0;
+}
+    .friends_space div .friends_exit{
+    padding: 10px 5px;
 }
 
 .friends_heading{
@@ -919,4 +932,12 @@ font-weight: lighter;
           width:100%;
        }
       
+}
+
+@media (max-height:547px) {
+    .friends_space div .friends_exit{
+    padding: 20px 0;
+}
+
+    
 }

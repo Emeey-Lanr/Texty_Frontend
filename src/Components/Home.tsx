@@ -78,8 +78,8 @@ const Home = () => {
   };
   const socketHomePostFunction = () => {
     socket?.on("homePost", (data: any) => {
-      const post  = data.post.reverse()
-      dispatch(socketHomePost(post));
+         console.log(data.post)
+      dispatch(socketHomePost(JSON.stringify(data.post.reverse())));
     });
   };
 

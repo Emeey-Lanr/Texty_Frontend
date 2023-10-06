@@ -14,9 +14,13 @@
     margin: 0 auto;
     position: sticky;
     top: 0;
+ 
 }
 .search_home_input_div{
     width: 80%;
+    height: 50px;
+    position: sticky;
+    top: 0;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 80% 20%;
@@ -150,6 +154,8 @@
         transform: rotate(360deg);
     }
 }
+
+
 @media (max-width:1001px){
     .search_home_div{
         width: 100%;
@@ -174,5 +180,11 @@
     .search_home_div .people .action{
         width: 100%;
         
+    }
+}
+
+@media (max-height:517px) {
+    .search_home_input_div{
+        padding-top: 40px;
     }
 }

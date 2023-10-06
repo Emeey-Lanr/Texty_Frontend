@@ -12,6 +12,7 @@ import {MdReportProblem} from "react-icons/md"
 import { useSocket } from "../Socket";
 import { openClose } from "../Redux/Error";
 import ErrorModal from "./ErrorModal";
+import { deleteHomePost } from "../Redux/HomePost";
 const Postaction = () => {
   const { userEndPoint, unfollowFunction, followFunction, openReportModal, setOpenReportModal } =
     useContext(appContext);
@@ -27,8 +28,10 @@ const Postaction = () => {
     if (socket) {
       socket.on(
         "postDeleted",
-        (data: { username: string; time: string; post: [] }) => {
+        (data: { username: string; time: string; homePost: [] }) => {
+          console.log(data.homePost)
           dispatch(deletePost({ time: data.time, username: data.username }));
+          dispatch(deleteHomePost(data.homePost))
           dispatch(closePostActionModal(false));
         }
       );

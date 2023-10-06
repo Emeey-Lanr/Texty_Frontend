@@ -34,6 +34,7 @@ export const appModelContext = {
   //
   getUserProfile: (id: string, route: string) => {},
   noUserFound: false,
+  userExitOrNot:"",
   userProfileLoading: false,
   setUserProfileLoading: (userProfileLoading: boolean) => {},
   about_meText: "",
