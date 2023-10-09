@@ -45,6 +45,7 @@ export const userProfileSlice = createSlice({
   reducers: {
     collectUserProfile: (state, action) => {
       state.value = action.payload;
+      state.value.post.reverse()
       
     },
     updatePost: (state, action) => {

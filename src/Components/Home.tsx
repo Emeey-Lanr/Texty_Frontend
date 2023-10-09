@@ -199,7 +199,7 @@ const Home = () => {
           <div className="home_post_container">
             <div ref={newPost} />
             {homePost.map((details: POST, id: number) => (
-              <div key={id} className="home_post_div">
+              <button key={id} className="home_post_div">
                 <div className="date">
                   <span>
                     {<ReactTimeAgo date={details.time} locale="en-US" />}
@@ -322,7 +322,7 @@ const Home = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
