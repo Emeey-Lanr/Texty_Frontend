@@ -49,10 +49,11 @@ import { useSocket } from "../Socket";
 import { openClose } from "../Redux/Error";
 import ReportUser from "./ReportUser";
 
+
 // import { followerUser} from "../Features/Profile"
 
 const UserProfile = () => {
-   const socketTesting = io("http://localhost:2001");
+  
     const { socket } = useSocket();
   const {
     userEndPoint,
@@ -79,6 +80,7 @@ const UserProfile = () => {
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
   );
+
   const [openFollowersFollowing, setOpenFollowersFollowing] =
     useState<boolean>(false);
     const [couldntFollow, setCouldntFolow] =useState<string>("an error occured, couldn't unfollow")
@@ -310,6 +312,7 @@ const UserProfile = () => {
   // const followerUserEndPoint =
 
   const follow = () => {
+ 
     if (userProfileDetails.registerdUserIdentification !== "") {
       // this check if probably you are among the searched for user followers that means you are following the search for user nad if he not folloing you
       // the notification should be "followed back not follows you"
@@ -355,7 +358,7 @@ const UserProfile = () => {
   //  socket.emit("like", {user:userProfileDetails.registerdUserIdentification, postedBy:name, time:time, route:"profile"})
 
   // }
-  const unlikeBtn = (name: string, time: string) => {};
+
 
   const unblockBtn = () => {
     if (userProfileDetails.blockedNumber === 2) {
@@ -453,7 +456,7 @@ const UserProfile = () => {
                             <>
                               {(userProfileDetails.blockedNumber === 2 ||
                                 userProfileDetails.blockedNumber === 3) && (
-                                <button
+                                <button 
                                   className="bfu"
                                   onClick={() => unblockBtn()}
                                   style={{ background: "red", color: "white" }}
@@ -481,6 +484,7 @@ const UserProfile = () => {
                                 </button>
                               ) : (
                                 <button
+                                 
                                   className="bfu"
                                   onClick={() => follow()}
                                 >
@@ -519,7 +523,11 @@ const UserProfile = () => {
                                   Following
                                 </button>
                               ) : (
-                                <button className="" onClick={() => follow()}>
+                                <button
+                                  // disabled={btnDisabled.userProfile === 1}
+                                  className=""
+                                  onClick={() => follow()}
+                                >
                                   Follow
                                 </button>
                               )}

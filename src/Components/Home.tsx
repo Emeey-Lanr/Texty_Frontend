@@ -78,8 +78,7 @@ const Home = () => {
   };
   const socketHomePostFunction = () => {
     socket?.on("homePost", (data: any) => {
-         console.log(data.post)
-      dispatch(socketHomePost(JSON.stringify(data.post.reverse())));
+      dispatch(socketHomePost(data));
     });
   };
 
@@ -200,7 +199,7 @@ const Home = () => {
           <div className="home_post_container">
             <div ref={newPost} />
             {homePost.map((details: POST, id: number) => (
-              <button key={id} className="home_post_div">
+              <div key={id} className="home_post_div">
                 <div className="date">
                   <span>
                     {<ReactTimeAgo date={details.time} locale="en-US" />}
@@ -323,7 +322,7 @@ const Home = () => {
                     </button>
                   </div>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
         </div>

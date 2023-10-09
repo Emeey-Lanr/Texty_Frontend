@@ -38,7 +38,6 @@ const App = () => {
   const dispatch = useDispatch();
   let serverApiRoute = "https://texty-api.onrender.com"
   let localApiRoute = "http://localhost:2001";
-  const socketTesting = io(`${serverApiRoute}`);
   const {socket} = useSocket()
 
 
@@ -363,7 +362,7 @@ const App = () => {
 
       setOpenPrePost(false);
       setCreatePostModal(0);
-      dispatch(userNewHomePost(data.homePost.post.reverse()));
+      dispatch(userNewHomePost(data.homePost.post));
       dispatch(newUserPost(data.post));
     });
   };

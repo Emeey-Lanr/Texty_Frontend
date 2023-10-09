@@ -22,6 +22,7 @@ import  ErrorSlice from "./Redux/Error";
 import { SocketProvider } from "./Socket"
 
 
+
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
 const root = ReactDOM.createRoot(
@@ -38,7 +39,7 @@ const store = configureStore({
     current_post: CurrentPost,
     postdecision: Postdecision,
     suggested_user: SuggestedUser,
-    texty_error:ErrorSlice
+    texty_error: ErrorSlice,
   },
 });
 

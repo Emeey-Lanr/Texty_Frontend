@@ -13,14 +13,12 @@ export interface POST {
 
 const post:POST[] = []
 
-
-
 export const homePostSlice = createSlice({
     name: "homePostSlice",
     initialState: { value: post },
     reducers: {
         socketHomePost: (state:{value:POST[]}, action) => {
-            state.value = action.payload
+            state.value = action.payload.reverse()
             
         },
         followerNewHomePost: (state:{value:POST[]}, action) => {
@@ -35,7 +33,7 @@ export const homePostSlice = createSlice({
             } 
         },
         userNewHomePost: (state, action) => {
-            state.value = action.payload  
+            state.value = action.payload.reverse()  
            
         },
         getLikesHomePost: (state, action) => {

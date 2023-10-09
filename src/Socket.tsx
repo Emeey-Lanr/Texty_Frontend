@@ -12,7 +12,7 @@ const SocketContext = createContext<SocketContextInterFace>({ socket: null })
 export const useSocket =()=>  useContext(SocketContext)
 
 export const SocketProvider:React.FC<ComponentProps> = ({ children }) => {
-    const socket = io(`${serverApiRoute}`);
+    const socket = io(serverApiRoute);
     return (
         <SocketContext.Provider value={{socket}}>
              {children}

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { suggestedUserProfile } from "../Redux/SuggestedUser"
 import noIMG from "../images/noImage.png"
 import { useSocket } from "../Socket";
+
 const FollowUser = () => {
   const {
     suggestedUserF,
@@ -21,7 +22,7 @@ const FollowUser = () => {
    const userProfileDetails = useSelector(
      (state: any) => state.userprofile.value
   );  
-
+  
   useEffect(() => {
     if (socket) {
       suggestedUserF()
