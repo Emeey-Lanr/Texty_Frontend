@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 import { suggestedUserProfile } from "../Redux/SuggestedUser"
 import noIMG from "../images/noImage.png"
 import { useSocket } from "../Socket";
-
+import  {Link} from "react-router-dom"
 const FollowUser = () => {
   const {
     suggestedUserF,
@@ -82,50 +82,55 @@ const FollowUser = () => {
 
   return (
     <>
-      {suggested.length > 0 && <div className={`follow_a_user_parent ${hide} ${alwaysOpenSuggested}`}>
-        <div className="top_heading">
-          <div>
-            <button onClick={() => slide()}>
-              <FaArrowDown className={icon} />
-            </button>
+      {suggested.length > 0 && (
+        <div className={`follow_a_user_parent ${hide} ${alwaysOpenSuggested}`}>
+          <div className="top_heading">
+            <div>
+              <button onClick={() => slide()}>
+                <FaArrowDown className={icon} />
+              </button>
+            </div>
+            <div onClick={() => check()} className="heading_follow_a_user">
+              <h2>Suggested User</h2>
+            </div>
           </div>
-          <div onClick={() => check()} className="heading_follow_a_user">
-            <h2>Suggested User</h2>
-          </div>
-        </div>
 
-        {suggested.map((details: suggestedUserProfile) => (
-          <div className="follow_a_user">
-            <div className="description">
-              <img
-                src={details.img_url === "" ? noIMG : details.img_url}
-                alt=""
-              />
-              <div>
-                <h3>{details.username}</h3>
-                <p>{details.about_me}</p>
+          {suggested.map((details: suggestedUserProfile) => (
+            <div className="follow_a_user">
+              <Link to={`/${details.username}`} >
+                <div className="description">
+                  <img
+                    src={details.img_url === "" ? noIMG : details.img_url}
+                    alt=""
+                  />
+                  <div>
+                    <h3>{details.username}</h3>
+                    <p>{details.about_me}</p>
+                  </div>
+                </div>
+              </Link>
+              <div className="action">
+                {userProfileDetails.ifUserFollowing.find(
+                  (data: { username: string }) =>
+                    data.username === details.username
+                ) ? (
+                  <button
+                    onClick={() => unfollowBtn(details.username)}
+                    className="unfollow"
+                  >
+                    Unfollow
+                  </button>
+                ) : (
+                  <button onClick={() => followUser(details.username)}>
+                    Follow
+                  </button>
+                )}
               </div>
             </div>
-            <div className="action">
-              {userProfileDetails.ifUserFollowing.find(
-                (data: { username: string }) =>
-                  data.username === details.username
-              ) ? (
-                <button
-                  onClick={() => unfollowBtn(details.username)}
-                  className="unfollow"
-                >
-                  Unfollow
-                </button>
-              ) : (
-                <button onClick={() => followUser(details.username)}>
-                  Follow
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>}
+          ))}
+          <div className="last_div"/>
+        </div>
+      )}
     </>
   );
 }

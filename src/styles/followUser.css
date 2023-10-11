@@ -7,6 +7,7 @@
     right: 0;
     border-radius: 10px 10px 0 0;
     overflow-y: scroll;
+  
 
 }
 .follow_a_user_parent::-webkit-scrollbar{
@@ -97,7 +98,11 @@ color: #8c8c8c;
     background: white;
     color: black;
 }
-
+.last_div{
+    width:100%;
+    height: 50px;
+   
+}
 
 @media (max-width:1000px) {
     .show{

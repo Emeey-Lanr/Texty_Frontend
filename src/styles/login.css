@@ -42,6 +42,7 @@ letter-spacing: 5px;
     padding-left: 10px;
 }
 .signup_username div input:focus{
+     border-radius: 40px;
     outline: 3px solid #00000086;
 }
 .signup_password{
@@ -63,6 +64,7 @@ margin: 0 auto;
     outline: 3px solid #ff00008f;
 }
 .signup_password div .valid:focus{
+    border-radius: 40px;
     outline: 3px solid #00000086;
 }
 

@@ -129,7 +129,8 @@ const Friends = ({
     <div className="friends_space_parent_div">
       <div></div>
       <div className="friends_space">
-        <div className="friends_exit_div">
+        <div className="friends_exit_P_div">
+            <div className="friends_exit_div">
           <button className="friends_exit"
             onClick={() => setOpenFollowersFollowing(false)}
             style={{ border: "none", background: "none", marginTop: "10px" }}
@@ -159,6 +160,9 @@ const Friends = ({
             <p>Following</p>
           </button>
         </div>
+
+        </div>
+      
 
         {/* Friends */}
         {openFFNumber === 0 ? (
@@ -549,6 +553,7 @@ const Friends = ({
             )}
           </div>
         )}
+        <div className="friends_last_div"/>
       </div>
     </div>
   );

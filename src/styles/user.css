@@ -21,26 +21,30 @@
 }
 .friends_space{
     height: 100%;
-overflow-x: scroll;
+overflow-y: scroll;
    background:white;
    padding-left:5px;
    padding-right: 5px;
    box-sizing: border-box;
 }
+.friends_exit_P_div{
+ position: sticky;
+    top: 0;
+    background: white;
+}
 .friends_space::-webkit-scrollbar{
     width: 5px;
 }
 
-.friends_space .friends_exit_div{
-    position: sticky;
-    top: 0;
-}
+/* 
     .friends_space div .friends_exit{
     padding: 10px 5px;
-}
+} */
 
 .friends_heading{
+    background: white;
     width: 90%;
+    height: 40px;
     margin:  0 auto;
     display: grid;
     grid-template-columns: 50% 50%;
@@ -196,6 +200,10 @@ width: 90px;
 padding: 0 10px;
 border-radius: 20px;
 
+}
+.friends_last_div{
+    width: 100%;
+    height: 50px;
 }
 
 /* USER NOTIFICATION */
@@ -564,6 +572,8 @@ padding-bottom: 10px;
      margin:  0  0 0 10px;
   
   height: 40px;
+  position: sticky;
+  top: 0;
   border-bottom: 2px solid black;
 
 }
@@ -935,10 +945,27 @@ font-weight: lighter;
       
 }
 
+@media (max-height:561px){
+    .userNotificationDiv .heading_demacation_div .userNofication_heading{
+        height: 60px;
+        display: flex;
+        align-items: end;
+
+    }
+}
 @media (max-height:547px) {
     .friends_space div .friends_exit{
     padding: 20px 0;
 }
+
+@media (max-height:500px) {
+      .userNotificationDiv .heading_demacation_div .userNofication_heading{
+        height: 70px;
+      
+
+    }
+}
+
 
     
 }

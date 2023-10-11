@@ -47,8 +47,8 @@ webkitRelativePath:string;
     }
     const uploadPostBtn = () => {
         const date = new Date()
-
-        const post = {
+        if (text !== "") {
+             const post = {
           text: text,
           date: `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
           time: date.getTime(),
@@ -72,6 +72,11 @@ webkitRelativePath:string;
            
                 setCreatePostModal(2)
         })
+            
+ }else{
+    alert("Empty Input")
+ }
+       
    
         
     }
