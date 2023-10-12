@@ -3,6 +3,7 @@ import {
 
   FaHeart,
   FaComment,
+  FaSpinner,
 } from "react-icons/fa";
 import noImg from "../images/noImage.png";
 import PostModal from "./PostModal";
@@ -198,6 +199,10 @@ const Home = () => {
           {/* <div /> */}
           <div className="home_post_container">
             <div ref={newPost} />
+            {homePost.length <  1 && <div className="spin_div">
+              <FaSpinner className="spin" />
+            </div>}
+
             {homePost.map((details: POST, id: number) => (
               <button key={id} className="home_post_div">
                 <div className="date">
@@ -330,13 +335,13 @@ const Home = () => {
       <FollowUser />
       <PostModal />
       <Group />
-      <Chat/>
+      <Chat />
       <Create />
       <SideBarModal />
       <Navbar />
       <Sidebar />
       <Postaction />
-      <ReportUser/>
+      <ReportUser />
     </>
   );
 };

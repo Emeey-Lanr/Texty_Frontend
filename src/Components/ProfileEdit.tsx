@@ -170,7 +170,7 @@ const ProfileEdit = () => {
               }
 
               <div className="profile_edit_profile_img">
-                <img
+                <img style={{objectFit:"cover"}}
                   src={
                     userProfileDetails.registeredUserImgUrl === ""
                       ? noImg

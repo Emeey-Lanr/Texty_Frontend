@@ -97,7 +97,7 @@ const FollowUser = () => {
 
           {suggested.map((details: suggestedUserProfile) => (
             <div className="follow_a_user">
-              <Link to={`/${details.username}`} >
+              <Link style={{textDecoration:"none"}} to={`/${details.username}`} >
                 <div className="description">
                   <img
                     src={details.img_url === "" ? noIMG : details.img_url}

@@ -5,7 +5,7 @@ import GroupNotification from "./GroupNotification";
 import GroupDetails from "./GroupDetails";
 import { FaArrowLeft } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { incomingMesageR } from "../Redux/Message";
+import { incomingMesageR, reflectMessageInstantly } from "../Redux/Message";
 import axios from "axios";
 import ActionModal from "./ActionModal";
 import noImg from "../images/noImage.png";
@@ -72,7 +72,18 @@ const ChattingSpace = () => {
          sender: userDetails.registerdUserIdentification,
          text: m,
          time: `${hours}:${minutes}${hours >= 12 ? "PM" : "AM"}`,
-       };
+    };
+    dispatch(
+      reflectMessageInstantly({
+        notOwner:info.notowner,
+        message: {
+          sender: info.owner,
+          time: info.time,
+          text: info.text,
+          checked: true,
+        },
+      })
+    );
 
        socket?.emit("privateMessage", info);
        

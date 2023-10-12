@@ -50,6 +50,24 @@ grid-template-columns: 280px 7fr;
     width: 90%;
     margin: 0 auto;
 }
+.spin_div{
+    width:100%;
+    display: flex;
+    justify-content: center;
+   padding-top: 40px;
+}
+.spin{
+    animation: spinner 1s infinite running normal ;
+}
+
+@keyframes spinner {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
 .home_post_div {
     width: 400px;
     border: none;

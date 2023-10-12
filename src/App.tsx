@@ -36,29 +36,21 @@ export const appContext = createContext(appModelContext);
 const App = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  let API_URL = "https://texty-api.onrender.com"
-  // let API_URL = "http://localhost:2001";
   const {socket} = useSocket()
 
-
-  // Socket
-  // const socket = useSelector((state: any) => state.socket.value);
   // userprofile details
   const userProfileDetails = useSelector(
     (state: any) => state.userprofile.value
   );
-  //Route identification
-  // useEffect(() => {
-  //   dispatch(connectSocket())
-  // },[  ])
+ 
   const [routeIdentification, setRouteIdentification] = useState<string>("");
   const [hideSideBar, setHideSideBar] = useState<string>("hidesidebar");
   const [hidebarBool, setHideBarBool] = useState<boolean>(true);
   const [userEndPoint, setuserEndPoint] = useState<string>(
-    `${API_URL}/user`
+    `${process.env.REACT_APP_API_URL}/user`
   );
   const [messageEndPoint, setMessageEndPoint] = useState<string>(
-    `${API_URL}/message`
+    `${process.env.REACT_APP_API_URL}/message`
   );
   //
   const [loginModalState, setLoginModalState] = useState<boolean>(false);
